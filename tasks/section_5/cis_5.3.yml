@@ -1,0 +1,55 @@
+---
+
+- name: "5.3 | PATCH | Ensure logrotate is configured"
+  block:
+      - name: "5.3 | PATCH | Ensure logrotate is configured | installed"
+        ansible.builtin.package:
+            name: rsyslog-logrotate
+            state: present
+
+      - name: "5.3 | PATCH | Ensure logrotate is configured | scheduled"
+        ansible.builtin.systemd:
+            name: logrotate.timer
+            state: started
+            enabled: true
+
+      - name: "5.3 | PATCH | Ensure logrotate is configured | set default conf"
+        ansible.builtin.replace:
+            path: "/etc/logrotate.conf"
+            regexp: '^(\s*)(daily|weekly|monthly|yearly)$'
+            replace: "\\1{{ amzn2023cis_logrotate }}"
+
+      - name: "5.3 | AUDIT | Ensure logrotate is configured | Get non default logrotate settings"
+        ansible.builtin.find:
+            paths: /etc/logrotate.d/
+            contains: '^(\s*)(?!{{ amzn2023cis_logrotate }})(daily|weekly|monthly|yearly)$'
+        register: log_rotates
+
+      - name: "5.3 | AUDIT | Ensure logrotate is configured"
+        block:
+            - name: "5.3 | AUDIT | Ensure logrotate is configured | generate file list"
+              ansible.builtin.set_fact:
+                  logrotate_non_def_conf: "{{ log_rotates.files | map(attribute='path') | join (', ') }}"
+
+            - name: "5.3 | AUDIT | Ensure logrotate is configured | List configured files"
+              ansible.builtin.debug:
+                  msg: |
+                    "Warning!! The following files are not covered by default logrotate settings ensure they match site policy"
+                    "{{ logrotate_non_def_conf }}"
+              loop: "{{ log_rotates.files }}"
+
+            - name: "5.3 | AUDIT | Ensure logrotate is configured | Warning count"
+              ansible.builtin.import_tasks: warning_facts.yml
+        vars:
+            warn_control_id: '5.3'
+        when: log_rotates.matched > 0
+
+  when:
+      - amzn2023cis_rule_5_3
+  tags:
+      - level1-server
+      - manual
+      - patch
+      - logrotate
+      - rule_5.3
+      - nist_sp800-53r5_AU-8

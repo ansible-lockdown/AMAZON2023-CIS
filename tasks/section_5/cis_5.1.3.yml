@@ -1,0 +1,31 @@
+---
+
+- name: "5.1.3 | PATCH | Ensure all logfiles have appropriate permissions and ownership"
+  block:
+      - name: "5.1.3 | AUDIT | Ensure all logfiles have appropriate permissions and ownership | find files"
+        ansible.builtin.find:
+            paths: "/var/log"
+            file_type: file
+            recurse: true
+        register: logfiles
+
+      - name: "5.1.3 | PATCH | Ensure all logfiles have appropriate permissions and ownership | change permissions"
+        ansible.builtin.file:
+            path: "{{ item.path }}"
+            mode: '0640'
+        loop: "{{ logfiles.files }}"
+        loop_control:
+            label: "{{ item.path }}"
+        when:
+            - item.path != "/var/log/btmp"
+            - item.path != "/var/log/utmp"
+            - item.path != "/var/log/wtmp"
+  when:
+      - amzn2023cis_rule_5_1_3
+  tags:
+      - level1-server
+      - patch
+      - logfiles
+      - rule_5.1.3
+      - nist_sp800-53r5_AC-3
+      - nist_sp800-53r5_MP-5
