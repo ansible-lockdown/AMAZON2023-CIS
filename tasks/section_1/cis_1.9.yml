@@ -1,0 +1,24 @@
+---
+
+- name: "1.9 | PATCH | Ensure system-wide crypto policy is not legacy"
+  block:
+      - name: "1.9 | PATCH | Ensure system-wide crypto policy is not legacy | set_fact"
+        ansible.builtin.set_fact:
+            amzn2023cis_full_crypto_policy: "{{ amzn2023cis_crypto_policy }}{% if amzn2023cis_crypto_policy_module | length > 0 %}:{{ amzn2023cis_crypto_policy_module }}{% endif %}"
+
+      - name: "1.9 | PATCH | Ensure system-wide crypto policy is not legacy"
+        ansible.builtin.shell: |
+            update-crypto-policies --set "{{ amzn2023cis_full_crypto_policy }}"
+            update-crypto-policies
+        notify: Change_requires_reboot
+        when:
+            - amzn2023cis_system_wide_crypto_policy.stdout != amzn2023cis_full_crypto_policy
+  when:
+      - amzn2023cis_rule_1_9
+
+  tags:
+      - level1-server
+      - automated
+      - patch
+      - rule_1.9
+      - nist_sp800-53r5_SC-8
