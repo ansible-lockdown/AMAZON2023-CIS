@@ -1,0 +1,132 @@
+---
+
+- name: "4.6.2 | PATCH | Ensure system accounts are secured"
+  block:
+      - name: "4.6.2 | Ensure system accounts are secured | Set nologin"
+        ansible.builtin.user:
+            name: "{{ item.id }}"
+            shell: /usr/sbin/nologin
+        loop: "{{ amzn2023cis_passwd }}"
+        when:
+            - item.id != "root"
+            - item.id != "sync"
+            - item.id != "shutdown"
+            - item.id != "halt"
+            - item.id != "nfsnobody"
+            - item.uid < min_int_uid | int
+            - item.shell != "      /bin/false"
+            - item.shell != "      /usr/sbin/nologin"
+        loop_control:
+            label: "{{ item.id }}"
+
+      - name: "4.6.2 | PATCH | Ensure system accounts are secured | Lock accounts"
+        ansible.builtin.user:
+            name: "{{ item.id }}"
+            password_lock: true
+        loop: "{{ amzn2023cis_passwd }}"
+        when:
+            - item.id != "halt"
+            - item.id != "shutdown"
+            - item.id != "sync"
+            - item.id != "root"
+            - item.id != "nfsnobody"
+            - item.uid < min_int_uid | int
+            - item.shell != "      /bin/false"
+            - item.shell != "      /usr/sbin/nologin"
+        loop_control:
+            label: "{{ item.id }}"
+  when:
+      - amzn2023cis_rule_4_6_2
+  tags:
+      - level1-server
+      - patch
+      - accounts
+      - rule_4.6.2
+      - nist_sp800-53r5_AC-2
+      - nist_sp800-53r5_AC-3
+      - nist_sp800-53r5_AC-5
+      - nist_sp800-53r5_MP-5
+
+- name: "4.6.3 | PATCH | Ensure default user shell timeout is 900 seconds or less"
+  ansible.builtin.blockinfile:
+      path: "{{ item.path }}"
+      state: "{{ item.state }}"
+      marker: "# {mark} - CIS benchmark - Ansible-lockdown"
+      create: true
+      mode: '0644'
+      block: |
+        TMOUT={{ amzn2023cis_shell_session_timeout.timeout }}
+        export TMOUT
+        readonly TMOUT
+  loop:
+      - { path: "{{ amzn2023cis_shell_session_timeout.file }}", state: present }
+      - { path: /etc/profile, state: "{{ (amzn2023cis_shell_session_timeout.file == '/etc/profile') | ternary('present', 'absent') }}" }
+  when:
+      - amzn2023cis_rule_4_6_3
+  tags:
+      - level1-server
+      - patch
+      - accounts
+      - rule_4.6.3
+      - nist_sp800-53r5_AC-11
+
+- name: "4.6.4 | PATCH | Ensure default group for the root account is GID 0"
+  ansible.builtin.user:
+      name: root
+      group: 0
+  when:
+      - amzn2023cis_rule_4_6_4
+  tags:
+      - level1-server
+      - patch
+      - accounts
+      - rule_4.6.4
+      - nist_sp800-53r5_CM-1
+      - nist_sp800-53r5_CM-2
+      - nist_sp800-53r5_CM-6
+      - nist_sp800-53r5_CM-7
+      - nist_sp800-53r5_IA-5
+
+- name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive"
+  block:
+      - name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set umask for /etc/login.defs pam_umask settings"
+        ansible.builtin.lineinfile:
+            path: "{{ item.path }}"
+            regexp: '(?i)(umask\s*)'
+            line: '{{ item.line }} 027'
+        with_items:
+            - { path: '/etc/bashrc', line: 'umask' }
+            - { path: '/etc/profile', line: 'umask' }
+            - { path: '/etc/login.defs', line: 'UMASK' }
+
+      - name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set umask for /etc/bashrc"
+        ansible.builtin.lineinfile:
+            path: /etc/login.defs
+            regexp: '^USERGROUPS_ENAB'
+            line: USERGROUPS_ENAB no
+
+  when:
+      - amzn2023cis_rule_4_6_5
+  tags:
+      - level1-server
+      - patch
+      - accounts
+      - rule_4.6.5
+      - nist_sp800-53r5_AC-3
+      - nist_sp800-53r5_MP-2
+
+- name: "4.6.6 | PATCH | Ensure root password is set"
+  ansible.builtin.debug:
+      msg: "The root password has been set as per the assert in early stages"
+  when:
+      - amzn2023cis_rule_4_6_6
+  tags:
+      - level1-server
+      - patch
+      - accounts
+      - root
+      - rule_4.6.6
+      - nist_sp800-53r5_AC-2
+      - nist_sp800-53r5_AC-3
+      - nist_sp800-53r5_AC-5
+      - nist_sp800-53r5_MP-2
