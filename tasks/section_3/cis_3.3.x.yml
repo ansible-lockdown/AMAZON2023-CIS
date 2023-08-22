@@ -1,0 +1,226 @@
+---
+
+- name: "3.3.1 | PATCH | Ensure source routed packets are not accepted"
+  block:
+      - name: "3.3.1 | PATCH | Ensure source routed packets are not accepted | IPv4 | Set Fact"
+        ansible.builtin.set_fact:
+            amzn2023cis_sysctl_update: true
+            amzn2023cis_flush_ipv4_route: true
+      - name: "3.3.1 | PATCH | Ensure source routed packets are not accepted | IPv4"
+        ansible.builtin.debug:
+            msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-netipv4_sysctl.conf"
+
+      - name: "3.3.1 | PATCH | Ensure source routed packets are not accepted | IPv6"
+        block:
+            - name: "3.3.1 | PATCH | Ensure source routed packets are not accepted | IPv6 | Set Fact"
+              ansible.builtin.set_fact:
+                  amzn2023cis_flush_ipv6_route: true
+
+            - name: "3.3.1 | PATCH | Ensure source routed packets are not accepted | IPv6"
+              ansible.builtin.debug:
+                  msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-netipv6_sysctl.conf"
+        when: amzn2023cis_ipv6_required
+  when:
+      - amzn2023cis_rule_3_3_1
+  tags:
+      - level1-server
+      - sysctl
+      - patch
+      - rule_3.3.1
+      - nist_sp800-53r5_CM-1
+      - nist_sp800-53r5_CM-2
+      - nist_sp800-53r5_CM-6
+      - nist_sp800-53r5_CM-7
+      - nist_sp800-53r5_IA-5
+
+- name: "3.3.2 | PATCH | Ensure ICMP redirects are not accepted"
+  block:
+      - name: "3.3.2 | PATCH | Ensure ICMP redirects are not accepted | IPv4 | Set Fact"
+        ansible.builtin.set_fact:
+            amzn2023cis_sysctl_update: true
+            amzn2023cis_flush_ipv4_route: true
+
+      - name: "3.3.2 | PATCH | Ensure ICMP redirects are not accepted | IPv4"
+        ansible.builtin.debug:
+            msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-netipv4_sysctl.conf"
+
+      - name: "3.3.2 | PATCH | Ensure ICMP redirects are not accepted | IPv6"
+        block:
+            - name: "3.3.2 | PATCH | Ensure ICMP redirects are not accepted | IPv6 | Set Fact"
+              ansible.builtin.set_fact:
+                  amzn2023cis_flush_ipv6_route: true
+
+            - name: "3.3.2 | PATCH | Ensure ICMP redirects are not accepted | IPv6"
+              ansible.builtin.debug:
+                  msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-netipv6_sysctl.conf"
+        when: amzn2023cis_ipv6_required
+  when:
+      - amzn2023cis_rule_3_3_2
+  tags:
+      - level1-server
+      - sysctl
+      - patch
+      - rule_3.3.2
+      - nist_sp800-53r5_CM-1
+      - nist_sp800-53r5_CM-2
+      - nist_sp800-53r5_CM-6
+      - nist_sp800-53r5_CM-7
+      - nist_sp800-53r5_IA-5
+
+- name: "3.3.3 | PATCH | Ensure secure ICMP redirects are not accepted"
+  block:
+      - name: "3.3.3 | PATCH | Ensure secure ICMP redirects are not accepted | Set Fact"
+        ansible.builtin.set_fact:
+            amzn2023cis_sysctl_update: true
+            amzn2023cis_flush_ipv4_route: true
+
+      - name: "3.3.3 | PATCH | Ensure secure ICMP redirects are not accepted"
+        ansible.builtin.debug:
+            msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-netipv4_sysctl.conf"
+  when:
+      - amzn2023cis_rule_3_3_3
+  tags:
+      - level1-server
+      - sysctl
+      - patch
+      - rule_3.3.3
+      - nist_sp800-53r5_CM-1
+      - nist_sp800-53r5_CM-2
+      - nist_sp800-53r5_CM-6
+      - nist_sp800-53r5_CM-7
+      - nist_sp800-53r5_IA-5
+
+- name: "3.3.4 | PATCH | Ensure suspicious packets are logged"
+  block:
+      - name: "3.3.4 | PATCH | Ensure suspicious packets are logged | Set Fact"
+        ansible.builtin.set_fact:
+            amzn2023cis_sysctl_update: true
+            amzn2023cis_flush_ipv4_route: true
+
+      - name: "3.3.4 | PATCH | Ensure suspicious packets are logged"
+        ansible.builtin.debug:
+            msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-netipv4_sysctl.conf"
+  when:
+      - amzn2023cis_rule_3_3_4
+  tags:
+      - level1-server
+      - sysctl
+      - patch
+      - rule_3.3.4
+      - nist_sp800-53r5_AU-3
+
+- name: "3.3.5 | PATCH | Ensure broadcast ICMP requests are ignored"
+  block:
+      - name: "3.3.5 | PATCH | Ensure broadcast ICMP requests are ignored | Set Fact"
+        ansible.builtin.set_fact:
+            amzn2023cis_sysctl_update: true
+            amzn2023cis_flush_ipv4_route: true
+
+      - name: 3.3.5 | PATCH | Ensure broadcast ICMP requests are ignored"
+        ansible.builtin.debug:
+            msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-netipv4_sysctl.conf"
+  when:
+      - amzn2023cis_rule_3_3_5
+  tags:
+      - level1-server
+      - sysctl
+      - patch
+      - rule_3.3.5
+      - nist_sp800-53r5_CM-1
+      - nist_sp800-53r5_CM-2
+      - nist_sp800-53r5_CM-6
+      - nist_sp800-53r5_CM-7
+      - nist_sp800-53r5_IA-5
+
+- name: "3.3.6 | PATCH | Ensure bogus ICMP responses are ignored"
+  block:
+      - name: "3.3.6 | PATCH | Ensure bogus ICMP responses are ignored | Set Fact"
+        ansible.builtin.set_fact:
+            amzn2023cis_sysctl_update: true
+            amzn2023cis_flush_ipv4_route: true
+
+      - name: "3.3.6 | PATCH | Ensure bogus ICMP responses are ignored"
+        ansible.builtin.debug:
+            msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-netipv4_sysctl.conf"
+  when:
+      - amzn2023cis_rule_3_3_6
+  tags:
+      - level1-server
+      - sysctl
+      - patch
+      - rule_3.3.6
+      - nist_sp800-53r5_CM-1
+      - nist_sp800-53r5_CM-2
+      - nist_sp800-53r5_CM-6
+      - nist_sp800-53r5_CM-7
+      - nist_sp800-53r5_IA-5
+
+- name: "3.3.7 | PATCH | Ensure Reverse Path Filtering is enabled"
+  block:
+      - name: "3.3.7 | PATCH | Ensure Reverse Path Filtering is enabled | Set Fact"
+        ansible.builtin.set_fact:
+            amzn2023cis_sysctl_update: true
+            amzn2023cis_flush_ipv4_route: true
+
+      - name: "3.3.7 | PATCH | Ensure Reverse Path Filtering is enabled"
+        ansible.builtin.debug:
+            msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-netipv4_sysctl.conf"
+  when:
+      - amzn2023cis_rule_3_3_7
+  tags:
+      - level1-server
+      - sysctl
+      - patch
+      - rule_3.3.7
+      - nist_sp800-53r5_CM-1
+      - nist_sp800-53r5_CM-2
+      - nist_sp800-53r5_CM-6
+      - nist_sp800-53r5_CM-7
+      - nist_sp800-53r5_IA-5
+
+- name: "3.3.8 | PATCH | Ensure TCP SYN Cookies is enabled"
+  block:
+      - name: "3.3.8 | PATCH | Ensure TCP SYN Cookies is enabled | Set Fact"
+        ansible.builtin.set_fact:
+            amzn2023cis_sysctl_update: true
+            amzn2023cis_flush_ipv4_route: true
+
+      - name: "3.3.8 | PATCH | Ensure TCP SYN Cookies is enabled"
+        ansible.builtin.debug:
+            msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-netipv4_sysctl.conf"
+  when:
+      - amzn2023cis_rule_3_3_8
+  tags:
+      - level1-server
+      - sysctl
+      - patch
+      - rule_3.3.8
+      - nist_sp800-53r5_CM-1
+      - nist_sp800-53r5_CM-2
+      - nist_sp800-53r5_CM-6
+      - nist_sp800-53r5_CM-7
+      - nist_sp800-53r5_IA-5
+
+- name: "3.3.9 | PATCH | Ensure IPv6 router advertisements are not accepted"
+  block:
+      - name: "3.3.9 | PATCH | Ensure IPv6 router advertisements are not accepted | IPv6 | Set Fact"
+        ansible.builtin.set_fact:
+            amzn2023cis_sysctl_update: true
+            amzn2023cis_flush_ipv6_route: true
+
+      - name: "3.3.9 | PATCH | Ensure IPv6 router advertisements are not accepted | IPv6"
+        ansible.builtin.debug:
+            msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-netipv6_sysctl"
+  when:
+      - amzn2023cis_ipv6_required
+      - amzn2023cis_rule_3_3_9
+  tags:
+      - level1-server
+      - sysctl
+      - patch
+      - rule_3.3.9
+      - nist_sp800-53r5_CM-1
+      - nist_sp800-53r5_CM-2
+      - nist_sp800-53r5_CM-6
+      - nist_sp800-53r5_CM-7
+      - nist_sp800-53r5_IA-5

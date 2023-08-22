@@ -1,0 +1,59 @@
+---
+
+- name: "3.4.1.1 | PATCH | Ensure nftables is installed"
+  ansible.builtin.package:
+      name:
+          - nftables
+      state: present
+  when:
+      - amzn2023cis_rule_3_4_1_1
+      - amzn2023cis_firewall == 'nftables'
+  tags:
+      - level2-server
+      - patch
+      - nftables
+      - rule_3.4.1.1
+      - nist_sp800-53r5_CM-7
+      - nist_sp800-53r5_CA-9
+
+- name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use"
+  block:
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | nftables"
+        ansible.builtin.systemd:
+            name: "{{ item }}"
+            masked: true
+        loop:
+            - firewalld
+        when:
+            - item in ansible_facts.packages
+            - amzn2023cis_firewall == 'nftables'
+
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | firewalld"
+        ansible.builtin.systemd:
+            name: "{{ item }}"
+            masked: true
+        loop:
+            - nftables
+        when:
+            - item in ansible_facts.packages
+            - amzn2023cis_firewall == 'firewalld'
+
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | package installed"
+        ansible.builtin.package:
+            name: "{{ amzn2023cis_firewall }}"
+            state: installed
+
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | {{ amzn2023cis_firewall }} started and enabled"
+        ansible.builtin.systemd:
+            name: "{{ amzn2023cis_firewall }}"
+            enabled: true
+            state: started
+
+  when:
+      - amzn2023cis_rule_3_4_1_2
+  tags:
+      - level2-server
+      - patch
+      - firewalld
+      - nftables
+      - rule_3.4.1.2

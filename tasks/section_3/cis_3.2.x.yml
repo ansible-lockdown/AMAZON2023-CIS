@@ -1,0 +1,60 @@
+---
+
+- name: "3.2.1 | PATCH | Ensure IP forwarding is disabled"
+  block:
+      - name: "3.2.1 | PATCH | Ensure IP forwarding is disabled | Disable IPv4 forwarding | Set Fact"
+        ansible.builtin.set_fact:
+            amzn2023cis_sysctl_update: true
+            amzn2023cis_flush_ipv4_route: true
+
+      - name: "3.2.1 | PATCH | Ensure IP forwarding is disabled | Disable IPv4 forwarding"
+        ansible.builtin.debug:
+            msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-netipv4_sysctl.conf"
+
+      - name: "3.2.1 | PATCH | Ensure IP forwarding is disabled | IPv6"
+        block:
+            - name: "3.2.1 | PATCH | Ensure IP forwarding is disabled | Disable IPv6 forwarding | Set Fact"
+              ansible.builtin.set_fact:
+                  amzn2023cis_flush_ipv6_route: true
+
+            - name: "3.2.1 | PATCH | Ensure IP forwarding is disabled | Disable IPv6 forwarding"
+              ansible.builtin.debug:
+                  msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-netipv6_sysctl.conf"
+
+        when: amzn2023cis_ipv6_required
+  when:
+      - not amzn2023cis_is_router
+      - amzn2023cis_rule_3_2_1
+  tags:
+      - level1-server
+      - sysctl
+      - patch
+      - rule_3.2.1
+      - nist_sp800-53r5_CM-1
+      - nist_sp800-53r5_CM-2
+      - nist_sp800-53r5_CM-6
+      - nist_sp800-53r5_CM-7
+      - nist_sp800-53r5_IA-5
+
+- name: "3.2.2 | PATCH | Ensure packet redirect sending is disabled"
+  block:
+      - name: "3.2.2 | PATCH | Ensure packet redirect sending is disabled | Set Fact"
+        ansible.builtin.set_fact:
+            amzn2023cis_sysctl_update: true
+            amzn2023cis_flush_ipv4_route: true
+      - name: "3.2.2 | PATCH | Ensure packet redirect sending is disabled"
+        ansible.builtin.debug:
+            msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-netipv4_sysctl.conf"
+  when:
+      - not amzn2023cis_is_router
+      - amzn2023cis_rule_3_2_2
+  tags:
+      - level1-server
+      - patch
+      - sysctl
+      - rule_3.2.2
+      - nist_sp800-53r5_CM-1
+      - nist_sp800-53r5_CM-2
+      - nist_sp800-53r5_CM-6
+      - nist_sp800-53r5_CM-7
+      - nist_sp800-53r5_IA-5

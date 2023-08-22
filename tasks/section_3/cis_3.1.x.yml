@@ -1,0 +1,143 @@
+---
+
+# The CIS Control wants IPv6 disabled if not in use.
+# We are using the amzn2023cis_ipv6_required to specify if you have IPv6 in use
+- name: "3.1.1 | PATCH | Ensure IPv6 status is identified"
+  block:
+      - name: "3.1.1 | PATCH | Ensure IPv6 status is identified | refresh"
+        ansible.builtin.set_fact:
+            amzn2023cis_sysctl_update: true
+            amzn2023cis_flush_ipv6_route: true
+
+      - name: "3.1.1 | PATCH | Ensure IPv6 status is identified | disable"
+        ansible.builtin.debug:
+            msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-disable_ipv6.conf"
+  when:
+      - not amzn2023cis_ipv6_required
+      - amzn2023cis_rule_3_1_1
+  tags:
+      - level1-server
+      - manual
+      - patch
+      - ipv6
+      - networking
+      - rule_3.1.1
+      - nist_sp800-53r5_CM-7
+
+- name: "3.1.2 | PATCH | Ensure DCCP is disabled"
+  block:
+      - name: "3.1.2 | PATCH | Ensure DCCP is disabled"
+        ansible.builtin.template:
+            src: "etc/modprobe.d/modprobe.conf.j2"
+            dest: "/etc/modprobe.d/{{ item }}.conf"
+            mode: '0600'
+            owner: root
+            group: root
+        loop: "{{ protocol }}"  # item used by template
+
+      - name: "3.1.2 | PATCH | Ensure DCCP is disabled | blacklist"
+        ansible.builtin.lineinfile:
+            path: /etc/modprobe.d/blacklist.conf
+            regexp: "^(#)?blacklist {{ protocol }}(\\s|$)"
+            line: "blacklist {{ protocol }}"
+            create: true
+            mode: '0600'
+  var:
+      protocol: dccp
+  when:
+      - amzn2023cis_rule_3_1_2
+  tags:
+      - level2-server
+      - patch
+      - tipc
+      - rule_3.1.2
+      - nist_sp800-53r5_CM-7
+
+- name: "3.1.3 | PATCH | Ensure SCTP is disabled"
+  block:
+      - name: "3.1.3 | PATCH | Ensure SCTP is disabled"
+        ansible.builtin.template:
+            src: "etc/modprobe.d/modprobe.conf.j2"
+            dest: "/etc/modprobe.d/{{ item }}.conf"
+            mode: '0600'
+            owner: root
+            group: root
+        loop: "{{ protocol }}"  # item used by template
+
+      - name: "3.1.3 | PATCH | Ensure SCTP is disabled | blacklist"
+        ansible.builtin.lineinfile:
+            path: /etc/modprobe.d/blacklist.conf
+            regexp: "^(#)?blacklist {{ protocol }}(\\s|$)"
+            line: "blacklist {{ protocol }}"
+            create: true
+            mode: '0600'
+  var:
+      protocol: sctp
+  when:
+      - amzn2023cis_rule_3_1_3
+  tags:
+      - level2-server
+      - patch
+      - tipc
+      - rule_3.1.3
+      - nist_sp800-53r5_SI-4
+      - nist_sp800-53r5_CM-7
+
+- name: "3.1.4 | PATCH | Ensure RDS is disabled"
+  block:
+      - name: "3.1.4 | PATCH | Ensure RDS is disabled"
+        ansible.builtin.template:
+            src: "etc/modprobe.d/modprobe.conf.j2"
+            dest: "/etc/modprobe.d/{{ item }}.conf"
+            mode: '0600'
+            owner: root
+            group: root
+        loop: "{{ protocol }}"  # item used by template
+
+      - name: "3.1.4 | PATCH | Ensure RDS is disabled | blacklist"
+        ansible.builtin.lineinfile:
+            path: /etc/modprobe.d/blacklist.conf
+            regexp: "^(#)?blacklist {{ protocol }}(\\s|$)"
+            line: "blacklist {{ protocol }}"
+            create: true
+            mode: '0600'
+  var:
+      protocol: rds
+  when:
+      - amzn2023cis_rule_3_1_4
+  tags:
+      - level2-server
+      - patch
+      - tipc
+      - rule_3.1.3
+      - nist_sp800-53r5_CM-7
+
+- name: "3.1.5 | PATCH | Ensure TIPC is disabled"
+  block:
+      - name: "3.1.5 | PATCH | Ensure TIPC is disabled"
+        ansible.builtin.template:
+            src: "etc/modprobe.d/modprobe.conf.j2"
+            dest: "/etc/modprobe.d/{{ item }}.conf"
+            mode: '0600'
+            owner: root
+            group: root
+        loop: "{{ protocol }}"  # item used by template
+
+      - name: "3.1.5 | PATCH | Ensure TIPC is disabled | blacklist"
+        ansible.builtin.lineinfile:
+            path: /etc/modprobe.d/blacklist.conf
+            regexp: "^(#)?blacklist {{ protocol }}(\\s|$)"
+            line: "blacklist {{ protocol }}"
+            create: true
+            mode: '0600'
+  var:
+      protocol: tipc
+  when:
+      - amzn2023cis_rule_3_1_5
+  tags:
+      - level2-server
+      - patch
+      - tipc
+      - rule_3.1.5
+      - nist_sp800-53r5_CM-7
+      - nist_sp800-53r5_SI-4
