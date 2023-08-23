@@ -1,4 +1,4 @@
-# AMAZON 2023 CIS
+# AMAZON 2023 CIS - Beta
 
 ## Configure a Amazon 2023 machine to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant
 
