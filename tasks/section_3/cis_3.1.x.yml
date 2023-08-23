@@ -42,7 +42,7 @@
             line: "blacklist {{ protocol }}"
             create: true
             mode: '0600'
-  var:
+  vars:
       protocol: dccp
   when:
       - amzn2023cis_rule_3_1_2
@@ -71,7 +71,7 @@
             line: "blacklist {{ protocol }}"
             create: true
             mode: '0600'
-  var:
+  vars:
       protocol: sctp
   when:
       - amzn2023cis_rule_3_1_3
@@ -101,7 +101,7 @@
             line: "blacklist {{ protocol }}"
             create: true
             mode: '0600'
-  var:
+  vars:
       protocol: rds
   when:
       - amzn2023cis_rule_3_1_4
@@ -130,7 +130,7 @@
             line: "blacklist {{ protocol }}"
             create: true
             mode: '0600'
-  var:
+  vars:
       protocol: tipc
   when:
       - amzn2023cis_rule_3_1_5

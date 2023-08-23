@@ -61,7 +61,6 @@
       - amzn2023cis_rule_1_7_4
   tags:
       - level1-server
-      - level1-workstation
       - perms
       - patch
       - rule_1.7.4

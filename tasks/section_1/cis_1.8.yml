@@ -9,7 +9,6 @@
       - amzn2023cis_rule_1_8
   tags:
       - level1-server
-      - level1-workstation
       - patch
       - rule_1.8
       - nist_sp800-53r5_SI-2

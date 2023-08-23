@@ -63,6 +63,5 @@
       - amzn2023cis_auditd_extra_conf.keys() | length > 0
   tags:
       - level2-server
-      - level2-workstation
       - patch
       - auditd
