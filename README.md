@@ -164,13 +164,12 @@ We encourage you (the community) to contribute to this role. Please read the rul
 
 ## Known Issues
 
-Variable used to unset.
-AMAZON2023cis_default_repo: true  # to be set to false if using repo that does have this ability
+Default builds dont have a root password set, so prelim will fail. Please set a root password using the correct encryption version
 
-controls
-1.2.2 and 1.2.4 affect default repos and will stop patching from occuring
+CIS Documented controls
 
-CIS Documented rules 6.1.1 and 6.1.2 are identical. So section 6 only has 12 items compared to documentation
+- 1.2.2 and 1.2.4 affect default repos and will stop patching from occuring
+- 6.1.1 and 6.1.2 are identical. So section 6 only has 12 items compared to documentation.
 
 ## Pipeline Testing
 
