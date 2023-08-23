@@ -73,10 +73,10 @@
             current_crypto_module: "{{ amzn2023cis_system_wide_crypto_policy.stdout.split(':')[1] }}"
         when: "':' in amzn2023cis_system_wide_crypto_policy.stdout"
   when:
-      - amzn2023cis_rule_1_10
+      - amzn2023cis_rule_1_9
   tags:
       - level1-server
-      - rule_1.10
+      - rule_1.9
       - crypto
 
 - name: "PRELIM | if systemd coredump"

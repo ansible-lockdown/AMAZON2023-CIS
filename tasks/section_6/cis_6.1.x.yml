@@ -264,6 +264,7 @@
         when: amzn2023cis_6_1_11_unowned_files_found or amzn2023cis_6_1_11_ungrouped_files_found
   vars:
       amzn2023cis_6_1_11_unowned_files_found: false
+      amzn2023cis_6_1_11_ungrouped_files_found: false
   when:
       - amzn2023cis_rule_6_1_11
   tags:
@@ -336,7 +337,7 @@
       - name: "6.1.12 | AUDIT | Ensure SUID and SGID files are reviewed | Alert SGID exist"
         ansible.builtin.debug:
             msg: "Warning!! SGID set on items in {{ amzn2023cis_6_1_12_sgid_perms | json_query('results[*].stdout_lines[*]') | flatten }}"  # noqa jinja[invalid]
-        when: amzn2023cis_6_1_13_sgid_found
+        when: amzn2023cis_6_1_12_sgid_found
 
       - name: "6.1.12 | AUDIT | Ensure SUID and SGID files are reviewed | Alert SUID/SGID exist | warning"
         ansible.builtin.import_tasks: warning_facts.yml

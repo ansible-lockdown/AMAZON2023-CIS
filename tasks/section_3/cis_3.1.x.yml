@@ -33,7 +33,8 @@
             mode: '0600'
             owner: root
             group: root
-        loop: "{{ protocol }}"  # item used by template
+        loop:
+            - "{{ protocol }}"  # item used by template
 
       - name: "3.1.2 | PATCH | Ensure DCCP is disabled | blacklist"
         ansible.builtin.lineinfile:
@@ -62,7 +63,8 @@
             mode: '0600'
             owner: root
             group: root
-        loop: "{{ protocol }}"  # item used by template
+        loop:
+            - "{{ protocol }}"  # item used by template
 
       - name: "3.1.3 | PATCH | Ensure SCTP is disabled | blacklist"
         ansible.builtin.lineinfile:
@@ -92,7 +94,8 @@
             mode: '0600'
             owner: root
             group: root
-        loop: "{{ protocol }}"  # item used by template
+        loop:
+            - "{{ protocol }}"  # item used by template
 
       - name: "3.1.4 | PATCH | Ensure RDS is disabled | blacklist"
         ansible.builtin.lineinfile:
@@ -109,7 +112,7 @@
       - level2-server
       - patch
       - tipc
-      - rule_3.1.3
+      - rule_3.1.4
       - nist_sp800-53r5_CM-7
 
 - name: "3.1.5 | PATCH | Ensure TIPC is disabled"
@@ -121,7 +124,8 @@
             mode: '0600'
             owner: root
             group: root
-        loop: "{{ protocol }}"  # item used by template
+        loop:
+            - "{{ protocol }}"  # item used by template
 
       - name: "3.1.5 | PATCH | Ensure TIPC is disabled | blacklist"
         ansible.builtin.lineinfile:
