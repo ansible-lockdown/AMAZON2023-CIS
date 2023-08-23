@@ -15,7 +15,7 @@ amzn2023cis_allowed_crypto_policies_modules:
 warn_control_list: ""
 warn_count: 0
 
-gpg_key_package: "{{ ansible_distribution | lower }}-gpg-keys"
+gpg_key_package: "system-release"
 
 os_gpg_key_pubkey_name: gpg-pubkey-d832c631-63977702
 os_gpg_key_pubkey_content: "Amazon Linux <amazon-linux@amazon.com> d832c631"
