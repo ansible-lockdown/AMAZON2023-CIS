@@ -45,7 +45,6 @@
       job: "{{ amzn2023cis_aide_cron['aide_job'] }}"
   when:
       - amzn2023cis_rule_1_3_2
-      - not system_is_ec2
   tags:
       - level1-server
       - aide
@@ -68,7 +67,6 @@
       validate: aide -D --config %s
   when:
       - amzn2023cis_rule_1_3_2
-      - not system_is_ec2
   tags:
       - level1-server
       - aide
