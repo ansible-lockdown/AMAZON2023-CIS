@@ -3,7 +3,7 @@
 
 - name: Check OS version and family
   ansible.builtin.assert:
-      that: (ansible_distribution == 'Amazon' ansible_distribution_major_version is version_compare('2023', '==')
+      that: (ansible_distribution == 'Amazon' and ansible_distribution_major_version is version_compare('2023', '=='))
       fail_msg: "This role can only be run against Supported OSs. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
       success_msg: "This role is running against a supported OS {{ ansible_distribution }} {{ ansible_distribution_major_version }}"
   when:
@@ -82,11 +82,6 @@
 - name: Gather the package facts
   ansible.builtin.package_facts:
       manager: auto
-  tags:
-      - always
-
-- name: Include OS specific variables
-  ansible.builtin.include_vars: "{{ ansible_distribution }}.yml"
   tags:
       - always
 

@@ -1,0 +1,21 @@
+---
+
+min_ansible_version: 2.10.1
+amzn2023cis_allowed_crypto_policies:
+    - 'DEFAULT'
+    - 'FUTURE'
+    - 'FIPS'
+
+amzn2023cis_allowed_crypto_policies_modules:
+    - 'OSPP'
+    - 'AD-SUPPORT'
+    - 'AD-SUPPORT-LEGACY'
+
+# Used to control warning summary
+warn_control_list: ""
+warn_count: 0
+
+gpg_key_package: "system-release"
+
+os_gpg_key_pubkey_name: gpg-pubkey-d832c631-63977702
+os_gpg_key_pubkey_content: "Amazon Linux <amazon-linux@amazon.com> d832c631"

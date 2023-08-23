@@ -119,6 +119,7 @@ amzn2023cis_rule_1_4_2: true
 amzn2023cis_rule_1_5_1: true
 amzn2023cis_rule_1_5_2: true
 amzn2023cis_rule_1_5_3: true
+amzn2023cis_rule_1_5_4: true
 amzn2023cis_rule_1_6_1_1: true
 amzn2023cis_rule_1_6_1_2: true
 amzn2023cis_rule_1_6_1_3: true
@@ -167,6 +168,8 @@ amzn2023cis_rule_2_4: true
 amzn2023cis_rule_3_1_1: true
 amzn2023cis_rule_3_1_2: true
 amzn2023cis_rule_3_1_3: true
+amzn2023cis_rule_3_1_4: true
+amzn2023cis_rule_3_1_5: true
 amzn2023cis_rule_3_2_1: true
 amzn2023cis_rule_3_2_2: true
 amzn2023cis_rule_3_3_1: true
@@ -189,118 +192,129 @@ amzn2023cis_rule_3_4_2_6: true
 amzn2023cis_rule_3_4_2_7: true
 
 # Section 4 rules
-amzn2023cis_rule_4_1_1_1: true
-amzn2023cis_rule_4_1_1_2: true
-amzn2023cis_rule_4_1_1_3: true
-amzn2023cis_rule_4_1_1_4: true
-amzn2023cis_rule_4_1_2_1: true
-amzn2023cis_rule_4_1_2_2: true
-amzn2023cis_rule_4_1_2_3: true
-amzn2023cis_rule_4_1_3_1: true
-amzn2023cis_rule_4_1_3_2: true
-amzn2023cis_rule_4_1_3_3: true
-amzn2023cis_rule_4_1_3_4: true
-amzn2023cis_rule_4_1_3_5: true
-amzn2023cis_rule_4_1_3_6: true
-amzn2023cis_rule_4_1_3_7: true
-amzn2023cis_rule_4_1_3_8: true
-amzn2023cis_rule_4_1_3_9: true
-amzn2023cis_rule_4_1_3_10: true
-amzn2023cis_rule_4_1_3_11: true
-amzn2023cis_rule_4_1_3_12: true
-amzn2023cis_rule_4_1_3_13: true
-amzn2023cis_rule_4_1_3_14: true
-amzn2023cis_rule_4_1_3_15: true
-amzn2023cis_rule_4_1_3_16: true
-amzn2023cis_rule_4_1_3_17: true
-amzn2023cis_rule_4_1_3_18: true
-amzn2023cis_rule_4_1_3_19: true
-amzn2023cis_rule_4_1_3_20: true
-amzn2023cis_rule_4_1_3_21: true
-amzn2023cis_rule_4_1_4_1: true
-amzn2023cis_rule_4_1_4_2: true
-amzn2023cis_rule_4_1_4_3: true
-amzn2023cis_rule_4_1_4_4: true
-amzn2023cis_rule_4_1_4_5: true
-amzn2023cis_rule_4_1_4_6: true
-amzn2023cis_rule_4_1_4_7: true
-amzn2023cis_rule_4_1_4_8: true
-amzn2023cis_rule_4_1_4_9: true
-amzn2023cis_rule_4_1_4_10: true
-amzn2023cis_rule_4_2_1_1: true
-amzn2023cis_rule_4_2_1_2: true
-amzn2023cis_rule_4_2_1_3: true
-amzn2023cis_rule_4_2_1_4: true
-amzn2023cis_rule_4_2_1_5: true
-amzn2023cis_rule_4_2_1_6: true
-amzn2023cis_rule_4_2_1_7: true
-amzn2023cis_rule_4_2_2_1_1: true
-amzn2023cis_rule_4_2_2_1_2: true
-amzn2023cis_rule_4_2_2_1_3: true
-amzn2023cis_rule_4_2_2_1_4: true
-amzn2023cis_rule_4_2_2_2: true
-amzn2023cis_rule_4_2_2_3: true
-amzn2023cis_rule_4_2_2_4: true
-amzn2023cis_rule_4_2_2_5: true
-amzn2023cis_rule_4_2_2_6: true
-amzn2023cis_rule_4_2_2_7: true
+amzn2023cis_rule_4_1_1: true
+amzn2023cis_rule_4_1_2: true
+amzn2023cis_rule_4_1_3: true
+amzn2023cis_rule_4_1_4: true
+amzn2023cis_rule_4_1_5: true
+amzn2023cis_rule_4_1_6: true
+amzn2023cis_rule_4_1_7: true
+amzn2023cis_rule_4_1_8: true
+amzn2023cis_rule_4_1_9: true
+amzn2023cis_rule_4_2_1: true
+amzn2023cis_rule_4_2_2: true
 amzn2023cis_rule_4_2_3: true
-amzn2023cis_rule_4_3: true
+amzn2023cis_rule_4_2_4: true
+amzn2023cis_rule_4_2_5: true
+amzn2023cis_rule_4_2_6: true
+amzn2023cis_rule_4_2_7: true
+amzn2023cis_rule_4_2_8: true
+amzn2023cis_rule_4_2_9: true
+amzn2023cis_rule_4_2_10: true
+amzn2023cis_rule_4_2_11: true
+amzn2023cis_rule_4_2_12: true
+amzn2023cis_rule_4_2_13: true
+amzn2023cis_rule_4_2_14: true
+amzn2023cis_rule_4_2_15: true
+amzn2023cis_rule_4_2_16: true
+amzn2023cis_rule_4_2_17: true
+amzn2023cis_rule_4_2_18: true
+amzn2023cis_rule_4_2_19: true
+amzn2023cis_rule_4_2_20: true
+
+amzn2023cis_rule_4_3_1: true
+amzn2023cis_rule_4_3_2: true
+amzn2023cis_rule_4_3_3: true
+amzn2023cis_rule_4_3_4: true
+amzn2023cis_rule_4_3_5: true
+amzn2023cis_rule_4_3_6: true
+
+amzn2023cis_rule_4_4_1: true
+amzn2023cis_rule_4_4_2: true
+
+amzn2023cis_rule_4_5_1: true
+amzn2023cis_rule_4_5_2: true
+amzn2023cis_rule_4_5_3: true
+amzn2023cis_rule_4_5_4: true
+
+amzn2023cis_rule_4_6_1_1: true
+amzn2023cis_rule_4_6_1_2: true
+amzn2023cis_rule_4_6_1_3: true
+amzn2023cis_rule_4_6_1_4: true
+amzn2023cis_rule_4_6_1_5: true
+
+amzn2023cis_rule_4_6_2: true
+amzn2023cis_rule_4_6_3: true
+amzn2023cis_rule_4_6_4: true
+amzn2023cis_rule_4_6_5: true
+amzn2023cis_rule_4_6_6: true
 
 # Section 5 rules
-amzn2023cis_rule_5_1_1: true
-amzn2023cis_rule_5_1_2: true
+amzn2023cis_rule_5_1_1_1: true
+amzn2023cis_rule_5_1_1_2: true
+amzn2023cis_rule_5_1_1_3: true
+amzn2023cis_rule_5_1_1_4: true
+amzn2023cis_rule_5_1_1_5: true
+amzn2023cis_rule_5_1_1_6: true
+amzn2023cis_rule_5_1_1_7: true
+
+amzn2023cis_rule_5_1_2_1_1: true
+amzn2023cis_rule_5_1_2_1_2: true
+amzn2023cis_rule_5_1_2_1_3: true
+amzn2023cis_rule_5_1_2_1_4: true
+
+amzn2023cis_rule_5_1_2_2: true
+amzn2023cis_rule_5_1_2_3: true
+amzn2023cis_rule_5_1_2_4: true
+amzn2023cis_rule_5_1_2_5: true
+amzn2023cis_rule_5_1_2_6: true
+amzn2023cis_rule_5_1_2_7: true
+
 amzn2023cis_rule_5_1_3: true
-amzn2023cis_rule_5_1_4: true
-amzn2023cis_rule_5_1_5: true
-amzn2023cis_rule_5_1_6: true
-amzn2023cis_rule_5_1_7: true
-amzn2023cis_rule_5_1_8: true
-amzn2023cis_rule_5_1_9: true
-amzn2023cis_rule_5_2_1: true
-amzn2023cis_rule_5_2_2: true
-amzn2023cis_rule_5_2_3: true
-amzn2023cis_rule_5_2_4: true
-amzn2023cis_rule_5_2_5: true
-amzn2023cis_rule_5_2_6: true
-amzn2023cis_rule_5_2_7: true
-amzn2023cis_rule_5_2_8: true
-amzn2023cis_rule_5_2_9: true
-amzn2023cis_rule_5_2_10: true
-amzn2023cis_rule_5_2_12: true
-amzn2023cis_rule_5_2_11: true
-amzn2023cis_rule_5_2_13: true
-amzn2023cis_rule_5_2_14: true
-amzn2023cis_rule_5_2_15: true
-amzn2023cis_rule_5_2_16: true
-amzn2023cis_rule_5_2_17: true
-amzn2023cis_rule_5_2_18: true
-amzn2023cis_rule_5_2_19: true
-amzn2023cis_rule_5_2_20: true
-amzn2023cis_rule_5_3_1: true
-amzn2023cis_rule_5_3_2: true
-amzn2023cis_rule_5_3_3: true
-amzn2023cis_rule_5_3_4: true
-amzn2023cis_rule_5_3_5: true
-amzn2023cis_rule_5_3_6: true
-amzn2023cis_rule_5_3_7: true
-amzn2023cis_rule_5_4_1: true
-amzn2023cis_rule_5_4_2: true
-amzn2023cis_rule_5_5_1: true
-amzn2023cis_rule_5_5_2: true
-amzn2023cis_rule_5_5_3: true
-amzn2023cis_rule_5_5_4: true
-amzn2023cis_rule_5_5_5: true
-amzn2023cis_rule_5_6_1_1: true
-amzn2023cis_rule_5_6_1_2: true
-amzn2023cis_rule_5_6_1_3: true
-amzn2023cis_rule_5_6_1_4: true
-amzn2023cis_rule_5_6_1_5: true
-amzn2023cis_rule_5_6_2: true
-amzn2023cis_rule_5_6_3: true
-amzn2023cis_rule_5_6_4: true
-amzn2023cis_rule_5_6_5: true
-amzn2023cis_rule_5_6_6: true
+
+amzn2023cis_rule_5_2_1_1: true
+amzn2023cis_rule_5_2_1_2: true
+amzn2023cis_rule_5_2_1_3: true
+amzn2023cis_rule_5_2_1_4: true
+
+amzn2023cis_rule_5_2_2_1: true
+amzn2023cis_rule_5_2_2_2: true
+amzn2023cis_rule_5_2_2_3: true
+
+amzn2023cis_rule_5_2_3_1: true
+amzn2023cis_rule_5_2_3_2: true
+amzn2023cis_rule_5_2_3_3: true
+amzn2023cis_rule_5_2_3_4: true
+amzn2023cis_rule_5_2_3_5: true
+amzn2023cis_rule_5_2_3_6: true
+amzn2023cis_rule_5_2_3_7: true
+amzn2023cis_rule_5_2_3_8: true
+amzn2023cis_rule_5_2_3_9: true
+amzn2023cis_rule_5_2_3_10: true
+amzn2023cis_rule_5_2_3_11: true
+amzn2023cis_rule_5_2_3_12: true
+amzn2023cis_rule_5_2_3_13: true
+amzn2023cis_rule_5_2_3_14: true
+amzn2023cis_rule_5_2_3_15: true
+amzn2023cis_rule_5_2_3_16: true
+amzn2023cis_rule_5_2_3_17: true
+amzn2023cis_rule_5_2_3_18: true
+amzn2023cis_rule_5_2_3_19: true
+amzn2023cis_rule_5_2_3_20: true
+amzn2023cis_rule_5_2_3_21: true
+
+amzn2023cis_rule_5_2_4_1: true
+amzn2023cis_rule_5_2_4_2: true
+amzn2023cis_rule_5_2_4_3: true
+amzn2023cis_rule_5_2_4_4: true
+amzn2023cis_rule_5_2_4_5: true
+amzn2023cis_rule_5_2_4_6: true
+amzn2023cis_rule_5_2_4_7: true
+amzn2023cis_rule_5_2_4_8: true
+amzn2023cis_rule_5_2_4_9: true
+amzn2023cis_rule_5_2_4_10: true
+
+amzn2023cis_rule_5_3: true
 
 # Section 6 rules
 amzn2023cis_rule_6_1_1: true
@@ -611,6 +625,8 @@ amzn2023cis_passwd_label: "{{ (this_item | default(item)).id }}: {{ (this_item |
 
 # This will allow the removal of .netrc, .forward or .rhosts if found from user home_dirs
 amzn2023cis_remove_other_dot_files: false
+
+amzn2023cis_6_2_11_home_follow_symlinks: false
 
 #### Goss Configuration Settings ####
 # Set correct env for the run_audit.sh script from https://github.com/ansible-lockdown/{{ benchmark }}-Audit.git"
