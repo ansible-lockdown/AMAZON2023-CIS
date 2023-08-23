@@ -339,8 +339,6 @@ amzn2023cis_tmp_svc: false
 #### 1.1.9
 amzn2023cis_allow_autofs: false
 
-
-
 # 1.9 Set crypto policy (LEGACY, DEFAULT, FUTURE, FIPS)
 # Control 1.9 states do not use LEGACY
 amzn2023cis_crypto_policy: 'DEFAULT'
