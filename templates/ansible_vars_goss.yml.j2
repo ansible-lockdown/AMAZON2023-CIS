@@ -93,6 +93,7 @@ amzn2023cis_rule_1_4_2: {{ amzn2023cis_rule_1_4_2 }}
 amzn2023cis_rule_1_5_1: {{ amzn2023cis_rule_1_5_1 }}
 amzn2023cis_rule_1_5_2: {{ amzn2023cis_rule_1_5_2 }}
 amzn2023cis_rule_1_5_3: {{ amzn2023cis_rule_1_5_3 }}
+amzn2023cis_rule_1_5_4: {{ amzn2023cis_rule_1_5_4 }}
 # 1.6 Mandatory Access Control
 amzn2023cis_rule_1_6_1_1: {{ amzn2023cis_rule_1_6_1_1 }}
 amzn2023cis_rule_1_6_1_2: {{ amzn2023cis_rule_1_6_1_2 }}
@@ -151,6 +152,8 @@ amzn2023cis_rule_2_4: true
 amzn2023cis_rule_3_1_1: {{ amzn2023cis_rule_3_1_1 }}
 amzn2023cis_rule_3_1_2: {{ amzn2023cis_rule_3_1_2 }}
 amzn2023cis_rule_3_1_3: {{ amzn2023cis_rule_3_1_3 }}
+amzn2023cis_rule_3_1_3: {{ amzn2023cis_rule_3_1_4 }}
+amzn2023cis_rule_3_1_3: {{ amzn2023cis_rule_3_1_5 }}
 # 3.2 Network Parameters (Host Only)
 amzn2023cis_rule_3_2_1: {{ amzn2023cis_rule_3_2_1 }}
 amzn2023cis_rule_3_2_2: {{ amzn2023cis_rule_3_2_2 }}
@@ -177,145 +180,130 @@ amzn2023cis_rule_3_4_2_5: {{ amzn2023cis_rule_3_4_2_5 }}
 amzn2023cis_rule_3_4_2_6: {{ amzn2023cis_rule_3_4_2_6 }}
 amzn2023cis_rule_3_4_2_7: {{ amzn2023cis_rule_3_4_2_7 }}
 
-#  Section 4 rules
-# 4.1 Configure System Accounting
-amzn2023cis_rule_4_1_1_1: {{ amzn2023cis_rule_4_1_1_1 }}
-amzn2023cis_rule_4_1_1_2: {{ amzn2023cis_rule_4_1_1_2 }}
-amzn2023cis_rule_4_1_1_3: {{ amzn2023cis_rule_4_1_1_3 }}
-amzn2023cis_rule_4_1_1_4: {{ amzn2023cis_rule_4_1_1_4 }}
-
-# 4.1.2 Configure Data retention
-amzn2023cis_rule_4_1_2_1: {{ amzn2023cis_rule_4_1_2_1 }}
-amzn2023cis_rule_4_1_2_2: {{ amzn2023cis_rule_4_1_2_2 }}
-amzn2023cis_rule_4_1_2_3: {{ amzn2023cis_rule_4_1_2_3 }}
-
-# 4.1.3 Configure auditd rules
-amzn2023cis_rule_4_1_3_1: {{ amzn2023cis_rule_4_1_3_1 }}
-amzn2023cis_rule_4_1_3_2: {{ amzn2023cis_rule_4_1_3_2 }}
-amzn2023cis_rule_4_1_3_3: {{ amzn2023cis_rule_4_1_3_3 }}
-amzn2023cis_rule_4_1_3_4: {{ amzn2023cis_rule_4_1_3_4 }}
-amzn2023cis_rule_4_1_3_5: {{ amzn2023cis_rule_4_1_3_5 }}
-amzn2023cis_rule_4_1_3_6: {{ amzn2023cis_rule_4_1_3_6 }}
-amzn2023cis_rule_4_1_3_7: {{ amzn2023cis_rule_4_1_3_7 }}
-amzn2023cis_rule_4_1_3_8: {{ amzn2023cis_rule_4_1_3_8 }}
-amzn2023cis_rule_4_1_3_9: {{ amzn2023cis_rule_4_1_3_9 }}
-amzn2023cis_rule_4_1_3_10: {{ amzn2023cis_rule_4_1_3_10 }}
-amzn2023cis_rule_4_1_3_11: {{ amzn2023cis_rule_4_1_3_11 }}
-amzn2023cis_rule_4_1_3_12: {{ amzn2023cis_rule_4_1_3_12 }}
-amzn2023cis_rule_4_1_3_13: {{ amzn2023cis_rule_4_1_3_13 }}
-amzn2023cis_rule_4_1_3_14: {{ amzn2023cis_rule_4_1_3_14 }}
-amzn2023cis_rule_4_1_3_15: {{ amzn2023cis_rule_4_1_3_15 }}
-amzn2023cis_rule_4_1_3_16: {{ amzn2023cis_rule_4_1_3_16 }}
-amzn2023cis_rule_4_1_3_17: {{ amzn2023cis_rule_4_1_3_17 }}
-amzn2023cis_rule_4_1_3_18: {{ amzn2023cis_rule_4_1_3_18 }}
-amzn2023cis_rule_4_1_3_19: {{ amzn2023cis_rule_4_1_3_19 }}
-amzn2023cis_rule_4_1_3_20: {{ amzn2023cis_rule_4_1_3_20 }}
-amzn2023cis_rule_4_1_3_21: {{ amzn2023cis_rule_4_1_3_21 }}
-
-# 4.1.4 Configure auditd file Access
-amzn2023cis_rule_4_1_4_1: {{ amzn2023cis_rule_4_1_4_1 }}
-amzn2023cis_rule_4_1_4_2: {{ amzn2023cis_rule_4_1_4_2 }}
-amzn2023cis_rule_4_1_4_3: {{ amzn2023cis_rule_4_1_4_3 }}
-amzn2023cis_rule_4_1_4_4: {{ amzn2023cis_rule_4_1_4_4 }}
-amzn2023cis_rule_4_1_4_5: {{ amzn2023cis_rule_4_1_4_5 }}
-amzn2023cis_rule_4_1_4_6: {{ amzn2023cis_rule_4_1_4_6 }}
-amzn2023cis_rule_4_1_4_7: {{ amzn2023cis_rule_4_1_4_7 }}
-amzn2023cis_rule_4_1_4_8: {{ amzn2023cis_rule_4_1_4_8 }}
-amzn2023cis_rule_4_1_4_9: {{ amzn2023cis_rule_4_1_4_9 }}
-amzn2023cis_rule_4_1_4_10: {{ amzn2023cis_rule_4_1_4_10 }}
-
-# 4.2.1 Configure rsyslog
-amzn2023cis_rule_4_2_1_1: {{ amzn2023cis_rule_4_2_1_1 }}
-amzn2023cis_rule_4_2_1_2: {{ amzn2023cis_rule_4_2_1_2 }}
-amzn2023cis_rule_4_2_1_2: {{ amzn2023cis_rule_4_2_1_3 }}
-amzn2023cis_rule_4_2_1_3: {{ amzn2023cis_rule_4_2_1_3 }}
-amzn2023cis_rule_4_2_1_4: {{ amzn2023cis_rule_4_2_1_4 }}
-amzn2023cis_rule_4_2_1_5: {{ amzn2023cis_rule_4_2_1_5 }}
-amzn2023cis_rule_4_2_1_6: {{ amzn2023cis_rule_4_2_1_6 }}
-amzn2023cis_rule_4_2_1_7: {{ amzn2023cis_rule_4_2_1_7 }}
-
-# 4.2.2 Configure journald
-amzn2023cis_rule_4_2_2_1_1: {{ amzn2023cis_rule_4_2_2_1_1 }}
-amzn2023cis_rule_4_2_2_1_2: {{ amzn2023cis_rule_4_2_2_1_2 }}
-amzn2023cis_rule_4_2_2_1_3: {{ amzn2023cis_rule_4_2_2_1_3 }}
-amzn2023cis_rule_4_2_2_1_4: {{ amzn2023cis_rule_4_2_2_1_4 }}
-amzn2023cis_rule_4_2_2_2: {{ amzn2023cis_rule_4_2_2_2 }}
-amzn2023cis_rule_4_2_2_3: {{ amzn2023cis_rule_4_2_2_3 }}
-amzn2023cis_rule_4_2_2_4: {{ amzn2023cis_rule_4_2_2_4 }}
-amzn2023cis_rule_4_2_2_5: {{ amzn2023cis_rule_4_2_2_5 }}
-amzn2023cis_rule_4_2_2_6: {{ amzn2023cis_rule_4_2_2_6 }}
-amzn2023cis_rule_4_2_2_7: {{ amzn2023cis_rule_4_2_2_7 }}
+# Section 4 rules
+amzn2023cis_rule_4_1_1: {{ amzn2023cis_rule_4_1_1 }}
+amzn2023cis_rule_4_1_2: {{ amzn2023cis_rule_4_1_2 }}
+amzn2023cis_rule_4_1_3: {{ amzn2023cis_rule_4_1_3 }}
+amzn2023cis_rule_4_1_4: {{ amzn2023cis_rule_4_1_4 }}
+amzn2023cis_rule_4_1_5: {{ amzn2023cis_rule_4_1_5 }}
+amzn2023cis_rule_4_1_6: {{ amzn2023cis_rule_4_1_6 }}
+amzn2023cis_rule_4_1_7: {{ amzn2023cis_rule_4_1_7 }}
+amzn2023cis_rule_4_1_8: {{ amzn2023cis_rule_4_1_8 }}
+amzn2023cis_rule_4_1_9: {{ amzn2023cis_rule_4_1_9 }}
+amzn2023cis_rule_4_2_1: {{ amzn2023cis_rule_4_2_1 }}
+amzn2023cis_rule_4_2_2: {{ amzn2023cis_rule_4_2_2 }}
 amzn2023cis_rule_4_2_3: {{ amzn2023cis_rule_4_2_3 }}
+amzn2023cis_rule_4_2_4: {{ amzn2023cis_rule_4_2_4 }}
+amzn2023cis_rule_4_2_5: {{ amzn2023cis_rule_4_2_5 }}
+amzn2023cis_rule_4_2_6: {{ amzn2023cis_rule_4_2_6 }}
+amzn2023cis_rule_4_2_7: {{ amzn2023cis_rule_4_2_7 }}
+amzn2023cis_rule_4_2_8: {{ amzn2023cis_rule_4_2_8 }}
+amzn2023cis_rule_4_2_9: {{ amzn2023cis_rule_4_2_9 }}
+amzn2023cis_rule_4_2_10: {{ amzn2023cis_rule_4_2_10 }}
+amzn2023cis_rule_4_2_11: {{ amzn2023cis_rule_4_2_11 }}
+amzn2023cis_rule_4_2_12: {{ amzn2023cis_rule_4_2_12 }}
+amzn2023cis_rule_4_2_13: {{ amzn2023cis_rule_4_2_13 }}
+amzn2023cis_rule_4_2_14: {{ amzn2023cis_rule_4_2_14 }}
+amzn2023cis_rule_4_2_15: {{ amzn2023cis_rule_4_2_15 }}
+amzn2023cis_rule_4_2_16: {{ amzn2023cis_rule_4_2_16 }}
+amzn2023cis_rule_4_2_17: {{ amzn2023cis_rule_4_2_17 }}
+amzn2023cis_rule_4_2_18: {{ amzn2023cis_rule_4_2_18}}
+amzn2023cis_rule_4_2_19: {{ amzn2023cis_rule_4_2_19 }}
+amzn2023cis_rule_4_2_20: {{ amzn2023cis_rule_4_2_20 }}
 
-# 4.3 Logrotate
-amzn2023cis_rule_4_3: {{ amzn2023cis_rule_4_3 }}
+amzn2023cis_rule_4_3_1: {{ amzn2023cis_rule_4_3_1 }}
+amzn2023cis_rule_4_3_2: {{ amzn2023cis_rule_4_3_2 }}
+amzn2023cis_rule_4_3_3: {{ amzn2023cis_rule_4_3_3 }}
+amzn2023cis_rule_4_3_4: {{ amzn2023cis_rule_4_3_4 }}
+amzn2023cis_rule_4_3_5: {{ amzn2023cis_rule_4_3_5 }}
+amzn2023cis_rule_4_3_6: {{ amzn2023cis_rule_4_3_6 }}
 
-# Section 5
-#  Authentication and Authorization
-# 5.1 Configure time-based job schedulers
-amzn2023cis_rule_5_1_1: {{ amzn2023cis_rule_5_1_1 }}
-amzn2023cis_rule_5_1_2: {{ amzn2023cis_rule_5_1_2 }}
+amzn2023cis_rule_4_4_1: {{ amzn2023cis_rule_4_4_1 }}
+amzn2023cis_rule_4_4_2: {{ amzn2023cis_rule_4_4_2 }}
+
+amzn2023cis_rule_4_5_1: {{ amzn2023cis_rule_4_5_1 }}
+amzn2023cis_rule_4_5_2: {{ amzn2023cis_rule_4_5_2 }}
+amzn2023cis_rule_4_5_3: {{ amzn2023cis_rule_4_5_3 }}
+amzn2023cis_rule_4_5_4: {{ amzn2023cis_rule_4_5_4 }}
+
+amzn2023cis_rule_4_6_1_1: {{ amzn2023cis_rule_4_6_1_1 }}
+amzn2023cis_rule_4_6_1_2: {{ amzn2023cis_rule_4_6_1_2 }}
+amzn2023cis_rule_4_6_1_3: {{ amzn2023cis_rule_4_6_1_3 }}
+amzn2023cis_rule_4_6_1_4: {{ amzn2023cis_rule_4_6_1_4 }}
+amzn2023cis_rule_4_6_1_5: {{ amzn2023cis_rule_4_6_1_5 }}
+
+amzn2023cis_rule_4_6_2: {{ amzn2023cis_rule_4_6_2 }}
+amzn2023cis_rule_4_6_3: {{ amzn2023cis_rule_4_6_3 }}
+amzn2023cis_rule_4_6_4: {{ amzn2023cis_rule_4_6_4 }}
+amzn2023cis_rule_4_6_5: {{ amzn2023cis_rule_4_6_5 }}
+amzn2023cis_rule_4_6_6: {{ amzn2023cis_rule_4_6_6 }}
+
+# Section 5 rules
+amzn2023cis_rule_5_1_1_1: {{ amzn2023cis_rule_5_1_1_1 }}
+amzn2023cis_rule_5_1_1_2: {{ amzn2023cis_rule_5_1_1_2 }}
+amzn2023cis_rule_5_1_1_3: {{ amzn2023cis_rule_5_1_1_3 }}
+amzn2023cis_rule_5_1_1_4: {{ amzn2023cis_rule_5_1_1_4 }}
+amzn2023cis_rule_5_1_1_5: {{ amzn2023cis_rule_5_1_1_5 }}
+amzn2023cis_rule_5_1_1_6: {{ amzn2023cis_rule_5_1_1_6 }}
+amzn2023cis_rule_5_1_1_7: {{ amzn2023cis_rule_5_1_1_7 }}
+
+amzn2023cis_rule_5_1_2_1_1: {{ amzn2023cis_rule_5_1_2_1_1 }}
+amzn2023cis_rule_5_1_2_1_2: {{ amzn2023cis_rule_5_1_2_1_2 }}
+amzn2023cis_rule_5_1_2_1_3: {{ amzn2023cis_rule_5_1_2_1_3 }}
+amzn2023cis_rule_5_1_2_1_4: {{ amzn2023cis_rule_5_1_2_1_4 }}
+
+amzn2023cis_rule_5_1_2_2: {{ amzn2023cis_rule_5_1_2_2 }}
+amzn2023cis_rule_5_1_2_3: {{ amzn2023cis_rule_5_1_2_3 }}
+amzn2023cis_rule_5_1_2_4: {{ amzn2023cis_rule_5_1_2_4 }}
+amzn2023cis_rule_5_1_2_5: {{ amzn2023cis_rule_5_1_2_5 }}
+amzn2023cis_rule_5_1_2_6: {{ amzn2023cis_rule_5_1_2_6 }}
+amzn2023cis_rule_5_1_2_7: {{ amzn2023cis_rule_5_1_2_7 }}
+
 amzn2023cis_rule_5_1_3: {{ amzn2023cis_rule_5_1_3 }}
-amzn2023cis_rule_5_1_4: {{ amzn2023cis_rule_5_1_4 }}
-amzn2023cis_rule_5_1_5: {{ amzn2023cis_rule_5_1_5 }}
-amzn2023cis_rule_5_1_6: {{ amzn2023cis_rule_5_1_6 }}
-amzn2023cis_rule_5_1_7: {{ amzn2023cis_rule_5_1_7 }}
-amzn2023cis_rule_5_1_8: {{ amzn2023cis_rule_5_1_8 }}
-amzn2023cis_rule_5_1_9: {{ amzn2023cis_rule_5_1_9 }}
 
-# 5.2 Configure SSH Server
-amzn2023cis_rule_5_2_1: {{ amzn2023cis_rule_5_2_1 }}
-amzn2023cis_rule_5_2_2: {{ amzn2023cis_rule_5_2_2 }}
-amzn2023cis_rule_5_2_3: {{ amzn2023cis_rule_5_2_3 }}
-amzn2023cis_rule_5_2_4: {{ amzn2023cis_rule_5_2_4 }}
-amzn2023cis_rule_5_2_5: {{ amzn2023cis_rule_5_2_5 }}
-amzn2023cis_rule_5_2_6: {{ amzn2023cis_rule_5_2_6 }}
-amzn2023cis_rule_5_2_7: {{ amzn2023cis_rule_5_2_7 }}
-amzn2023cis_rule_5_2_8: {{ amzn2023cis_rule_5_2_8 }}
-amzn2023cis_rule_5_2_9: {{ amzn2023cis_rule_5_2_9 }}
-amzn2023cis_rule_5_2_10: {{ amzn2023cis_rule_5_2_10 }}
-amzn2023cis_rule_5_2_11: {{ amzn2023cis_rule_5_2_11 }}
-amzn2023cis_rule_5_2_12: {{ amzn2023cis_rule_5_2_12 }}
-amzn2023cis_rule_5_2_13: {{ amzn2023cis_rule_5_2_13 }}
-amzn2023cis_rule_5_2_14: {{ amzn2023cis_rule_5_2_14 }}
-amzn2023cis_rule_5_2_15: {{ amzn2023cis_rule_5_2_15 }}
-amzn2023cis_rule_5_2_16: {{ amzn2023cis_rule_5_2_16 }}
-amzn2023cis_rule_5_2_17: {{ amzn2023cis_rule_5_2_17 }}
-amzn2023cis_rule_5_2_18: {{ amzn2023cis_rule_5_2_18 }}
-amzn2023cis_rule_5_2_19: {{ amzn2023cis_rule_5_2_19 }}
-amzn2023cis_rule_5_2_20: {{ amzn2023cis_rule_5_2_20 }}
-# 5.3 Configure privilege escalation
-amzn2023cis_rule_5_3_1: {{ amzn2023cis_rule_5_3_1 }}
-amzn2023cis_rule_5_3_2: {{ amzn2023cis_rule_5_3_2 }}
-amzn2023cis_rule_5_3_3: {{ amzn2023cis_rule_5_3_3 }}
-amzn2023cis_rule_5_3_4: {{ amzn2023cis_rule_5_3_4 }}
-amzn2023cis_rule_5_3_5: {{ amzn2023cis_rule_5_3_5 }}
-amzn2023cis_rule_5_3_6: {{ amzn2023cis_rule_5_3_6 }}
-amzn2023cis_rule_5_3_7: {{ amzn2023cis_rule_5_3_7 }}
+amzn2023cis_rule_5_2_1_1: {{ amzn2023cis_rule_5_2_1_1 }}
+amzn2023cis_rule_5_2_1_2: {{ amzn2023cis_rule_5_2_1_2 }}
+amzn2023cis_rule_5_2_1_3: {{ amzn2023cis_rule_5_2_1_3 }}
+amzn2023cis_rule_5_2_1_4: {{ amzn2023cis_rule_5_2_1_4 }}
 
-# 5.4 Configure authselect
+amzn2023cis_rule_5_2_2_1: {{ amzn2023cis_rule_5_2_2_1 }}
+amzn2023cis_rule_5_2_2_2: {{ amzn2023cis_rule_5_2_2_2 }}
+amzn2023cis_rule_5_2_2_3: {{ amzn2023cis_rule_5_2_2_3 }}
 
-amzn2023cis_rule_5_4_1: {{ amzn2023cis_rule_5_4_1 }}
-amzn2023cis_rule_5_4_2: {{ amzn2023cis_rule_5_4_2 }}
+amzn2023cis_rule_5_2_3_1: {{ amzn2023cis_rule_5_2_3_1 }}
+amzn2023cis_rule_5_2_3_2: {{ amzn2023cis_rule_5_2_3_2 }}
+amzn2023cis_rule_5_2_3_3: {{ amzn2023cis_rule_5_2_3_3 }}
+amzn2023cis_rule_5_2_3_4: {{ amzn2023cis_rule_5_2_3_4 }}
+amzn2023cis_rule_5_2_3_5: {{ amzn2023cis_rule_5_2_3_5 }}
+amzn2023cis_rule_5_2_3_6: {{ amzn2023cis_rule_5_2_3_6 }}
+amzn2023cis_rule_5_2_3_7: {{ amzn2023cis_rule_5_2_3_7 }}
+amzn2023cis_rule_5_2_3_8: {{ amzn2023cis_rule_5_2_3_8 }}
+amzn2023cis_rule_5_2_3_9: {{ amzn2023cis_rule_5_2_3_9 }}
+amzn2023cis_rule_5_2_3_10: {{ amzn2023cis_rule_5_2_3_10 }}
+amzn2023cis_rule_5_2_3_11: {{ amzn2023cis_rule_5_2_3_11 }}
+amzn2023cis_rule_5_2_3_12: {{ amzn2023cis_rule_5_2_3_12 }}
+amzn2023cis_rule_5_2_3_13: {{ amzn2023cis_rule_5_2_3_13 }}
+amzn2023cis_rule_5_2_3_14: {{ amzn2023cis_rule_5_2_3_14 }}
+amzn2023cis_rule_5_2_3_15: {{ amzn2023cis_rule_5_2_3_15 }}
+amzn2023cis_rule_5_2_3_16: {{ amzn2023cis_rule_5_2_3_16 }}
+amzn2023cis_rule_5_2_3_17: {{ amzn2023cis_rule_5_2_3_17 }}
+amzn2023cis_rule_5_2_3_18: {{ amzn2023cis_rule_5_2_3_18 }}
+amzn2023cis_rule_5_2_3_19: {{ amzn2023cis_rule_5_2_3_19 }}
+amzn2023cis_rule_5_2_3_20: {{ amzn2023cis_rule_5_2_3_20 }}
+amzn2023cis_rule_5_2_3_21: {{ amzn2023cis_rule_5_2_3_21 }}
 
-# 5.5 Configure PAM
-amzn2023cis_rule_5_5_1: {{ amzn2023cis_rule_5_5_1 }}
-amzn2023cis_rule_5_5_2: {{ amzn2023cis_rule_5_5_2 }}
-amzn2023cis_rule_5_5_3: {{ amzn2023cis_rule_5_5_3 }}
-amzn2023cis_rule_5_5_4: {{ amzn2023cis_rule_5_5_4 }}
+amzn2023cis_rule_5_2_4_1: {{ amzn2023cis_rule_5_2_4_1 }}
+amzn2023cis_rule_5_2_4_2: {{ amzn2023cis_rule_5_2_4_2 }}
+amzn2023cis_rule_5_2_4_3: {{ amzn2023cis_rule_5_2_4_3 }}
+amzn2023cis_rule_5_2_4_4: {{ amzn2023cis_rule_5_2_4_4 }}
+amzn2023cis_rule_5_2_4_5: {{ amzn2023cis_rule_5_2_4_5 }}
+amzn2023cis_rule_5_2_4_6: {{ amzn2023cis_rule_5_2_4_6 }}
+amzn2023cis_rule_5_2_4_7: {{ amzn2023cis_rule_5_2_4_7 }}
+amzn2023cis_rule_5_2_4_8: {{ amzn2023cis_rule_5_2_4_8 }}
+amzn2023cis_rule_5_2_4_9: {{ amzn2023cis_rule_5_2_4_9 }}
+amzn2023cis_rule_5_2_4_10: {{ amzn2023cis_rule_5_2_4_10 }}
 
-# 5.6 User Accounts and Environment
-# 5.6.1 Set Shadow Password Suite Parameters
-amzn2023cis_rule_5_6_1_1: {{ amzn2023cis_rule_5_6_1_1 }}
-amzn2023cis_rule_5_6_1_2: {{ amzn2023cis_rule_5_6_1_2 }}
-amzn2023cis_rule_5_6_1_3: {{ amzn2023cis_rule_5_6_1_3 }}
-amzn2023cis_rule_5_6_1_4: {{ amzn2023cis_rule_5_6_1_4 }}
-amzn2023cis_rule_5_6_1_5: {{ amzn2023cis_rule_5_6_1_5 }}
-amzn2023cis_rule_5_6_2: {{ amzn2023cis_rule_5_6_2 }}
-amzn2023cis_rule_5_6_3: {{ amzn2023cis_rule_5_6_3 }}
-amzn2023cis_rule_5_6_4: {{ amzn2023cis_rule_5_6_4 }}
-amzn2023cis_rule_5_6_5: {{ amzn2023cis_rule_5_6_5 }}
-amzn2023cis_rule_5_6_6: {{ amzn2023cis_rule_5_6_6 }}
+amzn2023cis_rule_5_3: {{ amzn2023cis_rule_5_3 }}
 
 # Section 6
 # 6 System Maintenance
