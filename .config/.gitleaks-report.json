@@ -1,0 +1,22 @@
+[
+ {
+  "Description": "Generic API Key",
+  "StartLine": 115,
+  "EndLine": 115,
+  "StartColumn": 18,
+  "EndColumn": 68,
+  "Match": "secret\": \"2aaf9f2a51d8fe89e48cb9cc7d04a991ceb7f360\"",
+  "Secret": "2aaf9f2a51d8fe89e48cb9cc7d04a991ceb7f360",
+  "File": ".config/.secrets.baseline",
+  "SymlinkFile": "",
+  "Commit": "a5f558a34ac453f9581a1c37f71bd36383a9c3ed",
+  "Entropy": 3.8439426,
+  "Author": "Mark Bolwell",
+  "Email": "mark.bollyuk@gmail.com",
+  "Date": "2023-08-23T09:28:17Z",
+  "Message": "initial\n\nSigned-off-by: Mark Bolwell \u003cmark.bollyuk@gmail.com\u003e",
+  "Tags": [],
+  "RuleID": "generic-api-key",
+  "Fingerprint": "a5f558a34ac453f9581a1c37f71bd36383a9c3ed:.config/.secrets.baseline:generic-api-key:115"
+ }
+]
