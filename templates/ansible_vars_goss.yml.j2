@@ -1,0 +1,476 @@
+
+## This file is managed by Ansible, YOUR CHANGED WILL BE LOST!
+## metadata for benchmark
+
+## metadata for Audit benchmark
+benchmark_version: '1.0.0'
+
+# If run via script this is discovered and set
+host_os_distribution: {{ ansible_distribution | lower }}
+
+#  timeout for each command to run where set - default = 10seconds/10000ms
+timeout_ms: 60000
+
+amzn2023cis_section1: {{ amzn2023cis_section1 }}
+amzn2023cis_section2: {{ amzn2023cis_section2 }}
+amzn2023cis_section3: {{ amzn2023cis_section3 }}
+amzn2023cis_section4: {{ amzn2023cis_section4 }}
+amzn2023cis_section5: {{ amzn2023cis_section5 }}
+amzn2023cis_section6: {{ amzn2023cis_section6 }}
+
+amzn2023cis_level_1: {{ amzn2023cis_level_1 }}
+amzn2023cis_level_2: {{ amzn2023cis_level_2 }}
+
+amzn2023cis_selinux_disable: {{ amzn2023cis_selinux_disable }}
+
+#  to enable rules that may have IO impact on a system e.g. full filesystem scans or CPU heavy
+run_heavy_tests: true
+
+
+amzn2023cis_set_boot_pass: {{ amzn2023cis_set_boot_pass }}
+
+# These variables correspond with the CIS rule IDs or paragraph numbers defined in
+# the CIS benchmark documents.
+# PLEASE NOTE: These work in coordination with the section # group variables and tags.
+# You must enable an entire section in order for the variables below to take effect.
+# Section 1 rules
+# 1.1.1 Disable unused filesystems
+amzn2023cis_rule_1_1_1_1: {{ amzn2023cis_rule_1_1_1_1 }}
+amzn2023cis_rule_1_1_1_2: {{ amzn2023cis_rule_1_1_1_2 }}
+amzn2023cis_rule_1_1_1_3: {{ amzn2023cis_rule_1_1_1_3 }}
+amzn2023cis_rule_1_1_1_4: {{ amzn2023cis_rule_1_1_1_4 }}
+amzn2023cis_rule_1_1_1_5: {{ amzn2023cis_rule_1_1_1_5 }}
+amzn2023cis_rule_1_1_1_6: {{ amzn2023cis_rule_1_1_1_6 }}
+amzn2023cis_rule_1_1_1_7: {{ amzn2023cis_rule_1_1_1_7 }}
+# 1.1.2 Configure /tmp
+amzn2023cis_rule_1_1_2_1: {{ amzn2023cis_rule_1_1_2_1 }}
+amzn2023cis_rule_1_1_2_2: {{ amzn2023cis_rule_1_1_2_2 }}
+amzn2023cis_rule_1_1_2_3: {{ amzn2023cis_rule_1_1_2_3 }}
+amzn2023cis_rule_1_1_2_4: {{ amzn2023cis_rule_1_1_2_4 }}
+# 1.1.3 Configure /var
+amzn2023cis_rule_1_1_3_1: {{ amzn2023cis_rule_1_1_3_1 }}
+amzn2023cis_rule_1_1_3_2: {{ amzn2023cis_rule_1_1_3_2 }}
+amzn2023cis_rule_1_1_3_3: {{ amzn2023cis_rule_1_1_3_3 }}
+# 1.1.4 Configure /var/tmp
+amzn2023cis_rule_1_1_4_1: {{ amzn2023cis_rule_1_1_4_1 }}
+amzn2023cis_rule_1_1_4_2: {{ amzn2023cis_rule_1_1_4_2 }}
+amzn2023cis_rule_1_1_4_3: {{ amzn2023cis_rule_1_1_4_3 }}
+amzn2023cis_rule_1_1_4_4: {{ amzn2023cis_rule_1_1_4_4 }}
+# 1.1.5 Configure /var/log
+amzn2023cis_rule_1_1_5_1: {{ amzn2023cis_rule_1_1_5_1 }}
+amzn2023cis_rule_1_1_5_2: {{ amzn2023cis_rule_1_1_5_2 }}
+amzn2023cis_rule_1_1_5_3: {{ amzn2023cis_rule_1_1_5_3 }}
+amzn2023cis_rule_1_1_5_4: {{ amzn2023cis_rule_1_1_5_4 }}
+# 1.1.6 Configure /var/log/audit
+amzn2023cis_rule_1_1_6_1: {{ amzn2023cis_rule_1_1_6_1 }}
+amzn2023cis_rule_1_1_6_2: {{ amzn2023cis_rule_1_1_6_2 }}
+amzn2023cis_rule_1_1_6_3: {{ amzn2023cis_rule_1_1_6_3 }}
+amzn2023cis_rule_1_1_6_4: {{ amzn2023cis_rule_1_1_6_4 }}
+# 1.1.7 Configure /home
+amzn2023cis_rule_1_1_7_1: {{ amzn2023cis_rule_1_1_7_1 }}
+amzn2023cis_rule_1_1_7_2: {{ amzn2023cis_rule_1_1_7_2 }}
+amzn2023cis_rule_1_1_7_3: {{ amzn2023cis_rule_1_1_7_3 }}
+# 1.1.8 Configure /dev/shm
+amzn2023cis_rule_1_1_8_1: {{ amzn2023cis_rule_1_1_8_1 }}
+amzn2023cis_rule_1_1_8_2: {{ amzn2023cis_rule_1_1_8_2 }}
+amzn2023cis_rule_1_1_8_3: {{ amzn2023cis_rule_1_1_8_3 }}
+amzn2023cis_rule_1_1_8_4: {{ amzn2023cis_rule_1_1_8_4 }}
+# 1.9 usb-storage
+amzn2023cis_rule_1_1_9: {{ amzn2023cis_rule_1_1_9 }}
+# 1.2 Configure Software Updates
+amzn2023cis_rule_1_2_1: {{ amzn2023cis_rule_1_2_1 }}
+amzn2023cis_rule_1_2_2: {{ amzn2023cis_rule_1_2_2 }}
+amzn2023cis_rule_1_2_3: {{ amzn2023cis_rule_1_2_3 }}
+amzn2023cis_rule_1_2_4: {{ amzn2023cis_rule_1_2_4 }}
+# 1.3 Filesystem Integrity Checking
+amzn2023cis_rule_1_3_1: {{ amzn2023cis_rule_1_3_1 }}
+amzn2023cis_rule_1_3_2: {{ amzn2023cis_rule_1_3_2 }}
+amzn2023cis_rule_1_3_3: {{ amzn2023cis_rule_1_3_3 }}
+# 1.4 Secure Boot Settings
+amzn2023cis_rule_1_4_1: {{ amzn2023cis_rule_1_4_1 }}
+amzn2023cis_rule_1_4_2: {{ amzn2023cis_rule_1_4_2 }}
+# 1.5 Additional Process Hardening
+amzn2023cis_rule_1_5_1: {{ amzn2023cis_rule_1_5_1 }}
+amzn2023cis_rule_1_5_2: {{ amzn2023cis_rule_1_5_2 }}
+amzn2023cis_rule_1_5_3: {{ amzn2023cis_rule_1_5_3 }}
+# 1.6 Mandatory Access Control
+amzn2023cis_rule_1_6_1_1: {{ amzn2023cis_rule_1_6_1_1 }}
+amzn2023cis_rule_1_6_1_2: {{ amzn2023cis_rule_1_6_1_2 }}
+amzn2023cis_rule_1_6_1_3: {{ amzn2023cis_rule_1_6_1_3 }}
+amzn2023cis_rule_1_6_1_4: {{ amzn2023cis_rule_1_6_1_4 }}
+amzn2023cis_rule_1_6_1_5: {{ amzn2023cis_rule_1_6_1_5 }}
+amzn2023cis_rule_1_6_1_6: {{ amzn2023cis_rule_1_6_1_6 }}
+amzn2023cis_rule_1_6_1_7: {{ amzn2023cis_rule_1_6_1_7 }}
+amzn2023cis_rule_1_6_1_8: {{ amzn2023cis_rule_1_6_1_8 }}
+# 1.7 Command Line Warning Banners
+amzn2023cis_rule_1_7_1: {{ amzn2023cis_rule_1_7_1 }}
+amzn2023cis_rule_1_7_2: {{ amzn2023cis_rule_1_7_2 }}
+amzn2023cis_rule_1_7_3: {{ amzn2023cis_rule_1_7_3 }}
+amzn2023cis_rule_1_7_4: {{ amzn2023cis_rule_1_7_4 }}
+amzn2023cis_rule_1_7_5: {{ amzn2023cis_rule_1_7_5 }}
+amzn2023cis_rule_1_7_6: {{ amzn2023cis_rule_1_7_6 }}
+# 1.8 Ensure updates, patches, and additional security software are installed
+amzn2023cis_rule_1_8: {{ amzn2023cis_rule_1_8 }}
+# Ensure system-wide crypto policy is not legacy
+amzn2023cis_rule_1_9: {{ amzn2023cis_rule_1_9 }}
+
+# section 2
+# Services
+# 2.1 Time Synchronization
+amzn2023cis_rule_2_1_1: {{ amzn2023cis_rule_2_1_1 }}
+amzn2023cis_rule_2_1_2: {{ amzn2023cis_rule_2_1_2 }}
+# 2.2 Special Purpose Services
+amzn2023cis_rule_2_2_1: {{ amzn2023cis_rule_2_2_1 }}
+amzn2023cis_rule_2_2_2: {{ amzn2023cis_rule_2_2_2 }}
+amzn2023cis_rule_2_2_3: {{ amzn2023cis_rule_2_2_3 }}
+amzn2023cis_rule_2_2_4: {{ amzn2023cis_rule_2_2_4 }}
+amzn2023cis_rule_2_2_5: {{ amzn2023cis_rule_2_2_5 }}
+amzn2023cis_rule_2_2_6: {{ amzn2023cis_rule_2_2_6 }}
+amzn2023cis_rule_2_2_7: {{ amzn2023cis_rule_2_2_7 }}
+amzn2023cis_rule_2_2_8: {{ amzn2023cis_rule_2_2_8 }}
+amzn2023cis_rule_2_2_9: {{ amzn2023cis_rule_2_2_9 }}
+amzn2023cis_rule_2_2_10: {{ amzn2023cis_rule_2_2_10 }}
+amzn2023cis_rule_2_2_11: {{ amzn2023cis_rule_2_2_11 }}
+amzn2023cis_rule_2_2_12: {{ amzn2023cis_rule_2_2_12 }}
+amzn2023cis_rule_2_2_13: {{ amzn2023cis_rule_2_2_13 }}
+amzn2023cis_rule_2_2_14: {{ amzn2023cis_rule_2_2_14 }}
+amzn2023cis_rule_2_2_15: {{ amzn2023cis_rule_2_2_15 }}
+amzn2023cis_rule_2_2_16: {{ amzn2023cis_rule_2_2_16 }}
+amzn2023cis_rule_2_2_17: {{ amzn2023cis_rule_2_2_17 }}
+amzn2023cis_rule_2_2_18: {{ amzn2023cis_rule_2_2_18 }}
+# 2.3 service clients
+amzn2023cis_rule_2_3_1: {{ amzn2023cis_rule_2_3_1 }}
+amzn2023cis_rule_2_3_2: {{ amzn2023cis_rule_2_3_2 }}
+amzn2023cis_rule_2_3_3: {{ amzn2023cis_rule_2_3_3 }}
+amzn2023cis_rule_2_3_4: {{ amzn2023cis_rule_2_3_4 }}
+
+amzn2023cis_rule_2_4: true
+
+# Section 3 rules
+# 3.1 Disable unused network protocols and devices
+amzn2023cis_rule_3_1_1: {{ amzn2023cis_rule_3_1_1 }}
+amzn2023cis_rule_3_1_2: {{ amzn2023cis_rule_3_1_2 }}
+amzn2023cis_rule_3_1_3: {{ amzn2023cis_rule_3_1_3 }}
+# 3.2 Network Parameters (Host Only)
+amzn2023cis_rule_3_2_1: {{ amzn2023cis_rule_3_2_1 }}
+amzn2023cis_rule_3_2_2: {{ amzn2023cis_rule_3_2_2 }}
+# 3.3 Network Parameters (Host and Router)
+amzn2023cis_rule_3_3_1: {{ amzn2023cis_rule_3_3_1 }}
+amzn2023cis_rule_3_3_2: {{ amzn2023cis_rule_3_3_2 }}
+amzn2023cis_rule_3_3_3: {{ amzn2023cis_rule_3_3_3 }}
+amzn2023cis_rule_3_3_4: {{ amzn2023cis_rule_3_3_4 }}
+amzn2023cis_rule_3_3_5: {{ amzn2023cis_rule_3_3_5 }}
+amzn2023cis_rule_3_3_6: {{ amzn2023cis_rule_3_3_6 }}
+amzn2023cis_rule_3_3_7: {{ amzn2023cis_rule_3_3_7 }}
+amzn2023cis_rule_3_3_8: {{ amzn2023cis_rule_3_3_8 }}
+amzn2023cis_rule_3_3_9: {{ amzn2023cis_rule_3_3_9 }}
+# 3.4.1 Configure firewalld
+amzn2023cis_rule_3_4_1_1: {{ amzn2023cis_rule_3_4_1_1 }}
+amzn2023cis_rule_3_4_1_2: {{ amzn2023cis_rule_3_4_1_2 }}
+
+# 3.4.1 Configure nftables
+amzn2023cis_rule_3_4_2_1: {{ amzn2023cis_rule_3_4_2_1 }}
+amzn2023cis_rule_3_4_2_2: {{ amzn2023cis_rule_3_4_2_2 }}
+amzn2023cis_rule_3_4_2_3: {{ amzn2023cis_rule_3_4_2_3 }}
+amzn2023cis_rule_3_4_2_4: {{ amzn2023cis_rule_3_4_2_4 }}
+amzn2023cis_rule_3_4_2_5: {{ amzn2023cis_rule_3_4_2_5 }}
+amzn2023cis_rule_3_4_2_6: {{ amzn2023cis_rule_3_4_2_6 }}
+amzn2023cis_rule_3_4_2_7: {{ amzn2023cis_rule_3_4_2_7 }}
+
+#  Section 4 rules
+# 4.1 Configure System Accounting
+amzn2023cis_rule_4_1_1_1: {{ amzn2023cis_rule_4_1_1_1 }}
+amzn2023cis_rule_4_1_1_2: {{ amzn2023cis_rule_4_1_1_2 }}
+amzn2023cis_rule_4_1_1_3: {{ amzn2023cis_rule_4_1_1_3 }}
+amzn2023cis_rule_4_1_1_4: {{ amzn2023cis_rule_4_1_1_4 }}
+
+# 4.1.2 Configure Data retention
+amzn2023cis_rule_4_1_2_1: {{ amzn2023cis_rule_4_1_2_1 }}
+amzn2023cis_rule_4_1_2_2: {{ amzn2023cis_rule_4_1_2_2 }}
+amzn2023cis_rule_4_1_2_3: {{ amzn2023cis_rule_4_1_2_3 }}
+
+# 4.1.3 Configure auditd rules
+amzn2023cis_rule_4_1_3_1: {{ amzn2023cis_rule_4_1_3_1 }}
+amzn2023cis_rule_4_1_3_2: {{ amzn2023cis_rule_4_1_3_2 }}
+amzn2023cis_rule_4_1_3_3: {{ amzn2023cis_rule_4_1_3_3 }}
+amzn2023cis_rule_4_1_3_4: {{ amzn2023cis_rule_4_1_3_4 }}
+amzn2023cis_rule_4_1_3_5: {{ amzn2023cis_rule_4_1_3_5 }}
+amzn2023cis_rule_4_1_3_6: {{ amzn2023cis_rule_4_1_3_6 }}
+amzn2023cis_rule_4_1_3_7: {{ amzn2023cis_rule_4_1_3_7 }}
+amzn2023cis_rule_4_1_3_8: {{ amzn2023cis_rule_4_1_3_8 }}
+amzn2023cis_rule_4_1_3_9: {{ amzn2023cis_rule_4_1_3_9 }}
+amzn2023cis_rule_4_1_3_10: {{ amzn2023cis_rule_4_1_3_10 }}
+amzn2023cis_rule_4_1_3_11: {{ amzn2023cis_rule_4_1_3_11 }}
+amzn2023cis_rule_4_1_3_12: {{ amzn2023cis_rule_4_1_3_12 }}
+amzn2023cis_rule_4_1_3_13: {{ amzn2023cis_rule_4_1_3_13 }}
+amzn2023cis_rule_4_1_3_14: {{ amzn2023cis_rule_4_1_3_14 }}
+amzn2023cis_rule_4_1_3_15: {{ amzn2023cis_rule_4_1_3_15 }}
+amzn2023cis_rule_4_1_3_16: {{ amzn2023cis_rule_4_1_3_16 }}
+amzn2023cis_rule_4_1_3_17: {{ amzn2023cis_rule_4_1_3_17 }}
+amzn2023cis_rule_4_1_3_18: {{ amzn2023cis_rule_4_1_3_18 }}
+amzn2023cis_rule_4_1_3_19: {{ amzn2023cis_rule_4_1_3_19 }}
+amzn2023cis_rule_4_1_3_20: {{ amzn2023cis_rule_4_1_3_20 }}
+amzn2023cis_rule_4_1_3_21: {{ amzn2023cis_rule_4_1_3_21 }}
+
+# 4.1.4 Configure auditd file Access
+amzn2023cis_rule_4_1_4_1: {{ amzn2023cis_rule_4_1_4_1 }}
+amzn2023cis_rule_4_1_4_2: {{ amzn2023cis_rule_4_1_4_2 }}
+amzn2023cis_rule_4_1_4_3: {{ amzn2023cis_rule_4_1_4_3 }}
+amzn2023cis_rule_4_1_4_4: {{ amzn2023cis_rule_4_1_4_4 }}
+amzn2023cis_rule_4_1_4_5: {{ amzn2023cis_rule_4_1_4_5 }}
+amzn2023cis_rule_4_1_4_6: {{ amzn2023cis_rule_4_1_4_6 }}
+amzn2023cis_rule_4_1_4_7: {{ amzn2023cis_rule_4_1_4_7 }}
+amzn2023cis_rule_4_1_4_8: {{ amzn2023cis_rule_4_1_4_8 }}
+amzn2023cis_rule_4_1_4_9: {{ amzn2023cis_rule_4_1_4_9 }}
+amzn2023cis_rule_4_1_4_10: {{ amzn2023cis_rule_4_1_4_10 }}
+
+# 4.2.1 Configure rsyslog
+amzn2023cis_rule_4_2_1_1: {{ amzn2023cis_rule_4_2_1_1 }}
+amzn2023cis_rule_4_2_1_2: {{ amzn2023cis_rule_4_2_1_2 }}
+amzn2023cis_rule_4_2_1_2: {{ amzn2023cis_rule_4_2_1_3 }}
+amzn2023cis_rule_4_2_1_3: {{ amzn2023cis_rule_4_2_1_3 }}
+amzn2023cis_rule_4_2_1_4: {{ amzn2023cis_rule_4_2_1_4 }}
+amzn2023cis_rule_4_2_1_5: {{ amzn2023cis_rule_4_2_1_5 }}
+amzn2023cis_rule_4_2_1_6: {{ amzn2023cis_rule_4_2_1_6 }}
+amzn2023cis_rule_4_2_1_7: {{ amzn2023cis_rule_4_2_1_7 }}
+
+# 4.2.2 Configure journald
+amzn2023cis_rule_4_2_2_1_1: {{ amzn2023cis_rule_4_2_2_1_1 }}
+amzn2023cis_rule_4_2_2_1_2: {{ amzn2023cis_rule_4_2_2_1_2 }}
+amzn2023cis_rule_4_2_2_1_3: {{ amzn2023cis_rule_4_2_2_1_3 }}
+amzn2023cis_rule_4_2_2_1_4: {{ amzn2023cis_rule_4_2_2_1_4 }}
+amzn2023cis_rule_4_2_2_2: {{ amzn2023cis_rule_4_2_2_2 }}
+amzn2023cis_rule_4_2_2_3: {{ amzn2023cis_rule_4_2_2_3 }}
+amzn2023cis_rule_4_2_2_4: {{ amzn2023cis_rule_4_2_2_4 }}
+amzn2023cis_rule_4_2_2_5: {{ amzn2023cis_rule_4_2_2_5 }}
+amzn2023cis_rule_4_2_2_6: {{ amzn2023cis_rule_4_2_2_6 }}
+amzn2023cis_rule_4_2_2_7: {{ amzn2023cis_rule_4_2_2_7 }}
+amzn2023cis_rule_4_2_3: {{ amzn2023cis_rule_4_2_3 }}
+
+# 4.3 Logrotate
+amzn2023cis_rule_4_3: {{ amzn2023cis_rule_4_3 }}
+
+# Section 5
+#  Authentication and Authorization
+# 5.1 Configure time-based job schedulers
+amzn2023cis_rule_5_1_1: {{ amzn2023cis_rule_5_1_1 }}
+amzn2023cis_rule_5_1_2: {{ amzn2023cis_rule_5_1_2 }}
+amzn2023cis_rule_5_1_3: {{ amzn2023cis_rule_5_1_3 }}
+amzn2023cis_rule_5_1_4: {{ amzn2023cis_rule_5_1_4 }}
+amzn2023cis_rule_5_1_5: {{ amzn2023cis_rule_5_1_5 }}
+amzn2023cis_rule_5_1_6: {{ amzn2023cis_rule_5_1_6 }}
+amzn2023cis_rule_5_1_7: {{ amzn2023cis_rule_5_1_7 }}
+amzn2023cis_rule_5_1_8: {{ amzn2023cis_rule_5_1_8 }}
+amzn2023cis_rule_5_1_9: {{ amzn2023cis_rule_5_1_9 }}
+
+# 5.2 Configure SSH Server
+amzn2023cis_rule_5_2_1: {{ amzn2023cis_rule_5_2_1 }}
+amzn2023cis_rule_5_2_2: {{ amzn2023cis_rule_5_2_2 }}
+amzn2023cis_rule_5_2_3: {{ amzn2023cis_rule_5_2_3 }}
+amzn2023cis_rule_5_2_4: {{ amzn2023cis_rule_5_2_4 }}
+amzn2023cis_rule_5_2_5: {{ amzn2023cis_rule_5_2_5 }}
+amzn2023cis_rule_5_2_6: {{ amzn2023cis_rule_5_2_6 }}
+amzn2023cis_rule_5_2_7: {{ amzn2023cis_rule_5_2_7 }}
+amzn2023cis_rule_5_2_8: {{ amzn2023cis_rule_5_2_8 }}
+amzn2023cis_rule_5_2_9: {{ amzn2023cis_rule_5_2_9 }}
+amzn2023cis_rule_5_2_10: {{ amzn2023cis_rule_5_2_10 }}
+amzn2023cis_rule_5_2_11: {{ amzn2023cis_rule_5_2_11 }}
+amzn2023cis_rule_5_2_12: {{ amzn2023cis_rule_5_2_12 }}
+amzn2023cis_rule_5_2_13: {{ amzn2023cis_rule_5_2_13 }}
+amzn2023cis_rule_5_2_14: {{ amzn2023cis_rule_5_2_14 }}
+amzn2023cis_rule_5_2_15: {{ amzn2023cis_rule_5_2_15 }}
+amzn2023cis_rule_5_2_16: {{ amzn2023cis_rule_5_2_16 }}
+amzn2023cis_rule_5_2_17: {{ amzn2023cis_rule_5_2_17 }}
+amzn2023cis_rule_5_2_18: {{ amzn2023cis_rule_5_2_18 }}
+amzn2023cis_rule_5_2_19: {{ amzn2023cis_rule_5_2_19 }}
+amzn2023cis_rule_5_2_20: {{ amzn2023cis_rule_5_2_20 }}
+# 5.3 Configure privilege escalation
+amzn2023cis_rule_5_3_1: {{ amzn2023cis_rule_5_3_1 }}
+amzn2023cis_rule_5_3_2: {{ amzn2023cis_rule_5_3_2 }}
+amzn2023cis_rule_5_3_3: {{ amzn2023cis_rule_5_3_3 }}
+amzn2023cis_rule_5_3_4: {{ amzn2023cis_rule_5_3_4 }}
+amzn2023cis_rule_5_3_5: {{ amzn2023cis_rule_5_3_5 }}
+amzn2023cis_rule_5_3_6: {{ amzn2023cis_rule_5_3_6 }}
+amzn2023cis_rule_5_3_7: {{ amzn2023cis_rule_5_3_7 }}
+
+# 5.4 Configure authselect
+
+amzn2023cis_rule_5_4_1: {{ amzn2023cis_rule_5_4_1 }}
+amzn2023cis_rule_5_4_2: {{ amzn2023cis_rule_5_4_2 }}
+
+# 5.5 Configure PAM
+amzn2023cis_rule_5_5_1: {{ amzn2023cis_rule_5_5_1 }}
+amzn2023cis_rule_5_5_2: {{ amzn2023cis_rule_5_5_2 }}
+amzn2023cis_rule_5_5_3: {{ amzn2023cis_rule_5_5_3 }}
+amzn2023cis_rule_5_5_4: {{ amzn2023cis_rule_5_5_4 }}
+
+# 5.6 User Accounts and Environment
+# 5.6.1 Set Shadow Password Suite Parameters
+amzn2023cis_rule_5_6_1_1: {{ amzn2023cis_rule_5_6_1_1 }}
+amzn2023cis_rule_5_6_1_2: {{ amzn2023cis_rule_5_6_1_2 }}
+amzn2023cis_rule_5_6_1_3: {{ amzn2023cis_rule_5_6_1_3 }}
+amzn2023cis_rule_5_6_1_4: {{ amzn2023cis_rule_5_6_1_4 }}
+amzn2023cis_rule_5_6_1_5: {{ amzn2023cis_rule_5_6_1_5 }}
+amzn2023cis_rule_5_6_2: {{ amzn2023cis_rule_5_6_2 }}
+amzn2023cis_rule_5_6_3: {{ amzn2023cis_rule_5_6_3 }}
+amzn2023cis_rule_5_6_4: {{ amzn2023cis_rule_5_6_4 }}
+amzn2023cis_rule_5_6_5: {{ amzn2023cis_rule_5_6_5 }}
+amzn2023cis_rule_5_6_6: {{ amzn2023cis_rule_5_6_6 }}
+
+# Section 6
+# 6 System Maintenance
+# 6.1 System File Permissions
+amzn2023cis_rule_6_1_1: {{ amzn2023cis_rule_6_1_1 }}
+amzn2023cis_rule_6_1_2: {{ amzn2023cis_rule_6_1_2 }}
+amzn2023cis_rule_6_1_3: {{ amzn2023cis_rule_6_1_3 }}
+amzn2023cis_rule_6_1_4: {{ amzn2023cis_rule_6_1_4 }}
+amzn2023cis_rule_6_1_5: {{ amzn2023cis_rule_6_1_5 }}
+amzn2023cis_rule_6_1_6: {{ amzn2023cis_rule_6_1_6 }}
+amzn2023cis_rule_6_1_7: {{ amzn2023cis_rule_6_1_7 }}
+amzn2023cis_rule_6_1_8: {{ amzn2023cis_rule_6_1_8 }}
+amzn2023cis_rule_6_1_9: {{ amzn2023cis_rule_6_1_9 }}
+amzn2023cis_rule_6_1_10: {{ amzn2023cis_rule_6_1_10 }}
+amzn2023cis_rule_6_1_11: {{ amzn2023cis_rule_6_1_11 }}
+amzn2023cis_rule_6_1_12: {{ amzn2023cis_rule_6_1_12 }}
+
+# 6.2 User and Group Settings
+amzn2023cis_rule_6_2_1: {{ amzn2023cis_rule_6_2_1 }}
+amzn2023cis_rule_6_2_2: {{ amzn2023cis_rule_6_2_2 }}
+amzn2023cis_rule_6_2_3: {{ amzn2023cis_rule_6_2_3 }}
+amzn2023cis_rule_6_2_4: {{ amzn2023cis_rule_6_2_4 }}
+amzn2023cis_rule_6_2_5: {{ amzn2023cis_rule_6_2_5 }}
+amzn2023cis_rule_6_2_6: {{ amzn2023cis_rule_6_2_6 }}
+amzn2023cis_rule_6_2_7: {{ amzn2023cis_rule_6_2_7 }}
+amzn2023cis_rule_6_2_8: {{ amzn2023cis_rule_6_2_8 }}
+amzn2023cis_rule_6_2_9: {{ amzn2023cis_rule_6_2_9 }}
+amzn2023cis_rule_6_2_10: {{ amzn2023cis_rule_6_2_10 }}
+amzn2023cis_rule_6_2_11: {{ amzn2023cis_rule_6_2_11 }}
+
+############
+
+# Section 1
+
+# AIDE
+amzn2023cis_config_aide: {{ amzn2023cis_config_aide }}
+
+# Warning Banner Content (issue, issue.net, motd)
+amzn2023cis_warning_banner: {{ amzn2023cis_warning_banner }}
+# End Banner
+
+# aide setup via - cron, timer
+amzn2023cis_aide_scan: cron
+
+# Section 2
+## 2.2 Special Purposes
+# Set to 'true' if X Windows is needed in your environment
+amzn2023cis_xwindows_required: false
+### Service configuration booleans set true to keep service
+amzn2023cis_avahi_server: {{ amzn2023cis_avahi_server }}
+amzn2023cis_cups_server: {{ amzn2023cis_cups_server }}
+amzn2023cis_dhcp_server: {{ amzn2023cis_dhcp_server }}
+amzn2023cis_dns_server: {{ amzn2023cis_dns_server }}
+amzn2023cis_dnsmasq_server: {{ amzn2023cis_dnsmasq_server }}
+amzn2023cis_vsftpd_server: {{ amzn2023cis_vsftpd_server }}
+amzn2023cis_tftp_server: {{ amzn2023cis_tftp_server }}
+amzn2023cis_httpd_server: {{ amzn2023cis_httpd_server }}
+amzn2023cis_nginx_server: {{ amzn2023cis_nginx_server }}
+amzn2023cis_dovecot_server: {{ amzn2023cis_dovecot_server }}
+amzn2023cis_imap_server: {{ amzn2023cis_imap_server }}
+amzn2023cis_samba_server: {{ amzn2023cis_samba_server }}
+amzn2023cis_squid_server: {{ amzn2023cis_squid_server }}
+amzn2023cis_snmp_server: {{ amzn2023cis_snmp_server }}
+amzn2023cis_telnet_server: {{ amzn2023cis_telnet_server }}
+amzn2023cis_is_mail_server: {{ amzn2023cis_is_mail_server }}
+
+# Note the options
+# Packages are used for client services and Server- only remove if you dont use the client service
+#
+amzn2023cis_use_nfs_server: {{ amzn2023cis_use_nfs_server }}
+amzn2023cis_use_nfs_service: {{ amzn2023cis_use_nfs_service }}
+amzn2023cis_use_rpc_server: {{ amzn2023cis_use_rpc_server }}
+amzn2023cis_use_rpc_service: {{ amzn2023cis_use_rpc_service }}
+amzn2023cis_use_rsync_server: {{ amzn2023cis_use_rsync_server }}
+amzn2023cis_use_rsync_service: {{ amzn2023cis_use_rsync_service }}
+
+#### 2.3 Service clients
+amzn2023cis_telnet_required: {{ amzn2023cis_telnet_required }}
+amzn2023cis_openldap_clients_required: {{ amzn2023cis_openldap_clients_required }}
+amzn2023cis_ftp_client: {{ amzn2023cis_ftp_client }}
+
+# Section 3
+
+## IPv6 required
+amzn2023cis_ipv6_required: {{ amzn2023cis_ipv6_required }}
+
+## 3.2 System network parameters (host only OR host and router)
+amzn2023cis_is_router: {{ amzn2023cis_is_router }}
+
+## Section 3.4
+### Firewall
+amzn2023cis_firewall: {{ amzn2023cis_firewall }}
+##### firewalld
+amzn2023cis_default_zone: {{ amzn2023cis_default_zone }}
+
+#### nftables
+
+amzn2023cis_nft_tables_autonewtable: {{ amzn2023cis_nft_tables_autonewtable }}
+amzn2023cis_nft_tables_tablename: {{ amzn2023cis_nft_tables_tablename }}
+amzn2023cis_nft_tables_autochaincreate: {{ amzn2023cis_nft_tables_autochaincreate }}
+
+# Section 4
+
+## Set if host is a logserver
+amzn2023cis_remote_log_server: {{ amzn2023cis_remote_log_server }}
+
+# Remote logserver settings
+amzn2023cis_remote_log_host: {{ amzn2023cis_remote_log_host }}
+amzn2023cis_remote_log_port: {{ amzn2023cis_remote_log_port }}
+amzn2023cis_remote_log_protocol: {{ amzn2023cis_remote_log_protocol }}
+amzn2023cis_remote_log_retrycount: {{ amzn2023cis_remote_log_retrycount }}
+amzn2023cis_remote_log_queuesize: {{ amzn2023cis_remote_log_queuesize }}
+
+## syslog
+amzn2023cis_syslog: {{ amzn2023cis_syslog }}
+
+# Section 5
+# This will allow use of drop in files when CIS adopts them.
+amzn2023cis_sshd_config_file: {{ amzn2023cis_sshd_config_file }}
+
+## 5.2.4 Note the following to understand precedence and layout
+amzn2023cis_sshd_limited: false
+amzn2023cis_sshd_access:
+  - AllowUser
+  - AllowGroup
+  - DenyUser
+  - DenyGroup
+
+## 5.3.2 & 5.4.2 Enable automation to select custom profile options, using the settings above
+amzn2023cis_authselect_custom_profile_select: {{ amzn2023cis_authselect_custom_profile_select }}
+
+## 5.3.2 Authselect select false if using AD or RHEL ID mgmt
+amzn2023cis_authselect:
+  custom_profile_name: {{ amzn2023cis_authselect['custom_profile_name'] }}
+  default_file_to_copy: {{ amzn2023cis_authselect['default_file_to_copy'] }}
+
+## 5.4.1 Enable automation to create custom profile settings, using the setings above
+amzn2023cis_authselect_custom_profile_create: {{ amzn2023cis_authselect_custom_profile_create }}
+
+# 5.5.1
+## PAM
+amzn2023cis_pam_password:
+  minlen: {{ amzn2023cis_pam_password['minlen'] }}
+  minclass: {{ amzn2023cis_pam_password['minclass'] }}
+amzn2023cis_pam_passwd_retry: "3"
+
+## 5.5.3 choose one of below
+amzn2023cis_pwhistory_so: "14"
+amzn2023cis_passwd_remember: "5"
+
+## 5.6.x login.defs password settings
+amzn2023cis_pass:
+  max_days: {{ amzn2023cis_pass['max_days'] }}
+  min_days: {{ amzn2023cis_pass['min_days'] }}
+  warn_age: {{ amzn2023cis_pass['warn_age'] }}
+
+## 5.3.7 set sugroup if differs from wheel
+amzn2023cis_sugroup: {{ amzn2023cis_sugroup }}

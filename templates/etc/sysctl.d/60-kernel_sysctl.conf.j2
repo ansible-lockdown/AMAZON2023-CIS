@@ -1,0 +1,10 @@
+## This file is managed by Ansible, YOUR CHANGES WILL BE LOST!
+# Kernel sysctl
+{% if amzn2023cis_rule_1_5_1 %}
+# CIS 1.5.1
+kernel.randomize_va_space = 2
+{% endif %}
+{% if amzn2023cis_rule_1_5_2 %}
+# CIS 1.5.2
+kernel.yama.ptrace_scope = 1
+{% endif %}
