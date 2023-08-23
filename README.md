@@ -1,5 +1,9 @@
 # AMAZON 2023 CIS - Beta
 
+****************************
+NOTE AUDIT NOT YET AVAILABLE
+****************************
+
 ## Configure a Amazon 2023 machine to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant
 
 ### Based on [ CIS Amazon 2023 Benchmark v1.0.0 - 26-06-2023 ](https://www.cisecurity.org/cis-benchmarks/)
