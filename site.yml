@@ -1,0 +1,9 @@
+---
+
+- name: Amazon 2023 cis benchmark
+  hosts: all
+  become: true
+
+  roles:
+
+      - role: "{{ playbook_dir }}"

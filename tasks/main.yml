@@ -1,0 +1,167 @@
+---
+# tasks file for AMAZON2023
+
+- name: Check OS version and family
+  ansible.builtin.assert:
+      that: (ansible_distribution == 'Amazon' ansible_distribution_major_version is version_compare('2023', '==')
+      fail_msg: "This role can only be run against Supported OSs. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
+      success_msg: "This role is running against a supported OS {{ ansible_distribution }} {{ ansible_distribution_major_version }}"
+  when:
+      - os_check
+  tags:
+      - always
+
+- name: Check ansible version
+  ansible.builtin.assert:
+      that: ansible_version.full is version_compare(min_ansible_version, '>=')
+      fail_msg: "You must use Ansible {{ min_ansible_version }} or greater"
+      success_msg: "This role is running a supported version of ansible {{ ansible_version.full }} >= {{ min_ansible_version }}"
+  tags:
+      - always
+
+- name: Ensure root password is set
+  block:
+      - name: Ensure root password is set
+        ansible.builtin.shell: passwd -S root | grep "Password set, SHA512 crypt"
+        changed_when: false
+        register: root_passwd_set
+
+      - name: Ensure root password is set
+        ansible.builtin.assert:
+            that: root_passwd_set.rc == 0
+            fail_msg: "You have rule 5.6.6 enabled this requires that you have a root password set"
+            success_msg: "You have a root password set"
+  when:
+      - amzn2023cis_rule_4_6_6
+  tags:
+      - level1-server
+      - patch
+      - accounts
+      - root
+      - rule_4.6.6
+
+- name: Setup rules if container
+  block:
+      - name: Discover and set container variable if required
+        ansible.builtin.set_fact:
+            system_is_container: true
+
+      - name: Load variable for container
+        ansible.builtin.include_vars:
+            file: "{{ container_vars_file }}"
+
+      - name: Output if discovered is a container
+        ansible.builtin.debug:
+            msg: system has been discovered as a container
+        when:
+            - system_is_container
+  when:
+      - ansible_connection == 'docker' or
+        ansible_virtualization_type in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+      - container_discovery
+      - always
+
+- name: Check crypto-policy input
+  ansible.builtin.assert:
+      that: amzn2023cis_crypto_policy in amzn2023cis_allowed_crypto_policies
+      fail_msg: "Crypto policy is not a permitted version"
+      success_msg: "Crypto policy is a permitted version"
+
+- name: Check crypto-policy module input
+  ansible.builtin.assert:
+      that: amzn2023cis_crypto_policy_module in amzn2023cis_allowed_crypto_policies_modules
+      fail_msg: "Crypto policy module is not a permitted version"
+      success_msg: "Crypto policy module is a permitted version"
+  when:
+      - amzn2023cis_rule_1_9
+      - amzn2023cis_crypto_policy_module | length > 0
+  tags:
+      - rule_1.9
+
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+      manager: auto
+  tags:
+      - always
+
+- name: Include OS specific variables
+  ansible.builtin.include_vars: "{{ ansible_distribution }}.yml"
+  tags:
+      - always
+
+- name: Include preliminary steps
+  ansible.builtin.import_tasks: prelim.yml
+  tags:
+      - prelim_tasks
+      - always
+
+- name: run pre_remediation audit
+  ansible.builtin.include_tasks: pre_remediation_audit.yml
+  when:
+      - run_audit
+
+- name: run Section 1 tasks
+  ansible.builtin.import_tasks: section_1/main.yml
+  when: amzn2023cis_section1
+  tags:
+      - amzn2023cis_section1
+
+- name: run Section 2 tasks
+  ansible.builtin.import_tasks: section_2/main.yml
+  when: amzn2023cis_section2
+  tags:
+      - amzn2023cis_section2
+
+- name: run Section 3 tasks
+  ansible.builtin.import_tasks: section_3/main.yml
+  when: amzn2023cis_section3
+  tags:
+      - amzn2023cis_section3
+
+- name: run Section 4 tasks
+  ansible.builtin.import_tasks: section_4/main.yml
+  when: amzn2023cis_section4
+  tags:
+      - amzn2023cis_section4
+
+- name: run Section 5 tasks
+  ansible.builtin.import_tasks: section_5/main.yml
+  when: amzn2023cis_section5
+  tags:
+      - amzn2023cis_section5
+
+- name: run Section 6 tasks
+  ansible.builtin.import_tasks: section_6/main.yml
+  when: amzn2023cis_section6
+  tags:
+      - amzn2023cis_section6
+
+- name: run auditd logic
+  ansible.builtin.import_tasks: auditd.yml
+  when: update_audit_template
+  tags:
+      - always
+
+- name: run post remediation tasks
+  ansible.builtin.import_tasks: post.yml
+  tags:
+      - post_tasks
+      - always
+
+- name: run post_remediation audit
+  ansible.builtin.import_tasks: post_remediation_audit.yml
+  when:
+      - run_audit
+
+- name: Show Audit Summary
+  ansible.builtin.debug:
+      msg: "{{ audit_results.split('\n') }}"
+  when: run_audit
+
+- name: If Warnings found Output count and control IDs affected
+  ansible.builtin.debug:
+      msg: "You have {{ warn_count }} Warning(s) that require investigating that are related to the following benchmark ID(s) {{ warn_control_list }}"
+  when: warn_count != 0
+  tags:
+      - always

@@ -1,0 +1,31 @@
+---
+
+galaxy_info:
+    author: "Mark Bolwell"
+    description: "Apply the Amazon 2023 CIS"
+    company: "MindPoint Group"
+    license: MIT
+    role_name: amazon2023_cis
+    namespace: mindpointgroup
+    min_ansible_version: '2.10.1'
+    platforms:
+        - name: "Amazon Linux"
+          versions:
+              - "2023"
+    galaxy_tags:
+        - system
+        - security
+        - stig
+        - hardening
+        - benchmark
+        - compliance
+        - complianceascode
+        - disa
+        - amazonlinux
+        - ec2
+        - cis
+collections:
+    - community.general
+    - community.crypto
+    - ansible.posix
+dependencies: []
