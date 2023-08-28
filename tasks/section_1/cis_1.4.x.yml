@@ -22,7 +22,7 @@
             path: /etc/fstab
             regexp: (.*\/boot\/efi\s+vfat\s+defaults)
             backrefs: true
-            line: '<g>\1,umask=0027,fmask=0077,uid=0,gid=0 0 0'
+            line: '\g<1>,umask=0027,fmask=0077,uid=0,gid=0 0 0'
         when: not amzn2023cis_legacy_boot
   when:
       - amzn2023cis_rule_1_4_1
