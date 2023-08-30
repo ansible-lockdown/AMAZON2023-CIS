@@ -120,6 +120,8 @@
         ansible.builtin.set_fact:
             grub2_path: /etc/grub2-efi.cfg
         when: amzn2023cis_efi_boot.stat.exists
+  when:
+      - amzn2023cis_rule_1_4_1
   tags:
       - always
 
@@ -262,3 +264,8 @@
       manager: auto
   tags:
       - always
+
+- name: "PRELIM  | Set audit to not run if amazon 2023"
+  ansible.builtin.set_fact:
+      run_audit: false
+  when: ansible_distribution_major_version == '2023'
