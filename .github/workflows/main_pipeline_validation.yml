@@ -104,7 +104,7 @@
 
           # Run the ansible playbook
             - name: Run_Ansible_Playbook
-              uses: arillso/action.playbook@master
+              uses: ansible-lockdown/action.playbook@main
               with:
                 playbook: site.yml
                 inventory: .github/workflows/github_linux_IaC/hosts.yml
