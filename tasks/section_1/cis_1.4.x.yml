@@ -20,9 +20,9 @@
       - name: "1.4.1 | PATCH | Ensure permissions on bootloader config are configured | efi boot"
         ansible.builtin.lineinfile:
             path: /etc/fstab
-            regexp: (.*\/boot\/efi\s+vfat\s+defaults)
+            regexp: '(.*\/boot\/efi\s+vfat\s+defaults,.*)umask=00\d\d,(fmask=\d\d\d\d,|)(.*$)'
             backrefs: true
-            line: '<g>\1,umask=0027,fmask=0077,uid=0,gid=0 0 0'
+            line: '\1umask=0027,fmask=0077,\3'
         when: not amzn2023cis_legacy_boot
   when:
       - amzn2023cis_rule_1_4_1
