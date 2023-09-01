@@ -61,6 +61,9 @@ run_audit: false
 # Timeout for those cmds that take longer to run where timeout set
 audit_cmd_timeout: 60000
 
+# Some tests can be resource heavy allow these to take place
+amzn2023cis_run_heavy_tests: true
+
 ### End Goss enablements ####
 #### Detailed settings found at the end of this document ####
 

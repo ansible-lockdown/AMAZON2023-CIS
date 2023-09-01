@@ -10,6 +10,7 @@ host_os_distribution: {{ ansible_distribution | lower }}
 
 #  timeout for each command to run where set - default = 10seconds/10000ms
 timeout_ms: 60000
+amzn2023cis_run_heavy_tests: {{ amzn2023cis_run_heavy_tests }}
 
 amzn2023cis_section1: {{ amzn2023cis_section1 }}
 amzn2023cis_section2: {{ amzn2023cis_section2 }}
@@ -25,9 +26,6 @@ amzn2023cis_selinux_disable: {{ amzn2023cis_selinux_disable }}
 
 #  to enable rules that may have IO impact on a system e.g. full filesystem scans or CPU heavy
 run_heavy_tests: true
-
-
-amzn2023cis_set_boot_pass: {{ amzn2023cis_set_boot_pass }}
 
 # These variables correspond with the CIS rule IDs or paragraph numbers defined in
 # the CIS benchmark documents.
