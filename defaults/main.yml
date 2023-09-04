@@ -473,10 +473,10 @@ amzn2023cis_auditd:
     max_log_file_action: keep_logs
 
 # The audit_back_log_limit value should never be below 8192
-amzn2023cis_audit_back_log_limit: 8192
+amzn2023cis_audit_back_log_limit: '8192'
 
 # The max_log_file parameter should be based on your sites policy
-amzn2023cis_max_log_file_size: 10
+amzn2023cis_max_log_file_size: '10'
 
 ### 4.1.3.x audit template
 update_audit_template: false
@@ -568,7 +568,7 @@ amzn2023cis_authselect_custom_profile_select: false
 
 amzn2023cis_pass:
     max_days: 365
-    min_days: 7
+    min_days: 1
     warn_age: 7
 
 # UID settings for interactive users
