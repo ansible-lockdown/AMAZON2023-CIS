@@ -23,8 +23,11 @@ amzn2023cis_level_1: {{ amzn2023cis_level_1 }}
 amzn2023cis_level_2: {{ amzn2023cis_level_2 }}
 
 amzn2023cis_selinux_disable: {{ amzn2023cis_selinux_disable }}
+amzn2023cis_selinux_enforce: {{ amzn2023cis_selinux_enforce }}
 
 amzn2023cis_legacy_boot: {{ amzn2023cis_legacy_boot }}
+amzn2023cis_bootloader_file: /boot/grub2/grub.cfg
+amzn2023cis_bootloader_user: /boot/grub2/user.cfg
 
 #  to enable rules that may have IO impact on a system e.g. full filesystem scans or CPU heavy
 run_heavy_tests: true
