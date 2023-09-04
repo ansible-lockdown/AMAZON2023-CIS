@@ -383,7 +383,7 @@ amzn2023cis_aide_cron:
 
 # SELinux policy
 amzn2023cis_selinux_pol: targeted
-# chose onf or enfocing or permissive
+# chose conf or enforcing or permissive
 amzn2023cis_selinux_enforce: enforcing
 
 # Whether or not to run tasks related to auditing/patching the desktop environment
