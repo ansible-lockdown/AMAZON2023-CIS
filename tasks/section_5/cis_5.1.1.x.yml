@@ -38,7 +38,7 @@
   notify: Restart rsyslog
   when:
       - amzn2023cis_rule_5_1_1_3
-      - amzn2023cis_syslog == "rsyslog"
+      - amzn2023cis_syslog_service == "rsyslog"
   tags:
       - level1-server
       - patch

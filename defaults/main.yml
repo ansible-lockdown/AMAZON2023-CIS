@@ -498,7 +498,7 @@ amzn2023cis_auditd_extra_conf: {}
 ## Preferred method of logging
 ## Whether rsyslog or journald preferred method for local logging
 ## Affects rsyslog cis 4.2.1.3 and journald cis 4.2.2.5
-amzn2023cis_syslog: rsyslog
+amzn2023cis_syslog_service: rsyslog
 amzn2023cis_rsyslog_ansiblemanaged: true
 
 #### 4.2.1.6 remote and destation log server name
