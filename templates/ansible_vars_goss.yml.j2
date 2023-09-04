@@ -413,18 +413,6 @@ amzn2023cis_nft_tables_autonewtable: {{ amzn2023cis_nft_tables_autonewtable }}
 amzn2023cis_nft_tables_tablename: {{ amzn2023cis_nft_tables_tablename }}
 amzn2023cis_nft_tables_autochaincreate: {{ amzn2023cis_nft_tables_autochaincreate }}
 
-# Section 5
-
-## Set if host is a logserver
-amzn2023cis_remote_log_server: {{ amzn2023cis_remote_log_server }}
-
-# Remote logserver settings
-amzn2023cis_remote_log_host: {{ amzn2023cis_remote_log_host }}
-amzn2023cis_remote_log_port: {{ amzn2023cis_remote_log_port }}
-amzn2023cis_remote_log_protocol: {{ amzn2023cis_remote_log_protocol }}
-amzn2023cis_remote_log_retrycount: {{ amzn2023cis_remote_log_retrycount }}
-amzn2023cis_remote_log_queuesize: {{ amzn2023cis_remote_log_queuesize }}
-
 # Section 4
 # This will allow use of drop in files when CIS adopts them.
 amzn2023cis_sshd_config_file: {{ amzn2023cis_sshd_config_file }}
@@ -455,8 +443,8 @@ amzn2023cis_authselect_custom_profile_create: {{ amzn2023cis_authselect_custom_p
 
 ## PAM
 amzn2023cis_pam_password:
-  minlen: {{ amzn2023cis_pam_password['minlen'] }}
-  minclass: {{ amzn2023cis_pam_password['minclass'] }}
+  minlen: '{{ amzn2023cis_pam_password['minlen'] }}'
+  minclass: '{{ amzn2023cis_pam_password['minclass'] }}'
 amzn2023cis_pam_passwd_retry: "3"
 
 ## choose one of below
@@ -475,13 +463,16 @@ amzn2023cis_sugroup: {{ amzn2023cis_sugroup }}
 
 ## Section 5
 
-## auditd settings
-amzn2023cis_auditd:
-  space_left_action: email
-  action_mail_acct: root
-  admin_space_left_action: {{ amzn2023cis_auditd.admin_space_left_action }}
-  max_log_file_action: {{ amzn2023cis_auditd.max_log_file_action }}
-  auditd_backlog_limit: {{ amzn2023cis_audit_back_log_limit }}
+
+## Set if host is a logserver
+amzn2023cis_remote_log_server: {{ amzn2023cis_remote_log_server }}
+
+# Remote logserver settings
+amzn2023cis_remote_log_host: {{ amzn2023cis_remote_log_host }}
+amzn2023cis_remote_log_port: {{ amzn2023cis_remote_log_port }}
+amzn2023cis_remote_log_protocol: {{ amzn2023cis_remote_log_protocol }}
+amzn2023cis_remote_log_retrycount: {{ amzn2023cis_remote_log_retrycount }}
+amzn2023cis_remote_log_queuesize: {{ amzn2023cis_remote_log_queuesize }}
 
 ## syslog
 amzn2023cis_is_syslog_server: {{ amzn2023cis_system_is_log_server }}
@@ -518,5 +509,13 @@ amzn2023cis_journald_runtimekeepfree: 100G
 # amzn2023cis_journald_MaxFileSec is how long in time to keep log files. Values are Xm, Xh, Xday, Xweek, Xmonth, Xyear, for example 2week is two weeks
 amzn2023cis_journald_maxfilesec: 1month
 
-
 amzn2023cis_logrotate: "daily"
+
+## auditd settings
+amzn2023cis_auditd:
+  space_left_action: email
+  action_mail_acct: root
+  admin_space_left_action: {{ amzn2023cis_auditd.admin_space_left_action }}
+  max_log_file_action: {{ amzn2023cis_auditd.max_log_file_action }}
+  auditd_backlog_limit: {{ amzn2023cis_audit_back_log_limit }}
+  max_log_file_size: {{ amzn2023cis_max_log_file_size }}
