@@ -422,15 +422,10 @@ amzn2023cis_is_mail_server: false
 # Note the options
 # Packages are used for client services and Server- only remove if you dont use the client service
 #
-
-amzn2023cis_use_nfs_server: false
-amzn2023cis_use_nfs_service: false
-
-amzn2023cis_use_rpc_server: false
-amzn2023cis_use_rpc_service: false
-
-amzn2023cis_use_rsync_server: false
-amzn2023cis_use_rsync_service: false
+# optional either remove or mask
+amzn2023cis_nfs_server: mask
+amzn2023cis_rpc_server: mask
+amzn2023cis_rsync_server: mask
 
 #### 2.3 Service clients
 amzn2023cis_telnet_required: false

@@ -383,9 +383,10 @@ amzn2023cis_is_mail_server: {{ amzn2023cis_is_mail_server }}
 # Note the options
 # Packages are used for client services and Server - only remove if you dont use the client service
 #
-amzn2023cis_use_server: {{ amzn2023cis_use_nfs_server }}
-amzn2023cis_rpc_server: {{ amzn2023cis_use_rpc_server }}
-amzn2023cis_rsyncd_server: {{ amzn2023cis_use_rsync_server }}
+# Set either mask or remove
+amzn2023cis_nfs_server: {{ amzn2023cis_nfs_server }}
+amzn2023cis_rpc_server: {{ amzn2023cis_rpc_server }}
+amzn2023cis_rsync_server: {{ amzn2023cis_rsync_server }}
 
 #### 2.3 Service clients
 amzn2023cis_telnet_required: {{ amzn2023cis_telnet_required }}

@@ -338,7 +338,7 @@
             name: rsync-daemon
             state: absent
         when:
-            - not amzn2023cis_use_rsync_server
+            - amzn2023cis_rsync_server == "remove"
             - not amzn2023cis_use_rsync_service
 
       - name: "2.2.18 | PATCH | Ensure rsync service is not enabled | mask service"
@@ -347,8 +347,7 @@
             masked: true
             state: stopped
         when:
-            - amzn2023cis_use_rsync_server
-            - not amzn2023cis_use_rsync_service
+            - amzn2023cis_rsync_server == "mask"
   when:
       - "'rsync' in ansible_facts.packages"
       - amzn2023cis_rule_2_2_18
