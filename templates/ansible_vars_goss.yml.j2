@@ -426,9 +426,9 @@ amzn2023cis_sshd_access:
   - DenyGroup
 
 amzn2023cis_sshd:
-    clientalivecountmax: {{ amzn2023cis_sshd.clientalivecountmax }}
-    clientaliveinterval: {{ amzn2023cis_sshd.clientaliveinterval }}
-    logingracetime: {{ amzn2023cis_sshd.logingracetime }}
+  clientalivecountmax: {{ amzn2023cis_sshd.clientalivecountmax }}
+  clientaliveinterval: {{ amzn2023cis_sshd.clientaliveinterval }}
+  logingracetime: {{ amzn2023cis_sshd.logingracetime }}
 
 ## Enable automation to select custom profile options, using the settings above
 amzn2023cis_authselect_custom_profile_select: {{ amzn2023cis_authselect_custom_profile_select }}
