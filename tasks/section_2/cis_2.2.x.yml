@@ -348,7 +348,7 @@
         when:
             - amzn2023cis_rsync_server == "mask"
   when:
-      - "'rsync' in ansible_facts.packages"
+      - "'rsync-daemon' in ansible_facts.packages"
       - amzn2023cis_rule_2_2_18
   tags:
       - level1-server
