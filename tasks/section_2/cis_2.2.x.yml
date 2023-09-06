@@ -275,17 +275,16 @@
             name: nfs-utils
             state: absent
         when:
-            - not amzn2023cis_use_nfs_server
-            - not amzn2023cis_use_nfs_service
+            - amzn2023cis_nfs_server == "remove"
 
       - name: "2.2.16 | PATCH | Ensure nfs-utils is not installed or the nfs-server service is masked | mask service"
         ansible.builtin.systemd:
             name: nfs-server
             masked: true
             state: stopped
+            daemon_reload: true
         when:
-            - not amzn2023cis_use_nfs_server
-            - amzn2023cis_use_nfs_service
+            - amzn2023cis_nfs_server == "mask"
   when:
       - "'nfs-utils' in ansible_facts.packages"
       - amzn2023cis_rule_2_2_16
@@ -307,17 +306,16 @@
             name: rpcbind
             state: absent
         when:
-            - not amzn2023cis_use_rpc_server
-            - not amzn2023cis_use_rpc_service
+            - amzn2023cis_rpc_server == "remove"
 
       - name: "2.2.17 | PATCH | Ensure rpcbind is not installed or the rpcbind services are masked | mask service"
         ansible.builtin.systemd:
             name: rpcbind.socket
             masked: true
             state: stopped
+            daemon_reload: true
         when:
-            - amzn2023cis_use_rpc_server
-            - not amzn2023cis_use_rpc_service
+            - amzn2023cis_rpc_server == "mask"
   when:
       - "'rpcbind' in ansible_facts.packages"
       - amzn2023cis_rule_2_2_17
@@ -331,26 +329,26 @@
 
 # The name title of the service says mask the service, but the fix allows for both options
 # Options available in default/main if to remove the package default is false just mask the server service
-- name: "2.2.18 | PATCH | Ensure rsync service is not enabled "
+- name: "2.2.18 | PATCH | Ensure rsync-daemon is not installed or the rsyncd service is masked "
   block:
       - name: "2.2.18 | PATCH | Ensure rsync-daemon is not installed or the rsync service is masked | remove package"
         ansible.builtin.package:
             name: rsync-daemon
             state: absent
         when:
-            - not amzn2023cis_use_rsync_server
+            - amzn2023cis_rsync_server == "remove"
             - not amzn2023cis_use_rsync_service
 
-      - name: "2.2.18 | PATCH | Ensure rsync service is not enabled | mask service"
+      - name: "2.2.18 | PATCH | Ensure rsync-daemon is not installed or the rsyncd service is masked | mask service"
         ansible.builtin.systemd:
             name: rsyncd
             masked: true
             state: stopped
+            daemon_reload: true
         when:
-            - amzn2023cis_use_rsync_server
-            - not amzn2023cis_use_rsync_service
+            - amzn2023cis_rsync_server == "mask"
   when:
-      - "'rsync' in ansible_facts.packages"
+      - "'rsync-daemon' in ansible_facts.packages"
       - amzn2023cis_rule_2_2_18
   tags:
       - level1-server

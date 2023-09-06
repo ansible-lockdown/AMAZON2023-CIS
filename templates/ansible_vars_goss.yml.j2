@@ -10,6 +10,7 @@ host_os_distribution: {{ ansible_distribution | lower }}
 
 #  timeout for each command to run where set - default = 10seconds/10000ms
 timeout_ms: 60000
+amzn2023cis_run_heavy_tests: {{ amzn2023cis_run_heavy_tests }}
 
 amzn2023cis_section1: {{ amzn2023cis_section1 }}
 amzn2023cis_section2: {{ amzn2023cis_section2 }}
@@ -22,12 +23,14 @@ amzn2023cis_level_1: {{ amzn2023cis_level_1 }}
 amzn2023cis_level_2: {{ amzn2023cis_level_2 }}
 
 amzn2023cis_selinux_disable: {{ amzn2023cis_selinux_disable }}
+amzn2023cis_selinux_state: {{ amzn2023cis_selinux_enforce }}
+
+amzn2023cis_legacy_boot: {{ amzn2023cis_legacy_boot }}
+amzn2023cis_bootloader_file: /boot/grub2/grub.cfg
+amzn2023cis_bootloader_user: /boot/grub2/user.cfg
 
 #  to enable rules that may have IO impact on a system e.g. full filesystem scans or CPU heavy
 run_heavy_tests: true
-
-
-amzn2023cis_set_boot_pass: {{ amzn2023cis_set_boot_pass }}
 
 # These variables correspond with the CIS rule IDs or paragraph numbers defined in
 # the CIS benchmark documents.
@@ -152,8 +155,8 @@ amzn2023cis_rule_2_4: true
 amzn2023cis_rule_3_1_1: {{ amzn2023cis_rule_3_1_1 }}
 amzn2023cis_rule_3_1_2: {{ amzn2023cis_rule_3_1_2 }}
 amzn2023cis_rule_3_1_3: {{ amzn2023cis_rule_3_1_3 }}
-amzn2023cis_rule_3_1_3: {{ amzn2023cis_rule_3_1_4 }}
-amzn2023cis_rule_3_1_3: {{ amzn2023cis_rule_3_1_5 }}
+amzn2023cis_rule_3_1_4: {{ amzn2023cis_rule_3_1_4 }}
+amzn2023cis_rule_3_1_5: {{ amzn2023cis_rule_3_1_5 }}
 # 3.2 Network Parameters (Host Only)
 amzn2023cis_rule_3_2_1: {{ amzn2023cis_rule_3_2_1 }}
 amzn2023cis_rule_3_2_2: {{ amzn2023cis_rule_3_2_2 }}
@@ -349,6 +352,13 @@ amzn2023cis_warning_banner: {{ amzn2023cis_warning_banner }}
 amzn2023cis_aide_scan: cron
 
 # Section 2
+#### 2.1.2 Time Synchronization servers - used in template file chrony.conf.j2
+amzn2023cis_time_synchronization_servers:
+{% for name in amzn2023cis_time_synchronization_servers %}
+   - {{ name }}
+{% endfor %}
+amzn2023cis_chrony_server_options: "minpoll 8"
+
 ## 2.2 Special Purposes
 # Set to 'true' if X Windows is needed in your environment
 amzn2023cis_xwindows_required: false
@@ -371,14 +381,12 @@ amzn2023cis_telnet_server: {{ amzn2023cis_telnet_server }}
 amzn2023cis_is_mail_server: {{ amzn2023cis_is_mail_server }}
 
 # Note the options
-# Packages are used for client services and Server- only remove if you dont use the client service
+# Packages are used for client services and Server - only remove if you dont use the client service
 #
-amzn2023cis_use_nfs_server: {{ amzn2023cis_use_nfs_server }}
-amzn2023cis_use_nfs_service: {{ amzn2023cis_use_nfs_service }}
-amzn2023cis_use_rpc_server: {{ amzn2023cis_use_rpc_server }}
-amzn2023cis_use_rpc_service: {{ amzn2023cis_use_rpc_service }}
-amzn2023cis_use_rsync_server: {{ amzn2023cis_use_rsync_server }}
-amzn2023cis_use_rsync_service: {{ amzn2023cis_use_rsync_service }}
+# Set either mask or remove
+amzn2023cis_nfs_server: {{ amzn2023cis_nfs_server }}
+amzn2023cis_rpc_server: {{ amzn2023cis_rpc_server }}
+amzn2023cis_rsync_server: {{ amzn2023cis_rsync_server }}
 
 #### 2.3 Service clients
 amzn2023cis_telnet_required: {{ amzn2023cis_telnet_required }}
@@ -406,6 +414,55 @@ amzn2023cis_nft_tables_tablename: {{ amzn2023cis_nft_tables_tablename }}
 amzn2023cis_nft_tables_autochaincreate: {{ amzn2023cis_nft_tables_autochaincreate }}
 
 # Section 4
+# This will allow use of drop in files when CIS adopts them.
+amzn2023cis_sshd_config_file: {{ amzn2023cis_sshd_config_file }}
+
+## Note the following to understand precedence and layout
+amzn2023cis_sshd_limited: false
+amzn2023cis_sshd_access:
+  - AllowUser
+  - AllowGroup
+  - DenyUser
+  - DenyGroup
+
+amzn2023cis_sshd:
+  clientalivecountmax: {{ amzn2023cis_sshd.clientalivecountmax }}
+  clientaliveinterval: {{ amzn2023cis_sshd.clientaliveinterval }}
+  logingracetime: {{ amzn2023cis_sshd.logingracetime }}
+
+## Enable automation to select custom profile options, using the settings above
+amzn2023cis_authselect_custom_profile_select: {{ amzn2023cis_authselect_custom_profile_select }}
+
+## Authselect select false if using AD or RHEL ID mgmt
+amzn2023cis_authselect:
+  custom_profile_name: {{ amzn2023cis_authselect['custom_profile_name'] }}
+  default_file_to_copy: {{ amzn2023cis_authselect['default_file_to_copy'] }}
+
+## Enable automation to create custom profile settings, using the setings above
+amzn2023cis_authselect_custom_profile_create: {{ amzn2023cis_authselect_custom_profile_create }}
+
+## PAM
+amzn2023cis_pam_password:
+  minlen: '{{ amzn2023cis_pam_password['minlen'] }}'
+  minclass: '{{ amzn2023cis_pam_password['minclass'] }}'
+amzn2023cis_pam_passwd_retry: "3"
+
+## choose one of below
+amzn2023cis_pwhistory_so: "14"
+amzn2023cis_passwd_remember: "5"
+
+## login.defs password settings
+amzn2023cis_pass:
+  max_days: {{ amzn2023cis_pass['max_days'] }}
+  min_days: {{ amzn2023cis_pass['min_days'] }}
+  warn_age: {{ amzn2023cis_pass['warn_age'] }}
+
+##set sugroup if differs from wheel
+amzn2023cis_sugroup: {{ amzn2023cis_sugroup }}
+
+
+## Section 5
+
 
 ## Set if host is a logserver
 amzn2023cis_remote_log_server: {{ amzn2023cis_remote_log_server }}
@@ -418,47 +475,47 @@ amzn2023cis_remote_log_retrycount: {{ amzn2023cis_remote_log_retrycount }}
 amzn2023cis_remote_log_queuesize: {{ amzn2023cis_remote_log_queuesize }}
 
 ## syslog
-amzn2023cis_syslog: {{ amzn2023cis_syslog }}
+amzn2023cis_is_syslog_server: {{ amzn2023cis_system_is_log_server }}
+amzn2023cis_syslog_service: "{{ amzn2023cis_syslog_service }}"
+amzn2023cis_remote_log_server: "{{ amzn2023cis_remote_log_server }}"
 
-# Section 5
-# This will allow use of drop in files when CIS adopts them.
-amzn2023cis_sshd_config_file: {{ amzn2023cis_sshd_config_file }}
+#### remote and destination log server name
+amzn2023cis_remote_log_server: false
+amzn2023cis_remote_log_host: logagg.example.com
+amzn2023cis_remote_log_port: 514
+amzn2023cis_remote_log_protocol: tcp
+amzn2023cis_remote_log_retrycount: 100
+amzn2023cis_remote_log_queuesize: 1000
 
-## 5.2.4 Note the following to understand precedence and layout
-amzn2023cis_sshd_limited: false
-amzn2023cis_sshd_access:
-  - AllowUser
-  - AllowGroup
-  - DenyUser
-  - DenyGroup
+amzn2023cis_system_is_log_server: {{ amzn2023cis_system_is_log_server }}
 
-## 5.3.2 & 5.4.2 Enable automation to select custom profile options, using the settings above
-amzn2023cis_authselect_custom_profile_select: {{ amzn2023cis_authselect_custom_profile_select }}
+#
+# amzn2023cis_journal_upload_url is the ip address to upload the journal entries to
+amzn2023cis_journal_upload_url: 192.168.50.42
 
-## 5.3.2 Authselect select false if using AD or RHEL ID mgmt
-amzn2023cis_authselect:
-  custom_profile_name: {{ amzn2023cis_authselect['custom_profile_name'] }}
-  default_file_to_copy: {{ amzn2023cis_authselect['default_file_to_copy'] }}
+# The paths below have the default paths/files, but allow user to create custom paths/filenames
+amzn2023cis_journal_upload_serverkeyfile: "/etc/ssl/private/journal-upload.pem"
+amzn2023cis_journal_servercertificatefile: "/etc/ssl/certs/journal-upload.pem"
+amzn2023cis_journal_trustedcertificatefile: "/etc/ssl/ca/trusted.pem"
 
-## 5.4.1 Enable automation to create custom profile settings, using the setings above
-amzn2023cis_authselect_custom_profile_create: {{ amzn2023cis_authselect_custom_profile_create }}
 
-# 5.5.1
-## PAM
-amzn2023cis_pam_password:
-  minlen: {{ amzn2023cis_pam_password['minlen'] }}
-  minclass: {{ amzn2023cis_pam_password['minclass'] }}
-amzn2023cis_pam_passwd_retry: "3"
+# The variables below related to journald, please set these to your site specific values
+# amzn2023cis_journald_systemmaxuse is the max amount of disk space the logs will use
+amzn2023cis_journald_systemmaxuse: 10M
+# amzn2023cis_journald_systemkeepfree is the amount of disk space to keep free
+amzn2023cis_journald_systemkeepfree: 100G
+amzn2023cis_journald_runtimemaxuse: 10M
+amzn2023cis_journald_runtimekeepfree: 100G
+# amzn2023cis_journald_MaxFileSec is how long in time to keep log files. Values are Xm, Xh, Xday, Xweek, Xmonth, Xyear, for example 2week is two weeks
+amzn2023cis_journald_maxfilesec: 1month
 
-## 5.5.3 choose one of below
-amzn2023cis_pwhistory_so: "14"
-amzn2023cis_passwd_remember: "5"
+amzn2023cis_logrotate: "daily"
 
-## 5.6.x login.defs password settings
-amzn2023cis_pass:
-  max_days: {{ amzn2023cis_pass['max_days'] }}
-  min_days: {{ amzn2023cis_pass['min_days'] }}
-  warn_age: {{ amzn2023cis_pass['warn_age'] }}
-
-## 5.3.7 set sugroup if differs from wheel
-amzn2023cis_sugroup: {{ amzn2023cis_sugroup }}
+## auditd settings
+amzn2023cis_auditd:
+  space_left_action: email
+  action_mail_acct: root
+  admin_space_left_action: {{ amzn2023cis_auditd.admin_space_left_action }}
+  max_log_file_action: {{ amzn2023cis_auditd.max_log_file_action }}
+  auditd_backlog_limit: {{ amzn2023cis_audit_back_log_limit }}
+  max_log_file_size: {{ amzn2023cis_max_log_file_size }}
