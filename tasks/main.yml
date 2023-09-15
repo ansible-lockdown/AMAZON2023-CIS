@@ -86,7 +86,8 @@
       - always
 
 - name: Include preliminary steps
-  ansible.builtin.import_tasks: prelim.yml
+  ansible.builtin.import_tasks:
+    file: prelim.yml
   tags:
       - prelim_tasks
       - always
@@ -94,61 +95,70 @@
 - name: Run pre_remediation audit
   when:
       - run_audit
-  ansible.builtin.include_tasks: pre_remediation_audit.yml
+  ansible.builtin.include_tasks:
+    file: pre_remediation_audit.yml
   tags:
       - run_audit
 
 - name: Run Section 1 tasks
   when:
       - amzn2023cis_section1
-  ansible.builtin.import_tasks: section_1/main.yml
+  ansible.builtin.import_tasks:
+    file: section_1/main.yml
   tags:
       - amzn2023cis_section1
 
 - name: Run Section 2 tasks
   when:
       - amzn2023cis_section2
-  ansible.builtin.import_tasks: section_2/main.yml
+  ansible.builtin.import_tasks:
+    file: section_2/main.yml
   tags:
       - amzn2023cis_section2
 
 - name: Run Section 3 tasks
   when:
       - amzn2023cis_section3
-  ansible.builtin.import_tasks: section_3/main.yml
+  ansible.builtin.import_tasks:
+    file: section_3/main.yml
   tags:
       - amzn2023cis_section3
 
 - name: Run Section 4 tasks
   when:
       - amzn2023cis_section4
-  ansible.builtin.import_tasks: section_4/main.yml
+  ansible.builtin.import_tasks:
+    file: section_4/main.yml
   tags:
       - amzn2023cis_section4
 
 - name: Run Section 5 tasks
   when:
       - amzn2023cis_section5
-  ansible.builtin.import_tasks: section_5/main.yml
+  ansible.builtin.import_tasks:
+    file: section_5/main.yml
   tags:
       - amzn2023cis_section5
 
 - name: Run Section 6 tasks
   when:
       - amzn2023cis_section6
-  ansible.builtin.import_tasks: section_6/main.yml
+  ansible.builtin.import_tasks:
+    file: section_6/main.yml
   tags:
       - amzn2023cis_section6
 
 - name: run auditd logic
   when:
       - update_audit_template
-  ansible.builtin.import_tasks: auditd.yml
+  ansible.builtin.import_tasks:
+    file: auditd.yml
   tags:
       - always
 
 - name: run post remediation tasks
-  ansible.builtin.import_tasks: post.yml
+  ansible.builtin.import_tasks:
+    file: post.yml
   tags:
       - post_tasks
       - always
@@ -156,7 +166,8 @@
 - name: run post_remediation audit
   when:
       - run_audit
-  ansible.builtin.import_tasks: post_remediation_audit.yml
+  ansible.builtin.import_tasks:
+    file: post_remediation_audit.yml
 
 - name: Show Audit Summary
   when:

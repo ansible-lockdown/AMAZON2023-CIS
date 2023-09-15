@@ -12,7 +12,8 @@
       - users
 
 - name: "PRELIM | capture /etc/password variables"
-  ansible.builtin.include_tasks: parse_etc_password.yml
+  ansible.builtin.include_tasks:
+    file: parse_etc_password.yml
   tags:
       - rule_5.5.2
       - rule_5.6.2
