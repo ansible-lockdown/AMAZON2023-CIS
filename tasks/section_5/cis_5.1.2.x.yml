@@ -99,7 +99,7 @@
 
       - name: "5.1.2.2 | AUDIT | Ensure journald service is enabled | Warn Count"
         ansible.builtin.import_tasks:
-          file: warning_facts.yml
+            file: warning_facts.yml
         when: "'static' not in amzn2023cis_5_1_2_2_status.stdout"
   vars:
       warn_control_id: '5.1.2.2'

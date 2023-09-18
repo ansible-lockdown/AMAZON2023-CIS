@@ -114,7 +114,7 @@
 
       - name: "4.6.1.5 | AUDIT | Ensure all users last password change date is in the past | warning count"
         ansible.builtin.import_tasks:
-          file: warning_facts.yml
+            file: warning_facts.yml
         when:
             - amzn2023cis_4_6_1_5_user_list.stdout | length > 0
             - not amzn2023cis_futurepwchgdate_autofix

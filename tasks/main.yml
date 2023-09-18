@@ -87,7 +87,7 @@
 
 - name: Include preliminary steps
   ansible.builtin.import_tasks:
-    file: prelim.yml
+      file: prelim.yml
   tags:
       - prelim_tasks
       - always
@@ -96,7 +96,7 @@
   when:
       - run_audit
   ansible.builtin.include_tasks:
-    file: pre_remediation_audit.yml
+      file: pre_remediation_audit.yml
   tags:
       - run_audit
 
@@ -104,7 +104,7 @@
   when:
       - amzn2023cis_section1
   ansible.builtin.import_tasks:
-    file: section_1/main.yml
+      file: section_1/main.yml
   tags:
       - amzn2023cis_section1
 
@@ -112,7 +112,7 @@
   when:
       - amzn2023cis_section2
   ansible.builtin.import_tasks:
-    file: section_2/main.yml
+      file: section_2/main.yml
   tags:
       - amzn2023cis_section2
 
@@ -120,7 +120,7 @@
   when:
       - amzn2023cis_section3
   ansible.builtin.import_tasks:
-    file: section_3/main.yml
+      file: section_3/main.yml
   tags:
       - amzn2023cis_section3
 
@@ -128,7 +128,7 @@
   when:
       - amzn2023cis_section4
   ansible.builtin.import_tasks:
-    file: section_4/main.yml
+      file: section_4/main.yml
   tags:
       - amzn2023cis_section4
 
@@ -136,7 +136,7 @@
   when:
       - amzn2023cis_section5
   ansible.builtin.import_tasks:
-    file: section_5/main.yml
+      file: section_5/main.yml
   tags:
       - amzn2023cis_section5
 
@@ -144,7 +144,7 @@
   when:
       - amzn2023cis_section6
   ansible.builtin.import_tasks:
-    file: section_6/main.yml
+      file: section_6/main.yml
   tags:
       - amzn2023cis_section6
 
@@ -152,13 +152,13 @@
   when:
       - update_audit_template
   ansible.builtin.import_tasks:
-    file: auditd.yml
+      file: auditd.yml
   tags:
       - always
 
 - name: run post remediation tasks
   ansible.builtin.import_tasks:
-    file: post.yml
+      file: post.yml
   tags:
       - post_tasks
       - always
@@ -167,7 +167,7 @@
   when:
       - run_audit
   ansible.builtin.import_tasks:
-    file: post_remediation_audit.yml
+      file: post_remediation_audit.yml
 
 - name: Show Audit Summary
   when:
