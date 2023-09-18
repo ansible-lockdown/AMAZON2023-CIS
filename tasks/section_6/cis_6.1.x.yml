@@ -154,7 +154,7 @@
 
             - name: "6.1.9 | AUDIT | Audit system file permissions | warning count"
               ansible.builtin.import_tasks:
-                file: warning_facts.yml
+                  file: warning_facts.yml
               vars:
                   warn_control_id: '6.1.9'
               when: amzn2023cis_6_1_9_packages_rpm.stdout|length > 0
@@ -260,7 +260,7 @@
 
       - name: "6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist | warning"
         ansible.builtin.import_tasks:
-          file: warning_facts.yml
+            file: warning_facts.yml
         vars:
             warn_control_id: '6.1.11'
         when: amzn2023cis_6_1_11_unowned_files_found or amzn2023cis_6_1_11_ungrouped_files_found
@@ -343,7 +343,7 @@
 
       - name: "6.1.12 | AUDIT | Ensure SUID and SGID files are reviewed | Alert SUID/SGID exist | warning"
         ansible.builtin.import_tasks:
-          file: warning_facts.yml
+            file: warning_facts.yml
         vars:
             warn_control_id: '6.1.12'
         when: amzn2023cis_6_1_12_suid_found or amzn2023cis_6_1_12_sgid_found

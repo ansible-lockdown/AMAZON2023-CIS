@@ -9,7 +9,7 @@
 
       - name: "1.1.8.1 | AUDIT | Ensure separate partition exists for /home | Present"
         ansible.builtin.import_tasks:
-          file: warning_facts.yml
+            file: warning_facts.yml
 
   vars:
       warn_control_id: '1.1.8.1'
