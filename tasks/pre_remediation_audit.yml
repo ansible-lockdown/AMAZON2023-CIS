@@ -1,7 +1,8 @@
 ---
 
 - name: Pre Audit Binary Setup | Setup the LE audit
-  ansible.builtin.include_tasks: LE_audit_setup.yml
+  ansible.builtin.include_tasks:
+      file: LE_audit_setup.yml
   when:
       - setup_audit
   tags:
@@ -20,7 +21,7 @@
             name: git
             state: present
 
-      - name: Pre Audit Setup | retrieve audit content files from git
+      - name: Pre Audit Setup | Retrieve audit content files from git
         ansible.builtin.git:
             repo: "{{ audit_file_git }}"
             dest: "{{ audit_conf_dir }}"
@@ -28,7 +29,7 @@
   when:
       - audit_content == 'git'
 
-- name: Pre Audit Setup | copy to audit content files to server
+- name: Pre Audit Setup | Copy to audit content files to server
   ansible.builtin.copy:
       src: "{{ audit_local_copy }}"
       dest: "{{ audit_conf_dest }}"
@@ -36,14 +37,14 @@
   when:
       - audit_content == 'copy'
 
-- name: Pre Audit Setup | unarchive audit content files on server
+- name: Pre Audit Setup | Unarchive audit content files on server
   ansible.builtin.unarchive:
       src: "{{ audit_conf_copy  }}"
       dest: "{{ audit_conf_dir }}"
   when:
       - audit_content == 'archived'
 
-- name: Pre Audit Setup | get audit content from url
+- name: Pre Audit Setup | Get audit content from url
   ansible.builtin.get_url:
       url: "{{ audit_files_url }}"
       dest: "{{ audit_conf_dir }}"
@@ -59,9 +60,8 @@
 
       - name: Pre Audit Setup | If audit ensure goss is available
         ansible.builtin.assert:
+            that: goss_available.stat.exists
             msg: "Audit has been selected: unable to find goss binary at {{ audit_bin }}"
-        when:
-            - not goss_available.stat.exists
   when:
       - run_audit
 

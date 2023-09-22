@@ -20,22 +20,16 @@
   block:
       - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | nftables"
         ansible.builtin.systemd:
-            name: "{{ item }}"
+            name: firewalld
             masked: true
-        loop:
-            - firewalld
         when:
-            - item in ansible_facts.packages
             - amzn2023cis_firewall == 'nftables'
 
       - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | firewalld"
         ansible.builtin.systemd:
-            name: "{{ item }}"
+            name: nftables
             masked: true
-        loop:
-            - nftables
         when:
-            - item in ansible_facts.packages
             - amzn2023cis_firewall == 'firewalld'
 
       - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | package installed"

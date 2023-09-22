@@ -12,7 +12,8 @@
       - users
 
 - name: "PRELIM | capture /etc/password variables"
-  ansible.builtin.include_tasks: parse_etc_password.yml
+  ansible.builtin.include_tasks:
+      file: parse_etc_password.yml
   tags:
       - rule_5.5.2
       - rule_5.6.2
@@ -110,13 +111,13 @@
             path: /sys/firmware/efi
         register: amzn2023cis_efi_boot
 
-      - name: "PRELIM | set legacy boot and grub path | Bios"
+      - name: "PRELIM | Set legacy boot and grub path | Bios"
         ansible.builtin.set_fact:
             amzn2023cis_legacy_boot: true
             grub2_path: /etc/grub2.cfg
         when: not amzn2023cis_efi_boot.stat.exists
 
-      - name: "PRELIM | set grub fact | UEFI"
+      - name: "PRELIM | Set grub fact | UEFI"
         ansible.builtin.set_fact:
             grub2_path: /etc/grub2-efi.cfg
         when: amzn2023cis_efi_boot.stat.exists
@@ -246,7 +247,7 @@
         changed_when: false
         register: gid_min_id
 
-      - name: "PRELIM | set_facts for interactive uid/gid"
+      - name: "PRELIM | Set_facts for interactive uid/gid"
         ansible.builtin.set_fact:
             min_int_uid: "{{ uid_min_id.stdout }}"
             max_int_uid: "{{ uid_max_id.stdout }}"
@@ -264,8 +265,3 @@
       manager: auto
   tags:
       - always
-
-- name: "PRELIM  | Set audit to not run if amazon 2023"
-  ansible.builtin.set_fact:
-      run_audit: false
-  when: ansible_distribution_major_version == '2023'
