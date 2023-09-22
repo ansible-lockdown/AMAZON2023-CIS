@@ -1,8 +1,4 @@
-# AMAZON 2023 CIS - Beta
-
-****************************
-NOTE AUDIT NOT YET AVAILABLE
-****************************
+# AMAZON 2023 CIS
 
 ## Configure a Amazon 2023 machine to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant
 
@@ -16,7 +12,7 @@ NOTE AUDIT NOT YET AVAILABLE
 ![followers](https://img.shields.io/github/followers/ansible-lockdown?style=social)
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/AnsibleLockdown.svg?style=social&label=Follow%20%40AnsibleLockdown)](https://twitter.com/AnsibleLockdown)
 
-![Ansible Galaxy Quality](https://img.shields.io/ansible/quality/61781?label=Quality&&logo=ansible)
+![Ansible Galaxy Quality](https://img.shields.io/ansible/quality/?label=Quality&&logo=ansible)
 ![Discord Badge](https://img.shields.io/discord/925818806838919229?logo=discord)
 
 ![Release Branch](https://img.shields.io/badge/Release%20Branch-Main-brightgreen)
@@ -38,9 +34,9 @@ NOTE AUDIT NOT YET AVAILABLE
 
 ## Looking for support?
 
-[Lockdown Enterprise](https://www.lockdownenterprise.com#GH_AL_RH9_cis)
+[Lockdown Enterprise](https://www.lockdownenterprise.com#GH_AL_AMZ2023_cis)
 
-[Ansible support](https://www.mindpointgroup.com/cybersecurity-products/ansible-counselor#GH_AL_RH9_cis)
+[Ansible support](https://www.mindpointgroup.com/cybersecurity-products/ansible-counselor#GH_AL_AMZ2023_cis)
 
 ### Community
 
@@ -96,10 +92,10 @@ Refer to [AMAZON2023-CIS-Audit](https://github.com/ansible-lockdown/AMAZON2023-C
 ## Documentation
 
 - [Read The Docs](https://ansible-lockdown.readthedocs.io/en/latest/)
-- [Getting Started](https://www.lockdownenterprise.com/docs/getting-started-with-lockdown#GH_AL_RH9_cis)
-- [Customizing Roles](https://www.lockdownenterprise.com/docs/customizing-lockdown-enterprise#GH_AL_RH9_cis)
-- [Per-Host Configuration](https://www.lockdownenterprise.com/docs/per-host-lockdown-enterprise-configuration#GH_AL_RH9_cis)
-- [Getting the Most Out of the Role](https://www.lockdownenterprise.com/docs/get-the-most-out-of-lockdown-enterprise#GH_AL_RH9_cis)
+- [Getting Started](https://www.lockdownenterprise.com/docs/getting-started-with-lockdown#GH_AL_AMZ2023_cis)
+- [Customizing Roles](https://www.lockdownenterprise.com/docs/customizing-lockdown-enterprise#GH_AL_AMZ2023_cis)
+- [Per-Host Configuration](https://www.lockdownenterprise.com/docs/per-host-lockdown-enterprise-configuration#GH_AL_AMZ2023_cis)
+- [Getting the Most Out of the Role](https://www.lockdownenterprise.com/docs/get-the-most-out-of-lockdown-enterprise#GH_AL_AMZ2023_cis)
 
 ## Requirements
 
@@ -195,7 +191,6 @@ uses:
 
 ## Added Extras
 
-- makefile - this is there purely for testing and initial setup purposes.
 - [pre-commit](https://pre-commit.com) can be tested and can be run from within the directory
 
 ```sh
