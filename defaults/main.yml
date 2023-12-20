@@ -1066,9 +1066,8 @@ amzn2023cis_max_log_file_size: '10'
 # This variable controls how the audit system behaves when
 # log files are getting too full and space is getting too low.
 amzn2023cis_auditd:
-    # This variable determines the action the audit system should take when disk
-    # space runs low.
-    # This variable specifies the general action for all users!
+    # This variable tells the system what action to take when the system has detected
+    # that it is starting to get low on disk space.
     # The options for setting this variable are as follows:
     # "ignore"  - the system does nothing when presented with the aforementioned issue;
     # "syslog" - a message is sent to the system log about disk space running low;
@@ -1085,9 +1084,8 @@ amzn2023cis_auditd:
     # remote account as long as e-mail and the network are properly configured on
     # your system and /usr/lib/sendmail exists.
     action_mail_acct: root
-    # This variable determines the action the audit system should take when disk
-    # space runs low.
-    # This variable specifies an additional action!
+    # This variable tells the system what action to take when the system has detected
+    # that it is low on disk space. 
     # The options for setting this variable are as follows:
     # "ignore"  - the system does nothing when presented with the aforementioned issue;
     # "syslog"  - a message is sent to the system log about disk space running low;
