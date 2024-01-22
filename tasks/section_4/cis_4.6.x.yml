@@ -92,7 +92,7 @@
       - name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set umask for /etc/login.defs pam_umask settings"
         ansible.builtin.lineinfile:
             path: "{{ item.path }}"
-            regexp: '(?i)(umask\s*)'
+            regexp: '(?i)^\s*umask\s*'
             line: '{{ item.line }} 027'
         with_items:
             - { path: '/etc/bashrc', line: 'umask' }
