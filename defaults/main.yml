@@ -595,22 +595,34 @@ amzn2023cis_chrony_server_options: "minpoll 8"
 # The set of rules that make up section 2.2, are used for ensuring that
 # certain services are not installed on the OS.
 # The following list of variables determine if a service shall be kept
-# on the OS or if it shall be uninstalled. If you specifically want for
-# a service to remain on your machine then set that service's variable's
-# value to true!
+# on the OS or if it shall be uninstalled.
+# Set this variable to `true` to keep service `avahi`; otherwise, the service is uninstalled.
 amzn2023cis_avahi_server: false
+# Set this variable to `true` to keep service `cups`; otherwise, the service is uninstalled.
 amzn2023cis_cups_server: false
+# Set this variable to `true` to keep service `dhcp`; otherwise, the service is uninstalled.
 amzn2023cis_dhcp_server: false
+# Set this variable to `true` to keep service `dns`; otherwise, the service is uninstalled.
 amzn2023cis_dns_server: false
+# Set this variable to `true` to keep service `dnsmasq`; otherwise, the service is uninstalled.
 amzn2023cis_dnsmasq_server: false
+# Set this variable to `true` to keep service `vsftpd`; otherwise, the service is uninstalled.
 amzn2023cis_vsftpd_server: false
+# Set this variable to `true` to keep service `tftp`; otherwise, the service is uninstalled.
 amzn2023cis_tftp_server: false
+# Set this variable to `true` to keep service `httpd`; otherwise, the service is uninstalled.
 amzn2023cis_httpd_server: false
+# Set this variable to `true` to keep service `nginx`; otherwise, the service is uninstalled.
 amzn2023cis_nginx_server: false
+# Set this variable to `true` to keep service `dovecot`; otherwise, the service is uninstalled.
 amzn2023cis_dovecot_server: false
+# Set this variable to `true` to keep service `imap`; otherwise, the service is uninstalled.
 amzn2023cis_imap_server: false
+# Set this variable to `true` to keep service `samba`; otherwise, the service is uninstalled.
 amzn2023cis_samba_server: false
+# Set this variable to `true` to keep service `squid`; otherwise, the service is uninstalled.
 amzn2023cis_squid_server: false
+# Set this variable to `true` to keep service `snmp`; otherwise, the service is uninstalled.
 amzn2023cis_snmp_server: false
 
 ## Control 2.2.12 - Ensure net-snmp is not installed or the snmpd service is not enabled
@@ -690,11 +702,15 @@ amzn2023cis_ftp_client: false
 # value to 'true' so as to execute the needed update!
 amzn2023cis_sysctl_update: false
 
-# The following variables are responsible for the execution of a
-# handler that flushes ipv4 or ipv6 route table. Although the default
-# values are 'false', some tasks are in need of these handlers to get
-# executed, therefore, they are setting these variables' values to 'true'!
+# The following variable is responsible for the execution of a
+# handler that flushes the ipv4 route table. Although the default
+# value is 'false', some tasks are in need of this handler to get
+# executed, therefore, they are setting this variable's value to 'true'!
 amzn2023cis_flush_ipv4_route: false
+# The following variable is responsible for the execution of a
+# handler that flushes the ipv6 route table. Although the default
+# value is 'false', some tasks are in need of this handler to get
+# executed, therefore, they are setting this variable's value to 'true'!
 amzn2023cis_flush_ipv6_route: false
 
 ## Controls 3.4.1.x and 3.4.2.x Firewall Service
@@ -782,26 +798,26 @@ amzn2023cis_sshd:
     # If an USER@HOST format will be used, the specified user will be allowed only on that particular host.
     # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
     # For more info, see https://linux.die.net/man/5/sshd_config
-    # allowusers:
-    # (String) This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to allow SSH access
+    allowusers:
+    # This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to allow SSH access
     # for users whose primary group or supplementary group list matches one of the patterns. This is done
     # by setting the value of `AllowGroups` option in `/etc/ssh/sshd_config` file.
     # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
     # For more info, https://linux.die.net/man/5/sshd_config
-    # allowgroups: systems dba
+    allowgroups: systems dba
     # This variable, if specified, configures a list of USER name patterns, separated by spaces, to prevent SSH access
     # for users whose user name matches one of the patterns. This is done
     # by setting the value of `DenyUsers` option in `/etc/ssh/sshd_config` file.
     # If an USER@HOST format will be used, the specified user will be restricted only on that particular host.
     # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
     # For more info, see https://linux.die.net/man/5/sshd_config
-    # denyusers:
+    denyusers:
     # This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to prevent SSH access
     # for users whose primary group or supplementary group list matches one of the patterns. This is done
     # by setting the value of `DenyGroups` option in `/etc/ssh/sshd_config` file.
     # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
     # For more info, see https://linux.die.net/man/5/sshd_config
-    # denygroups:
+    denygroups:
 
 ## Control 4.2.5 - Ensure SSH LogLevel is appropriate
 # This variable refers to the loglevel used for ssh.
@@ -857,12 +873,18 @@ amzn2023cis_sugroup: nosugroup
 # Authselect is another authentication configuration tool
 # that aims to provide a more modern and modular approach
 # for authentication settings configuration.
-# The actual settings are just placeholders taken from the CIS
-# examples, which might lead to failure. These settings need
-# to be adjusted in order to minimise risk.
 amzn2023cis_authselect:
+    # This setting is just a placeholder taken from the CIS
+    # examples, which might lead to failure. This setting needs
+    # to be adjusted in order to minimise risk.
     custom_profile_name: custom-profile
+    # This setting is just a placeholder taken from the CIS
+    # examples, which might lead to failure. This setting needs
+    # to be adjusted in order to minimise risk.
     default_file_to_copy: "sssd --symlink-meta"
+    # This setting is just a placeholder taken from the CIS
+    # examples, which might lead to failure. This setting needs
+    # to be adjusted in order to minimise risk.
     options: with-sudo with-faillock without-nullok
 
 ## Control 4.4.1 - Ensure custom authselect profile is used
@@ -872,10 +894,10 @@ amzn2023cis_authselect_custom_profile_create: false
 ## Control 4.4.2 - Ensure authselect includes with-faillock
 # This variable enables automation to select custom profile options, using the variables above
 amzn2023cis_authselect_custom_profile_select: false
-## This option is used at your own risk. It is responsible for
-## enabling faillock for users.
-## Only to be used on a new clean system that is not using authselect!
-## THIS CAN BREAK ACCESS EVEN FOR ROOT - UNDERSTAND RISKS ##
+# This option is used at your own risk. It is responsible for
+# enabling faillock for users.
+# Only to be used on a new clean system that is not using authselect!
+# THIS CAN BREAK ACCESS EVEN FOR ROOT - UNDERSTAND RISKS !!
 amzn2023cis_add_faillock_without_authselect: false
 # This needs to be set to "ACCEPT" in order for the option
 # mentioned above to be implemented!
@@ -921,11 +943,11 @@ amzn2023cis_pass:
     warn_age: 7
 
 ## Control 4.6.1.4 - Ensure inactive password lock is 30 days or less
-# The following variable's "lock_days" value refers to the period
-# of time when users can be inactive. Once that period of time is
-# over, users will be automatically disabled. The value should be
-# 30 or less.
 amzn2023cis_inactivelock:
+    # The following variable refers to the period of time when
+    # users can be inactive. Once that period of time is over,
+    # users will be automatically disabled. The value should be
+    # 30 or less.
     lock_days: 30
 
 ## Control 4.6.1.5 - Ensure all users last password change date is in the past
@@ -1122,10 +1144,10 @@ update_audit_template: false
 amzn2023cis_allow_auditd_uid_user_exclusions: false
 
 # This variable can be used to configure other keys in auditd.conf
-amzn2023cis_auditd_extra_conf: {}
 # Example:
 # amzn2023cis_auditd_extra_conf:
 #     admin_space_left: '10%'
+amzn2023cis_auditd_extra_conf: {}
 
 ## Control 5.3 - Ensure logrotate is configured
 # This variable is used to specify the regularity of
