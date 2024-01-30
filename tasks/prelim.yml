@@ -161,6 +161,25 @@
       - ssh
       - level1_server
 
+- name: "PRELIM | Section 4.2 | SSH - Identify files in sshd_config.d Dir"
+  ansible.builtin.find:
+      patterns: '*.conf'
+      path: /etc/ssh/sshd_config.d
+  register: sshd_d_conf_files
+  when:
+      - "'openssh-server' in ansible_facts.packages"
+  tags:
+      - always
+
+- name: "PRELIM | Section 4.2 | SSH - Search for main cfg file"
+  ansible.builtin.stat:
+      path: "{{ amzn2023cis_sshd_config_file }}"
+  register: main_sshd_cfg
+  when:
+      - "'openssh-server' in ansible_facts.packages"
+  tags:
+      - always
+
 - name: "PRELIM | Section 5.2 | Configure System Accounting (auditd)"
   ansible.builtin.package:
       name: audit
