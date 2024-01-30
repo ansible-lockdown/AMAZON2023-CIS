@@ -97,7 +97,6 @@ change_requires_reboot: false
 # and configuration of Goss and the audit role at the end
 # of this file.
 
-
 # Audits are carried out using Goss. This variable
 # determines whether execution of the role prepares for auditing
 # by installing the required binary.
@@ -447,7 +446,6 @@ amzn2023cis_rule_6_2_11: true
 ## Section 1 Control Variables
 ##
 
-
 ## Control 1.1.2 - Configure /tmp
 # This variable is used in order to determine which method
 # shall be used by the role in order to ensure that the
@@ -455,7 +453,6 @@ amzn2023cis_rule_6_2_11: true
 # If it is set to 'true', the role will use the tmp.mount
 # service otherwise, the role will use the fstab configuration.
 amzn2023cis_tmp_svc: true
-
 
 ## Control 1.9 - Ensure system-wide crypto policy is not legacy
 # This variable helps in determining which type of crypto policy
@@ -739,7 +736,6 @@ amzn2023cis_firewall: firewalld
 #                  devices on your home LAN and that some services are allowed;
 # "trusted"      - All connections are accepted;
 amzn2023cis_default_zone: public
-
 
 ## Control 3.4.2.2 - Ensure at least one nftables table exists
 # With this variable you can chose if you want to automatically
