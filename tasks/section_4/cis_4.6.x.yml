@@ -98,7 +98,7 @@
             - { path: '/etc/profile', line: 'umask' }
             - { path: '/etc/login.defs', line: 'UMASK' }
 
-      - name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set umask for /etc/bashrc" 
+      - name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set umask for /etc/bashrc"
         ansible.builtin.replace:
             path: /etc/bashrc
             regexp: '\s+umask\s*\d\d\d'
