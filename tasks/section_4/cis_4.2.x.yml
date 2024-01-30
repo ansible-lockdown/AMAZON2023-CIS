@@ -213,7 +213,7 @@
       validate: sshd -t -f %s
   with_items:
       - "{{ sshd_d_conf_files.files }}"
-      - "{{ main_sshd_cfg.stat }}" 
+      - "{{ main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_9
   tags:

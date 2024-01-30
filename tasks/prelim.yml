@@ -167,7 +167,7 @@
       path: /etc/ssh/sshd_config.d
   register: sshd_d_conf_files
   when:
-      - "'openssh-server' in ansible_facts.packages" 
+      - "'openssh-server' in ansible_facts.packages"
   tags:
       - always
 
@@ -176,7 +176,7 @@
       path: "{{ amzn2023cis_sshd_config_file }}"
   register: main_sshd_cfg
   when:
-      - "'openssh-server' in ansible_facts.packages" 
+      - "'openssh-server' in ansible_facts.packages"
   tags:
       - always
 
