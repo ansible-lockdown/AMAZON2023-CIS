@@ -177,7 +177,7 @@
 - name: "6.1.10 | PATCH | Ensure world writable files and directories are secured"
   block:
       - name: "6.1.10 | AUDIT | Ensure world writable files and directories are secured | Get list of world-writable files"
-        ansible.builtin.shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -0002
+        ansible.builtin.shell: find / -type f \( ! -path "/run/user/*" -a ! -path "/proc/*" -a ! -path "*/containerd/*" -a ! -path "*/kubelet/pods/*" -a ! -path "/sys/kernel/security/apparmor/*" -a ! -path "/snap/*" -a ! -path "/sys/fs/cgroup/memory*" \) -type f -perm -0002 2>/dev/nul
         failed_when: false
         changed_when: false
         register: amzn2023cis_6_1_10_perms_results
