@@ -1147,8 +1147,16 @@ amzn2023cis_allow_auditd_uid_user_exclusions: false
 # Example:
 # amzn2023cis_auditd_extra_conf:
 #     admin_space_left: '10%'
-amzn2023cis_auditd_extra_conf: {}
-
+amzn2023cis_auditd_extra_conf:
+    # This variable governs the threshold(MegaBytes) under which the audit daemon should perform a
+    # specific action to alert that the system is running low on disk space. Must be lower than
+    # the 'space_left' variable.
+    admin_space_left: 50
+    # This variable governs the threshold(MegaBytes) under which the audit daemon should perform a
+    # specific action to alert that the system is running low on disk space(last chance to do something
+    # before running out of disk space). Must be lower than the 'space_left' variable.
+    space_left: 75
+ 
 ## Control 5.3 - Ensure logrotate is configured
 # This variable is used to specify the regularity of
 # log file rotation.
