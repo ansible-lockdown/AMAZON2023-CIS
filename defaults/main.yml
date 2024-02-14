@@ -1156,7 +1156,7 @@ amzn2023cis_auditd_extra_conf:
     # specific action to alert that the system is running low on disk space(last chance to do something
     # before running out of disk space). Must be lower than the 'space_left' variable.
     space_left: 75
- 
+
 ## Control 5.3 - Ensure logrotate is configured
 # This variable is used to specify the regularity of
 # log file rotation.
