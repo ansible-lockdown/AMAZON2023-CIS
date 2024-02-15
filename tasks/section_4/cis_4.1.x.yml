@@ -46,7 +46,7 @@
       - level1-server
       - patch
       - cron
-      - rule_5.1.3
+      - rule_4.1.3
       - nist_sp800-53r5_AC-3
       - nist_sp800-53r5_MP-2
 
@@ -170,6 +170,6 @@
       - level1-server
       - patch
       - cron
-      - rule_5.1.9
+      - rule_4.1.9
       - nist_sp800-53r5_AC-3
       - nist_sp800-53r5_MP-2
