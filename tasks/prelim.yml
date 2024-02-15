@@ -15,13 +15,6 @@
   ansible.builtin.include_tasks:
       file: parse_etc_password.yml
   tags:
-      - rule_5.5.2
-      - rule_5.6.2
-      - rule_6.2.9
-      - rule_6.2.10
-      - rule_6.2.11
-      - amzn2023cis_section5
-      - amzn2023cis_section6
       - level1-server
 
 - name: "PRELIM | Interactive User accounts"
