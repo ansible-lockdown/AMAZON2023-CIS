@@ -1,13 +1,33 @@
 ---
 # defaults file for amazon2023-cis
 
+# This variable is used to state if the system where
+# the role is executed is a container image or not.
+# The role discovers this dinamically and sets this
+# variable's value to 'true' or it leaves it unchanged
+# ('false') based on its findings.
 system_is_container: false
+# This variable holds the name of the "yml" file, in which
+# the role would store the container's variables. This
+# file would get created only if the role determines that
+# it is executed on a container image.
 container_vars_file: is_container.yml
 
-# Run the OS validation check
-# Supported OSs will not need for this to be changed - see README e.g. CentOS
+# This variable is used to run the OS version and family
+# check. This validation check determines if the role is
+# executed against a supported OS. Setting it to 'true' will
+# mean that the OS validation will be executed. Setting it
+# to 'false' would mean otherwise.
+# If you know that your OS finds itself among the supported
+# Oss then this variable's value does not need to be changed.
+# If not, you should change it accordingly - see README e.g. CentOS
 os_check: true
 
+# The following variables are used in order to determine if
+# certain sections of the role should get executed or not.
+# If you desire for a certain section to not get executed
+# against your OS, simply change that section's variable
+# value to 'false'!
 amzn2023cis_section1: true
 amzn2023cis_section2: true
 amzn2023cis_section3: true
@@ -15,63 +35,118 @@ amzn2023cis_section4: true
 amzn2023cis_section5: true
 amzn2023cis_section6: true
 
-# This is used for audit purposes to run only specific level use the tags
+# This is used for audit purposes to run only a specific level
+# use the following tags:
 # e.g.
 # - level1-server
 amzn2023cis_level_1: true
 amzn2023cis_level_2: true
 
+# This variable is used to determine whether SELinux
+# should be enabled or not. All the tasks regarding
+# the hardening of SELinux will get executed only if
+# this variable's value is set to 'false'. If it is set
+# to 'true', then that means that SELinux is considered
+# disabled by the role, therefore the role will not
+# execute any hardening tasks against it!
 amzn2023cis_selinux_disable: false
+
+# This variable refers to Legacy Boot, also known as
+# Legacy BIOS boot, which is a boot mode that emulates
+# the traditional BIOS. The variable is used in a task
+# that ensures the necessary permissions on the bootloader
+# config are in place. Setting the value to 'true', will mean
+# that those permisions will be set for the configuration of
+# BIOS boot. Setting it to 'false', will mean that the Legacy
+# Boot (BIOS boot) is not in use, which means that the
+# permissions will have to be set for the configuration of
+# efi boot.
 amzn2023cis_legacy_boot: false
 
 ## Python Binary
-## This is used for python3 Installations where python2 OS modules are used in ansible
+## This is used for python3 Installations where python2 OS modules
+## are used in ansible
 python2_bin: /bin/python2.7
 
-## Benchmark name used by audting control role
-# The audit variable found at the base
-## metadata for Audit benchmark
+## Benchmark name and profile used by audting control role
+# The audit variable can be found at the base
+benchmark: AMAZON2023-CIS
 benchmark_version: 'v1.0.0'
 
-benchmark: AMAZON2023-CIS
-
-# Whether to skip the reboot
+# This variable states to the role whether to skip
+# the reboot or not. If it is set to 'false', the role
+# would reboot the system before audit, which could
+# give better audit results.
 skip_reboot: true
 
-# default value will change to true but wont reboot if not enabled but will error
+# This variable is used in a handler task, that is notified
+# if a certain task's changes are considered to be in need
+# of a reboot. The default value will change to true when
+# the handler gets executed but the system will reboot only
+# if the 'skip_reboot' variable indicates it.
+# Otherwise, a warning message will get displayed, which will
+# alert the user that a reboot is needed based on the latest
+# changes!
 change_requires_reboot: false
 
-#### Basic external goss audit enablement settings ####
-#### Precise details - per setting can be found at the bottom of this file ####
+###
+### Settings for associated Audit role using Goss
+###
 
-### Goss is required on the remote host
+# Note that there are also variables regarding the retrieval
+# and configuration of Goss and the audit role at the end
+# of this file.
+
+# Audits are carried out using Goss. This variable
+# determines whether execution of the role prepares for auditing
+# by installing the required binary.
 setup_audit: false
-# How to retrive goss
-# Options are copy or download - detailed settings at the bottom of this file
-# you will need to access to either github or the file already dowmloaded
+## How to retrive audit binary
+# Options are copy or download, using either the path
+# provided in variable `audit_local_copy` for copying or
+# the url given in variable `audit_files_url` for downloading.
 get_audit_binary_method: download
 
-# how to get audit files onto host options
-# options are git/copy/get_url - use local if already available to to the host (adjust paths accordingly)
+## How to retrieve the audit role
+# The role for auditing is maintained separately.
+# This variable specifies the method of how to get the audit role
+# onto the system. The options are as follows:
+# "git"       - clone from git repository as specified in variable "audit_file_git"
+#               in the version specified by variable "audit_git_version";
+# "copy"      - copy from path as specified in variable "audit_local_copy";
+# "download"  - download from url as specified in variable "audit_files_url";
 audit_content: git
 
-# enable audits to run - this  runs the audit and get the latest content
+## Enable audits to run
+# This variable governs whether the audit, using
+# the separately maintained audit role using Goss,
+# is carried out.
 run_audit: false
 
-# Timeout for those cmds that take longer to run where timeout set
+# This variable specifies the timeout (in ms) for audit commands that
+# take a very long time: if a command takes too long to complete,
+# it will be forcefully terminated after the specified duration.
 audit_cmd_timeout: 60000
 
-# Some tests can be resource heavy allow these to take place
+## Resource-intensive Tests
+# This variable governs whether resource-intensive audit tests are carried out
 amzn2023cis_run_heavy_tests: true
 
-### End Goss enablements ####
-#### Detailed settings found at the end of this document ####
+###
+### End Audit Settings for associcated Audit role using Goss
+###
 
-# These variables correspond with the CIS rule IDs or paragraph numbers defined in
-# the CIS benchmark documents.
-# PLEASE NOTE: These work in coordination with the section # group variables and tags.
-# You must enable an entire section in order for the variables below to take effect.
-# Section 1 rules
+## The following variables correspond with the CIS rule IDs or paragraph numbers
+## defined in the CIS benchmark documents.
+## PLEASE NOTE: These work in coordination with the section # group variables
+## and tags. You must enable an entire section in order for the variables below
+## to take effect. If you want a specific rule to not get executed simply change
+## that rule's variable's value to 'false'!
+
+## Section 1 rules
+# Section 1 is Initial setup (FileSystem Configuration, Configure Software Updates, Filesystem Integrity Checking,
+# Secure Boot Settings, Additional Process Hardening, Mandatory Access Control and Command Line Warning Banners)
+# Configure Filesystem Kernel Modules
 amzn2023cis_rule_1_1_1_1: true
 amzn2023cis_rule_1_1_1_2: true
 amzn2023cis_rule_1_1_1_3: true
@@ -79,50 +154,58 @@ amzn2023cis_rule_1_1_1_4: true
 amzn2023cis_rule_1_1_1_5: true
 amzn2023cis_rule_1_1_1_6: true
 amzn2023cis_rule_1_1_1_7: true
+# Configure /tmp
 amzn2023cis_rule_1_1_2_1: true
 amzn2023cis_rule_1_1_2_2: true
 amzn2023cis_rule_1_1_2_3: true
 amzn2023cis_rule_1_1_2_4: true
+# Configure /var
 amzn2023cis_rule_1_1_3_1: true
 amzn2023cis_rule_1_1_3_2: true
 amzn2023cis_rule_1_1_3_3: true
+# Configure /var/tmp
 amzn2023cis_rule_1_1_4_1: true
 amzn2023cis_rule_1_1_4_2: true
 amzn2023cis_rule_1_1_4_3: true
 amzn2023cis_rule_1_1_4_4: true
+# Configure /var/log
 amzn2023cis_rule_1_1_5_1: true
 amzn2023cis_rule_1_1_5_2: true
 amzn2023cis_rule_1_1_5_3: true
 amzn2023cis_rule_1_1_5_4: true
+# Configure /var/log/audit
 amzn2023cis_rule_1_1_6_1: true
 amzn2023cis_rule_1_1_6_2: true
 amzn2023cis_rule_1_1_6_3: true
 amzn2023cis_rule_1_1_6_4: true
+# Configure /home
 amzn2023cis_rule_1_1_7_1: true
 amzn2023cis_rule_1_1_7_2: true
 amzn2023cis_rule_1_1_7_3: true
+# Configure /dev/shm
 amzn2023cis_rule_1_1_8_1: true
 amzn2023cis_rule_1_1_8_2: true
 amzn2023cis_rule_1_1_8_3: true
 amzn2023cis_rule_1_1_8_4: true
-amzn2023cis_rule_1_1_18: true
-amzn2023cis_rule_1_1_19: true
-amzn2023cis_rule_1_1_20: true
-amzn2023cis_rule_1_1_21: true
 amzn2023cis_rule_1_1_9: true
+# Configure Software and Patch Management
 amzn2023cis_rule_1_2_1: true
 amzn2023cis_rule_1_2_2: true
 amzn2023cis_rule_1_2_3: true
 amzn2023cis_rule_1_2_4: true
+# Filesystem Integrity Checking
 amzn2023cis_rule_1_3_1: true
 amzn2023cis_rule_1_3_2: true
 amzn2023cis_rule_1_3_3: true
+# Secure Boot Settings
 amzn2023cis_rule_1_4_1: true
 amzn2023cis_rule_1_4_2: true
+# Additional Process Hardening
 amzn2023cis_rule_1_5_1: true
 amzn2023cis_rule_1_5_2: true
 amzn2023cis_rule_1_5_3: true
 amzn2023cis_rule_1_5_4: true
+# Configure SELinux
 amzn2023cis_rule_1_6_1_1: true
 amzn2023cis_rule_1_6_1_2: true
 amzn2023cis_rule_1_6_1_3: true
@@ -131,6 +214,7 @@ amzn2023cis_rule_1_6_1_5: true
 amzn2023cis_rule_1_6_1_6: true
 amzn2023cis_rule_1_6_1_7: true
 amzn2023cis_rule_1_6_1_8: true
+# Command Line Warning Banners
 amzn2023cis_rule_1_7_1: true
 amzn2023cis_rule_1_7_2: true
 amzn2023cis_rule_1_7_3: true
@@ -140,9 +224,12 @@ amzn2023cis_rule_1_7_6: true
 amzn2023cis_rule_1_8: true
 amzn2023cis_rule_1_9: true
 
-# Section 2 rules
+## Section 2 rules
+# Section 2 is Services (Special Purpose Services, and service clients)
+# Configure Time Synchronization (chrony)
 amzn2023cis_rule_2_1_1: true
 amzn2023cis_rule_2_1_2: true
+# Configure Special Purpose Services
 amzn2023cis_rule_2_2_1: true
 amzn2023cis_rule_2_2_2: true
 amzn2023cis_rule_2_2_3: true
@@ -161,20 +248,25 @@ amzn2023cis_rule_2_2_15: true
 amzn2023cis_rule_2_2_16: true
 amzn2023cis_rule_2_2_17: true
 amzn2023cis_rule_2_2_18: true
+# Service Clients
 amzn2023cis_rule_2_3_1: true
 amzn2023cis_rule_2_3_2: true
 amzn2023cis_rule_2_3_3: true
 amzn2023cis_rule_2_3_4: true
 amzn2023cis_rule_2_4: true
 
-# Section 3 rules
+## Section 3 rules
+# Section 3 is Network Configuration
+# Disable unused network protocols and devices
 amzn2023cis_rule_3_1_1: true
 amzn2023cis_rule_3_1_2: true
 amzn2023cis_rule_3_1_3: true
 amzn2023cis_rule_3_1_4: true
 amzn2023cis_rule_3_1_5: true
+# Network Parameters (Host Only)
 amzn2023cis_rule_3_2_1: true
 amzn2023cis_rule_3_2_2: true
+# Network Parameters (Host and Router)
 amzn2023cis_rule_3_3_1: true
 amzn2023cis_rule_3_3_2: true
 amzn2023cis_rule_3_3_3: true
@@ -184,8 +276,10 @@ amzn2023cis_rule_3_3_6: true
 amzn2023cis_rule_3_3_7: true
 amzn2023cis_rule_3_3_8: true
 amzn2023cis_rule_3_3_9: true
+# Configure a firewall utility
 amzn2023cis_rule_3_4_1_1: true
 amzn2023cis_rule_3_4_1_2: true
+# Configure firewall rules
 amzn2023cis_rule_3_4_2_1: true
 amzn2023cis_rule_3_4_2_2: true
 amzn2023cis_rule_3_4_2_3: true
@@ -195,6 +289,8 @@ amzn2023cis_rule_3_4_2_6: true
 amzn2023cis_rule_3_4_2_7: true
 
 # Section 4 rules
+# Section 4 is Access, Authentication and Authorization
+# Configure time-based job schedulers
 amzn2023cis_rule_4_1_1: true
 amzn2023cis_rule_4_1_2: true
 amzn2023cis_rule_4_1_3: true
@@ -204,6 +300,7 @@ amzn2023cis_rule_4_1_6: true
 amzn2023cis_rule_4_1_7: true
 amzn2023cis_rule_4_1_8: true
 amzn2023cis_rule_4_1_9: true
+# Configure SSH Server
 amzn2023cis_rule_4_2_1: true
 amzn2023cis_rule_4_2_2: true
 amzn2023cis_rule_4_2_3: true
@@ -224,28 +321,27 @@ amzn2023cis_rule_4_2_17: true
 amzn2023cis_rule_4_2_18: true
 amzn2023cis_rule_4_2_19: true
 amzn2023cis_rule_4_2_20: true
-
+# Configure privilege escalation
 amzn2023cis_rule_4_3_1: true
 amzn2023cis_rule_4_3_2: true
 amzn2023cis_rule_4_3_3: true
 amzn2023cis_rule_4_3_4: true
 amzn2023cis_rule_4_3_5: true
 amzn2023cis_rule_4_3_6: true
-
+# Configure authselect
 amzn2023cis_rule_4_4_1: true
 amzn2023cis_rule_4_4_2: true
-
+# Configure PAM
 amzn2023cis_rule_4_5_1: true
 amzn2023cis_rule_4_5_2: true
 amzn2023cis_rule_4_5_3: true
 amzn2023cis_rule_4_5_4: true
-
+# Set Shadow Password Suite Parameters
 amzn2023cis_rule_4_6_1_1: true
 amzn2023cis_rule_4_6_1_2: true
 amzn2023cis_rule_4_6_1_3: true
 amzn2023cis_rule_4_6_1_4: true
 amzn2023cis_rule_4_6_1_5: true
-
 amzn2023cis_rule_4_6_2: true
 amzn2023cis_rule_4_6_3: true
 amzn2023cis_rule_4_6_4: true
@@ -253,6 +349,8 @@ amzn2023cis_rule_4_6_5: true
 amzn2023cis_rule_4_6_6: true
 
 # Section 5 rules
+# Section 5 is Logging and Auditing
+# Configure rsyslog
 amzn2023cis_rule_5_1_1_1: true
 amzn2023cis_rule_5_1_1_2: true
 amzn2023cis_rule_5_1_1_3: true
@@ -260,30 +358,28 @@ amzn2023cis_rule_5_1_1_4: true
 amzn2023cis_rule_5_1_1_5: true
 amzn2023cis_rule_5_1_1_6: true
 amzn2023cis_rule_5_1_1_7: true
-
+# Configure journald
 amzn2023cis_rule_5_1_2_1_1: true
 amzn2023cis_rule_5_1_2_1_2: true
 amzn2023cis_rule_5_1_2_1_3: true
 amzn2023cis_rule_5_1_2_1_4: true
-
 amzn2023cis_rule_5_1_2_2: true
 amzn2023cis_rule_5_1_2_3: true
 amzn2023cis_rule_5_1_2_4: true
 amzn2023cis_rule_5_1_2_5: true
 amzn2023cis_rule_5_1_2_6: true
 amzn2023cis_rule_5_1_2_7: true
-
 amzn2023cis_rule_5_1_3: true
-
+# Ensure auditing is enabled
 amzn2023cis_rule_5_2_1_1: true
 amzn2023cis_rule_5_2_1_2: true
 amzn2023cis_rule_5_2_1_3: true
 amzn2023cis_rule_5_2_1_4: true
-
+# Configure Data Retention
 amzn2023cis_rule_5_2_2_1: true
 amzn2023cis_rule_5_2_2_2: true
 amzn2023cis_rule_5_2_2_3: true
-
+# Configure auditd rules
 amzn2023cis_rule_5_2_3_1: true
 amzn2023cis_rule_5_2_3_2: true
 amzn2023cis_rule_5_2_3_3: true
@@ -305,7 +401,7 @@ amzn2023cis_rule_5_2_3_18: true
 amzn2023cis_rule_5_2_3_19: true
 amzn2023cis_rule_5_2_3_20: true
 amzn2023cis_rule_5_2_3_21: true
-
+# Configure auditd file access
 amzn2023cis_rule_5_2_4_1: true
 amzn2023cis_rule_5_2_4_2: true
 amzn2023cis_rule_5_2_4_3: true
@@ -316,10 +412,11 @@ amzn2023cis_rule_5_2_4_7: true
 amzn2023cis_rule_5_2_4_8: true
 amzn2023cis_rule_5_2_4_9: true
 amzn2023cis_rule_5_2_4_10: true
-
 amzn2023cis_rule_5_3: true
 
 # Section 6 rules
+# Section 6 is System Maintenance
+# System File Permissions
 amzn2023cis_rule_6_1_1: true
 amzn2023cis_rule_6_1_2: true
 amzn2023cis_rule_6_1_3: true
@@ -332,6 +429,7 @@ amzn2023cis_rule_6_1_9: true
 amzn2023cis_rule_6_1_10: true
 amzn2023cis_rule_6_1_11: true
 amzn2023cis_rule_6_1_12: true
+# Local User and Group Settings
 amzn2023cis_rule_6_2_1: true
 amzn2023cis_rule_6_2_2: true
 amzn2023cis_rule_6_2_3: true
@@ -344,286 +442,762 @@ amzn2023cis_rule_6_2_9: true
 amzn2023cis_rule_6_2_10: true
 amzn2023cis_rule_6_2_11: true
 
-## Section 1 vars
+##
+## Section 1 Control Variables
+##
 
-#### 1.1.2
-# These settings go into the /etc/fstab file for the /tmp mount settings
-# The value must contain nosuid,nodev,noexec to conform to CIS standards
-# amzn2023cis_tmp_tmpfs_settings: "defaults,rw,nosuid,nodev,noexec,relatime 0 0"
-# If set true uses the tmp.mount service else using fstab configuration
-amzn2023cis_tmp_svc: false
+## Control 1.1.2 - Configure /tmp
+# This variable is used in order to determine which method
+# shall be used by the role in order to ensure that the
+# "nodev,noexec,nosuid" options are set for "/tmp".
+# If it is set to 'true', the role will use the tmp.mount
+# service otherwise, the role will use the fstab configuration.
+amzn2023cis_tmp_svc: true
 
-#### 1.1.9
-amzn2023cis_allow_autofs: false
-
-# 1.9 Set crypto policy (LEGACY, DEFAULT, FUTURE, FIPS)
-# Control 1.9 states do not use LEGACY
+## Control 1.9 - Ensure system-wide crypto policy is not legacy
+# This variable helps in determining which type of crypto policy
+# the role will set. As per the description of Control 1.9,
+# the "LEGACY" option is not to be used! A reason for this would
+# be the fact that "LEGACY" includes older algorithms that might
+# be considered less secure. You can choose from other options
+# such as:
+# "DEFAULT" - includes a set of cryptographic algorithms that are
+#             considered secure;
+# "FUTURE"  - may include newer algorithms that will replace older
+#             ones;
+# "FIPS"    - designed to comply with specific cryptographic standards
+#             defined by NIST. They are often required in certain
+#             government or regulated environments;
 amzn2023cis_crypto_policy: 'DEFAULT'
-# Added module to be allowed as default setting (Allowed options in vars/main.yml)
+# If you want to have a crypto policy module, you can specify it
+# here, as the value of the following variable. Allowed options
+# for this can be found in the  "vars/main.yml" file at the
+# "amzn2023cis_allowed_crypto_policies_modules" variable!
 amzn2023cis_crypto_policy_module: ''
 
-# System network parameters (host only OR host and router)
+# This variable governs whether specific CIS rules
+# concerned with IP forwarding and routing of packages
+# are skipped.
 amzn2023cis_is_router: false
 
-# IPv6 required
+## IPv6 requirement toggle
+# This variable governs whether ipv6 is enabled or disabled.
 amzn2023cis_ipv6_required: true
 
-# AIDE
+## Control 1.3.1 - Ensure AIDE is installed
+# AIDE is a file integrity checking tool, similar in nature to Tripwire.
+# While it cannot prevent intrusions, it can detect unauthorized changes
+# to configuration files by alerting when the files are changed. Review
+# the AIDE quick start guide and AIDE documentation before proceeding.
+# By setting this variable to 'true', all of the settings related to AIDE
+# will be applied!
 amzn2023cis_config_aide: true
-# AIDE cron settings
+
+## Control 1.3.2 - Ensure filesystem integrity is regularly checked
+# These are the crontab settings for periodical checking of the filesystem's
+# integrity using AIDE. The sub-settings of this variable provide the parameters
+# required to configure the cron job on the target system.
+# Cron is a time-based job scheduling program in Unix OSs, which allows tasks to
+# be scheduled and executed automatically at a certain point in time.
 amzn2023cis_aide_cron:
+    # This variable represents the user account under which the cron job for AIDE will run.
     cron_user: root
+    # This variable represents the path to the AIDE crontab file.
     cron_file: /etc/cron.d/aide_cron
+    # This variable represents the actual command or script that the cron job
+    # will execute for running AIDE.
     aide_job: '/usr/sbin/aide --check'
+    # These variables define the schedule for the cron job
+    # This variable governs the minute of the time of day when the AIDE cronjob is run.
+    # It must be in the range `0-59`.
     aide_minute: 0
+    # This variable governs the hour of the time of day when the AIDE cronjob is run.
+    # It must be in the range `0-23`.
     aide_hour: 5
+    # This variable governs the day of the month when the AIDE cronjob is run.
+    # `*` signifies that the job is run on all days; furthermore, specific days
+    # can be given in the range `1-31`; several days can be concatenated with a comma.
+    # The specified day(s) must be in the range  `1-31`.
     aide_day: '*'
+    # This variable governs months when the AIDE cronjob is run.
+    # `*` signifies that the job is run in every month; furthermore, specific months
+    # can be given in the range `1-12`; several months can be concatenated with commas.
+    # The specified month(s) must be in the range  `1-12`.
     aide_month: '*'
+    # This variable governs the weekdays, when the AIDE cronjob is run.
+    # `*` signifies that the job is run on all weekdays; furthermore, specific weekdays
+    # can be given in the range `0-7` (both `0` and `7` represent Sunday); several weekdays
+    # can be concatenated with commas.
     aide_weekday: '*'
 
-# SELinux policy
+## Control 1.6.1.3 - Ensure SELinux policy is configured
+# SELinux implements Mandatory Access Control (MAC). The SELinux policy uses
+# a series of rules which define how processes can interact with each other
+# and the various system resources. There are two such policies:
+# "targeted" - targeted processes run in their own domain, called a confined domain.
+#              In a confined domain, the files that a targeted process has access to,
+#              are limited. If a confined process is compromised by an attacker, the
+#              attacker’s access to resources and the possible damage they can do is
+#              also limited;
+# "mls"      - implements Multi-Level Security (MLS), which introduces even more kinds
+#              of labels (sensitivity and category) and rules that govern access based
+#              on these;
+# The following variable is used to choose which type of SELinux policy will be configured
+# by the role.
+# CIS provides guidance for the configuration of the "targeted" policy!
 amzn2023cis_selinux_pol: targeted
-# chose conf or enforcing or permissive
+
+## Control 1.6.1.4 - Ensure the SELinux mode is not disabled
+# SELinux can run in one of three modes. This variable is used to select which
+# mode shall be used. These are the options:
+# "enforcing"  - Is the default, and recommended, mode of operation; in enforcing
+#                mode SELinux operates normally, enforcing the loaded security policy
+#                on the entire system;
+# "permissive" - The system acts as if SELinux is enforcing the loaded security policy,
+#                including labeling objects and emitting access denial entries in the logs,
+#                but it does not actually deny any operations. While not recommended for
+#                production systems, permissive mode can be helpful for SELinux policy
+#                development;
+# "disabled"   - Is strongly DISCOURAGED; not only does the system avoid enforcing the
+#                SELinux policy, it also avoids labeling any persistent objects such as
+#                files, making it difficult to enable SELinux in the future;
 amzn2023cis_selinux_enforce: enforcing
 
-# Whether or not to run tasks related to auditing/patching the desktop environment
+## Controls 1.7.1, 1.7.2, 1.7.3 - Warning Banner Content
+# The following variable is used in templates such as "issue.j2",
+# "issue.net.j2" and "motd.j2" which are responsible for configuring
+# warning banners. The value of this variable represents the
+# content of the warning banner message.
+amzn2023cis_warning_banner: Authorized uses only. All activity may be monitored and reported.
 
-## 2. Services
+##
+## Section 2 Control Variables
+##
 
-### 2.1 Time Synchronization
-#### 2.1.2 Time Synchronization servers - used in template file chrony.conf.j2
+## Control 2.1.2 - Ensure chrony is configured
+# The following list of servers is present in the template file
+# chrony.conf.j2 used for setting the configuration for chrony.
+# These servers are Time Synchronization servers.
 amzn2023cis_time_synchronization_servers:
     - 0.pool.ntp.org
     - 1.pool.ntp.org
     - 2.pool.ntp.org
     - 3.pool.ntp.org
+# This variable is also present in the aforementioned template file
+# used for setting the chrony configuration. The variable is added next
+# to each server from the above list and is used to specify the minimum
+# poll interval between updates from a particular time source. Other options
+# alongside their accurate and complete descriptions can be consulted at this
+# link: 'https://chrony-project.org/doc/3.4/chrony.conf.html'.
 amzn2023cis_chrony_server_options: "minpoll 8"
 
-### 2.2 Special Purposes
-##### Service configuration booleans set true to keep service
+## Control 2.2 - Special Purpose Services
+# The set of rules that make up section 2.2, are used for ensuring that
+# certain services are not installed on the OS.
+# The following list of variables determine if a service shall be kept
+# on the OS or if it shall be uninstalled.
+# Set this variable to `true` to keep service `avahi`; otherwise, the service is uninstalled.
 amzn2023cis_avahi_server: false
+# Set this variable to `true` to keep service `cups`; otherwise, the service is uninstalled.
 amzn2023cis_cups_server: false
+# Set this variable to `true` to keep service `dhcp`; otherwise, the service is uninstalled.
 amzn2023cis_dhcp_server: false
+# Set this variable to `true` to keep service `dns`; otherwise, the service is uninstalled.
 amzn2023cis_dns_server: false
+# Set this variable to `true` to keep service `dnsmasq`; otherwise, the service is uninstalled.
 amzn2023cis_dnsmasq_server: false
+# Set this variable to `true` to keep service `vsftpd`; otherwise, the service is uninstalled.
 amzn2023cis_vsftpd_server: false
+# Set this variable to `true` to keep service `tftp`; otherwise, the service is uninstalled.
 amzn2023cis_tftp_server: false
+# Set this variable to `true` to keep service `httpd`; otherwise, the service is uninstalled.
 amzn2023cis_httpd_server: false
+# Set this variable to `true` to keep service `nginx`; otherwise, the service is uninstalled.
 amzn2023cis_nginx_server: false
+# Set this variable to `true` to keep service `dovecot`; otherwise, the service is uninstalled.
 amzn2023cis_dovecot_server: false
+# Set this variable to `true` to keep service `imap`; otherwise, the service is uninstalled.
 amzn2023cis_imap_server: false
+# Set this variable to `true` to keep service `samba`; otherwise, the service is uninstalled.
 amzn2023cis_samba_server: false
+# Set this variable to `true` to keep service `squid`; otherwise, the service is uninstalled.
 amzn2023cis_squid_server: false
+# Set this variable to `true` to keep service `snmp`; otherwise, the service is uninstalled.
 amzn2023cis_snmp_server: false
-# snmp can be a dependacy for many packages - it is masked only by default if installed
+
+## Control 2.2.12 - Ensure net-snmp is not installed or the snmpd service is not enabled
+# The following variable is used to determine if snmp should be removed
+# If snmp is installed, it is masked by default therefore it complies
+# from the very begining with CIS's requirements! Given the fact that
+# many packages or applications include snmp as a dependency, it would
+# be best to leave this variable's value set to 'false'.
 amzn2023cis_remove_snmp: false
+
+## Control 2.2.13 - Ensure telnet-server is not installed
+# This variable ensures that telnet-server is not installed on the OS.
+# Switching it to 'true' will keep the server, leaving it to 'false' will
+# remove it!
 amzn2023cis_telnet_server: false
+
+## Control 2.2.15 - Ensure mail transfer agent is configured for local-only mode
+# This variable is used to determine whether you intend to use your machine as a mail server or not.
+# If you do not intend to use it as such, the mail transfer agent (MTA) will be configured to only
+# process local mail, in order to reduce chances of security risks. Set to 'false' if your machine
+# is not a mail server or to 'true' if it is!
 amzn2023cis_is_mail_server: false
-# Note the options
-# Packages are used for client services and Server- only remove if you dont use the client service
-#
-# optional either remove or mask
+
+## Control 2.2.16 - Ensure nfs-utils is not installed or the nfs-server service is masked
+# In order for the OS to meet CIS's requirements regarding this rule, it is accepted to
+# either mask nfs-server or remove nfs-utils. Set the following variables value as it best
+# suits your needs, choosing between "mask" or "remove".
 amzn2023cis_nfs_server: mask
+
+## Control 2.2.17 - Ensure rpcbind is not installed or the rpcbind services are masked
+# In order for the OS to meet CIS's requirements regarding this rule, it is accepted to
+# either mask rpcbind services or remove rpcbind. Set the following variables value as it
+# best suits your needs, choosing between "mask" or "remove".
 amzn2023cis_rpc_server: mask
+
+## Control 2.2.18 - Ensure rsync-daemon is not installed or the rsyncd service is masked
+# In order for the OS to meet CIS's requirements regarding this rule, it is accepted to
+# either mask rsyncd service or remove rsync-daemon. Set the following variables value as
+# it best suits your needs choosing between "mask" or "remove".
 amzn2023cis_rsync_server: mask
 
-#### 2.3 Service clients
+## Control 2.3.1 - Ensure telnet client is not installed
+# This variable specifies to the role if telnet is required
+# or not. If it is set to 'true' then telnet will not be
+# uninstalled.
 amzn2023cis_telnet_required: false
+
+## Control 2.3.2 - Ensure LDAP client is not installed
+# This variable specifies to the role if LDAP is required
+# or not. If it is set to 'true' then LDAP will not be
+# uninstalled.
 amzn2023cis_openldap_clients_required: false
+
+## Control 2.3.3 - Ensure FTP client is not installed
+# This variable specifies to the role if FTP is required
+# or not. If it is set to 'true' then FTP will not be
+# uninstalled.
 amzn2023cis_ftp_client: false
 
-## Section3 vars
+##
+## Section 3 Control Variables
+##
+
 ## Sysctl
+# Sysctl is a command-line utility on Unix-like OSs that allows
+# administrators and users to query and modify kernel parameters
+# at run time. It is commonly used for performance optimization,
+# security hardening, etc.
+# Updating sysctl after modifications is necessary to make the
+# changes persistent and ensure they are applied each time the
+# system restarts!
+# This variable's value controls the execution of a Post task
+# responsible for updating sysctl. The default value is 'false',
+# but throughout the role, some tasks need sysctl to get
+# updated in order for the changes made by them to be fully
+# implemented. Therefore, those tasks are setting this variable's
+# value to 'true' so as to execute the needed update!
 amzn2023cis_sysctl_update: false
+
+# The following variable is responsible for the execution of a
+# handler that flushes the ipv4 route table. Although the default
+# value is 'false', some tasks are in need of this handler to get
+# executed, therefore, they are setting this variable's value to 'true'!
 amzn2023cis_flush_ipv4_route: false
+# The following variable is responsible for the execution of a
+# handler that flushes the ipv6 route table. Although the default
+# value is 'false', some tasks are in need of this handler to get
+# executed, therefore, they are setting this variable's value to 'true'!
 amzn2023cis_flush_ipv6_route: false
 
-### Firewall Service - either firewalld, iptables, or nftables
-#### Some control allow for services to be removed or masked
-#### The options are under each heading
-#### absent = remove the package
-#### masked = leave package if installed and mask the service
+## Controls 3.4.1.x and 3.4.2.x Firewall Service
+# This variable represents the toggle for which firewall service is used.
+# The options are either firewalld or nftables.
 amzn2023cis_firewall: firewalld
 
-##### firewalld
+## Control 3.4.2.1 - Ensure firewalld default zone is set
+# This variable specifies which default zone should be set
+# for firewalld. A firewall zone defines the trust level for
+# a connection, interface or source address binding. The
+# default zone is the zone that is used for everything that
+# is not explicitly bound/assigned to another zone.
+# Options are:
+# "block"        - All incoming connections are dropped with an
+#                  icmp-host-prohibited message. Only network
+#                  connections initiated from within the system
+#                  are possible;
+# "**drop**"     - This is the zone with the lowest level of trust.
+#                  All incoming connections are dropped with no reply,
+#                  and only outgoing connections are allowed;
+# "public"       - This represents untrusted networks. It is implemented
+#                  when you don't trust other servers on the network.
+#                  This is recommended when you have a server hosted on
+#                  the cloud or local network;
+# "external"     - Used when you want to configure the firewall as a NAT
+#                  gateway. The external zone is used for NAT masquerading
+#                  such that your internal network stays private but
+#                  reachable from external systems;
+# "**internal**" - Used for internal networks when you trust other
+#                  computers or servers on your LAN;
+# "dmz"          - Used for servers or computers in a DMZ ( Demilitarized Zone ).
+#                  These will not be accessible to systems on your network
+#                  and only specific incoming connections are allowed;
+# "work"         - Used at your place of work where you trust most
+#                  of the computers and co-workers' PCs;
+# "home"         - Used in the home environment especially on desktops and laptops on
+#                  your LAN. The implication is that you trust most of the
+#                  devices on your home LAN and that some services are allowed;
+# "trusted"      - All connections are accepted;
 amzn2023cis_default_zone: public
 
-# These settings are added to demonstrate how this update can be done (eventually will require a new control)
-amzn2023cis_firewalld_ports:
-    - number: 80
-      protocol: tcp
-
-#### nftables
+## Control 3.4.2.2 - Ensure at least one nftables table exists
+# With this variable you can chose if you want to automatically
+# create a new nftable or not. Setting it to 'true' will enable
+# that. Otherwise, the tasks will firstly check if there are any
+# nftables and if not, they will alert the user about this!
 amzn2023cis_nft_tables_autonewtable: true
+# This variable sets the name of the nftable created.
 amzn2023cis_nft_tables_tablename: filter
+
+## Control 3.4.2.3 - Ensure nftables base chains exist
+# This variable is similar to the one from Control 3.4.2.2.
+# Setting it to 'true' will automatically create nft chains.
+# Otherwise, the tasks will display the already existing chains.
 amzn2023cis_nft_tables_autochaincreate: true
 
-# Warning Banner Content (issue, issue.net, motd)
-amzn2023cis_warning_banner: Authorized uses only. All activity may be monitored and reported.
-# End Banner
+##
+## Section 4 Control Variables
+##
 
-## Section4 vars
+# This variable stores the path to the sshd configuration file
+# that the role will use, in order to implement different
+# needed controls related to sshd.
+amzn2023cis_sshd_config_file: /etc/ssh/sshd_config
 
-### 4.1 Configure System Accounting
-#### 4.1.2 Configure Data Retention
-amzn2023cis_auditd:
-    space_left_action: email
-    action_mail_acct: root
-    admin_space_left_action: halt
-    max_log_file_action: keep_logs
+## Controls 4.2.4, 4.2.19, 4.2.20 --various sshd settings
+amzn2023cis_sshd:
+    # This variable sets the maximum number of unresponsive "keep-alive" messages
+    # that can be sent from the server to the client before the connection is considered
+    # inactive and thus, closed.
+    clientalivecountmax: 3
+    # This variable sets the time interval in seconds between sending "keep-alive"
+    # messages from the server to the client. These types of messages are intended to
+    # keep the connection alive and prevent it from being terminated due to inactivity.
+    clientaliveinterval: 900
+    # This variable specifies the amount of seconds allowed for successful authentication to
+    # the SSH server.
+    logingracetime: 60
+    # WARNING: make sure you understand the precedence when working with the values
+    # of the following variables
+    # This variable, if specified, configures a list of USER name patterns, separated by spaces, to allow SSH
+    # access for users whose user name matches one of the patterns. This is done
+    # by setting the value of `AllowUsers` option in `/etc/ssh/sshd_config` file.
+    # If an USER@HOST format will be used, the specified user will be allowed only on that particular host.
+    # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
+    # For more info, see https://linux.die.net/man/5/sshd_config
+    allowusers: ""
+    # This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to allow SSH access
+    # for users whose primary group or supplementary group list matches one of the patterns. This is done
+    # by setting the value of `AllowGroups` option in `/etc/ssh/sshd_config` file.
+    # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
+    # For more info, https://linux.die.net/man/5/sshd_config
+    allowgroups: ""
+    # This variable, if specified, configures a list of USER name patterns, separated by spaces, to prevent SSH access
+    # for users whose user name matches one of the patterns. This is done
+    # by setting the value of `DenyUsers` option in `/etc/ssh/sshd_config` file.
+    # If an USER@HOST format will be used, the specified user will be restricted only on that particular host.
+    # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
+    # For more info, see https://linux.die.net/man/5/sshd_config
+    denyusers: ""
+    # This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to prevent SSH access
+    # for users whose primary group or supplementary group list matches one of the patterns. This is done
+    # by setting the value of `DenyGroups` option in `/etc/ssh/sshd_config` file.
+    # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
+    # For more info, see https://linux.die.net/man/5/sshd_config
+    denygroups: ""
 
-# The audit_back_log_limit value should never be below 8192
+## Control 4.2.5 - Ensure SSH LogLevel is appropriate
+# This variable refers to the loglevel used for ssh.
+# The loglevel allows you to control the amount of detail
+# included in the server's log files regarding ssh-related
+# activities.
+# Options recommended by CIS are:
+# INFO    - the basic level that only records login activity of
+#           SSH users. In many situations, such as Incident Response,
+#           it is important to determine when a particular user was
+#           active on a system. The logout record can eliminate those
+#           users who disconnected, which helps narrow the field;
+# VERBOSE - specifies that login and logout activity as well as the key
+#           fingerprint for any SSH key used for login will be logged.
+#           This information is important for SSH key management, especially
+#           in legacy environments;
+amzn2023cis_ssh_loglevel: INFO
+
+## Control 4.2.18 - Ensure SSH MaxSessions is set to 10 or less
+# This variable contains the maximum number of open sessions permitted
+# from a given connection. This number should be 10 or less.
+amzn2023cis_ssh_maxsessions: 4
+
+# This variable controls the execution of a preliminary task that
+# installs authconfig. Authconfig is a command-line
+# utility used for configuring authentication and identity
+# sources on Linux systems.
+# If this variable's value is set to 'true' then authconfig
+# will be installed, otherwise, it will not be installed.
+amzn2023cis_use_authconfig: false
+
+## Control 4.3.3 - Ensure sudo log file exists
+# This variable contains the path to the sudo
+# log file.
+amzn2023cis_sudolog_location: "/var/log/sudo.log"
+
+## Control 4.3.5 - Ensure sudo authentication timeout is configured correctly
+# This variable contains the timeout value for sudo authentication.
+# Setting a timeout value reduces the window of opportunity for
+# unauthorized privileged access to another user.
+# CIS requires a value of 15 or less according to your site's
+# policy.
+amzn2023cis_sudo_timestamp_timeout: 15
+
+## Control 4.3.6 - Ensure access to the su command is restricted
+# This variable contains the name of the needed empty group
+# that will be specified for use of the su command.
+# This group's name should be chosen according to site
+# policy.
+amzn2023cis_sugroup: nosugroup
+
+## Controls 4.4.1, 4.4.2 - Custom authselect profile settings
+# Authselect is another authentication configuration tool
+# that aims to provide a more modern and modular approach
+# for authentication settings configuration.
+amzn2023cis_authselect:
+    # This setting is just a placeholder taken from the CIS
+    # examples, which might lead to failure. This setting needs
+    # to be adjusted in order to minimise risk.
+    custom_profile_name: custom-profile
+    # This setting is just a placeholder taken from the CIS
+    # examples, which might lead to failure. This setting needs
+    # to be adjusted in order to minimise risk.
+    default_file_to_copy: "sssd --symlink-meta"
+    # This setting is just a placeholder taken from the CIS
+    # examples, which might lead to failure. This setting needs
+    # to be adjusted in order to minimise risk.
+    options: with-sudo with-faillock without-nullok
+
+## Control 4.4.1 - Ensure custom authselect profile is used
+# This variable enables automation to create custom profile settings, using the variables above
+amzn2023cis_authselect_custom_profile_create: false
+
+## Control 4.4.2 - Ensure authselect includes with-faillock
+# This variable enables automation to select custom profile options, using the variables above
+amzn2023cis_authselect_custom_profile_select: false
+# This option is used at your own risk. It is responsible for
+# enabling faillock for users.
+# Only to be used on a new clean system that is not using authselect!
+# THIS CAN BREAK ACCESS EVEN FOR ROOT - UNDERSTAND RISKS !!
+amzn2023cis_add_faillock_without_authselect: false
+# This needs to be set to "ACCEPT" in order for the option
+# mentioned above to be implemented!
+amzn2023cis_4_4_2_risks: NEVER
+
+## Controls 4.4.2, 4.5.2 - faillock configurations
+amzn2023cis_pam_faillock:
+    # This variable holds the time in seconds before the account is unlocked.
+    # CIS states that this value should be at least 900 and should never be 0.
+    unlock_time: 900
+    # This variable holds the number of attempts before the account is locked.
+    # CIS states that this value should be greater than 0 and no greater than 5.
+    deny: 5
+    # This variable controls for how long failed login attempts are remembered
+    # for an account.
+    remember: 5
+
+## Control 4.5.1 - Ensure password creation requirements are configured
+amzn2023cis_pam_password:
+    # This variable specifies the minimum length that a password must
+    # have to be considered valid. CIS states that this value should be
+    # at least 14.
+    minlen: 14
+    # This variable specifies the minimum number of character classes
+    # that must be represented in a password. Requiring a minimum
+    # number of classes ensures diversity in password composition.
+    # CIS states that this value should be at least 4.
+    minclass: 4
+
+## Controls 4.6.1.x - password configuration
+amzn2023cis_pass:
+    ## Control 4.6.1.1
+    # This variable governs after how many days a  password expires.
+    # CIS requires a value of 365 or less.
+    max_days: 365
+    ## Control 4.6.1.2
+    # This variable specifies the minimum number of days allowed between changing passwords.
+    # CIS requires a value of at least 1.
+    min_days: 1
+    ## Control 4.6.1.3
+    # This variable governs, how many days before a password expires, the user will be warned!
+    # CIS requires a value of at least 7.
+    warn_age: 7
+
+## Control 4.6.1.4 - Ensure inactive password lock is 30 days or less
+amzn2023cis_inactivelock:
+    # The following variable refers to the period of time when
+    # users can be inactive. Once that period of time is over,
+    # users will be automatically disabled. The value should be
+    # 30 or less.
+    lock_days: 30
+
+## Control 4.6.1.5 - Ensure all users last password change date is in the past
+# This variable tells the role if the fixing for control 4.6.1.5 shall
+# be implemented automatically or not. Setting it to 'true' will ensure
+# that the role executes all the necesary changes, in order for this rule
+# to become compliant. Otherwise, the role will allert the user with a
+# warning, that lists all accounts that have the last PW change date in
+# the future.
+amzn2023cis_futurepwchgdate_autofix: true
+
+## Control 4.6.3 - Ensure default user shell timeout is 900 seconds or less
+amzn2023cis_shell_session_timeout:
+    # This variable contains the name of the file in which TMOUT will
+    # be configured
+    file: /etc/profile.d/tmout.sh
+    # This variable holds the value of TMOUT which determines
+    # the number of seconds after which a shell is automatically
+    # terminated. TMOUT value is in seconds (e.g. 60 seconds * 10 = 600)
+    # CIS states that this value shall never exceed 900 or be equal to 0.
+    timeout: 600
+
+##
+## Section 5 Control Variables
+##
+
+## Control 5.1 - Configure Logging
+# The following variable contains the preferred method used
+# for logging. The options are "rsyslog" or "journald".
+# The value of this variable controls the importing of
+# certain tasks from section 5.1. If the chosen option
+# is "rsyslog" then only tasks from 5.1.1.x will be executed.
+# Otherwise, only tasks from 5.1.2.x will be executed.
+amzn2023cis_syslog_service: rsyslog
+## Control 5.1.1.5 - Ensure logging is configured
+# This variable determines if rsyslog configuration
+# shall be ansible managed or not. If you set it to
+# 'true' then configuration lines will be automatically
+# added to rsyslog.
+amzn2023cis_rsyslog_ansiblemanaged: true
+
+## Control 5.1.1.6 - Ensure rsyslog is configured to send logs to a remote log host
+# This variable is used to toggle the execution of control 5.1.1.6, which
+# ensures rsyslog sends logs to a remote host. If you do not wish for
+# this particular feature to be implemented simply switch the value of
+# the variable to 'false'.
+amzn2023cis_remote_log_server: false
+# This variable holds the name chosen for the remote log host.
+amzn2023cis_remote_log_host: logagg.example.com
+# This variable represents the port number for the remote log host
+amzn2023cis_remote_log_port: 514
+# The following variable mentions the protocol used for sending the
+# logs to the remote host.
+amzn2023cis_remote_log_protocol: tcp
+# This variable represents the number of retries that rsyslog
+# will attempt to resume the transmission of logs, in case of a
+# network or connection failure.
+amzn2023cis_remote_log_retrycount: 100
+# This variable refers to the maximum number of messages that can
+# be held in the internal queue before they are transmitted to their
+# destination.
+amzn2023cis_remote_log_queuesize: 1000
+
+## Control 5.1.1.7 - Ensure rsyslog is not configured to receive logs from a remote client
+# This variable decides whether the system is considered to be a log
+# server or not. In the case of option 'true' being selected, the role
+# will not proceed to implement control 5.1.1.7. Otherwise, rsyslog
+# will not receive logs from a remote client!
+amzn2023cis_system_is_log_server: true
+
+## Control 5.1.2.1.2 - Ensure systemd-journal-remote is configured
+# The following variable represents the IP address where the entries
+# of the journal will be uploaded to.
+amzn2023cis_journal_upload_url: 192.168.50.42
+## The following variables contain default paths. Users are allowed
+## to create their own custom paths!
+# This variable represents the path to the private key used by
+# systemd-journal-remote. The key is part of the server's
+# configuration for secure communication.
+amzn2023cis_journal_upload_serverkeyfile: "/etc/ssl/private/journal-upload.pem"
+# This variable represents the path to the server certificate file
+# used by systemd-journal-remote. This certificate is used to verify
+# the server's identity.
+amzn2023cis_journal_servercertificatefile: "/etc/ssl/certs/journal-upload.pem"
+# This variable represents the path to a file containing trusted
+# certificate authorities that the client trusts. It is used by
+# the client to verify the authenticity of the server's certificate.
+amzn2023cis_journal_trustedcertificatefile: "/etc/ssl/ca/trusted.pem"
+
+## Control 5.1.2.6 - Ensure journald log rotation is configured per site policy
+## The variables below are related to journald log rotation,
+## please set these to your site's specific values!
+# This variable represents the max amount of disk space the logs will use.
+# When the journal files exceed this size, older journal files
+# are deleted to keep the disk space usage below the specified
+# limit. The value is in megabytes.
+amzn2023cis_journald_systemmaxuse: 10M
+# This variable represents the amount of disk space to be kept free.
+# If the free disk space falls below this threshold, older logs are
+# deleted to free up space. The value is in gigabytes.
+amzn2023cis_journald_systemkeepfree: 100G
+# This variable is similar to "amzn2023cis_journald_systemmaxuse"
+# only that it refers to in-memory space. "Runtime" is about logs
+# that are stored in memory (RAM) and are not present on disk.
+# These logs are temporary and exist only for the duration
+# of the current system runtime.
+amzn2023cis_journald_runtimemaxuse: 10M
+# This variable is similar to "amzn2023cis_journald_systemkeepfree"
+# only that it refers to in-memory space that should be kept free.
+# "Runtime" is about logs that are stored in memory (RAM) and are not
+# present on disk. These logs are temporary and exist only for the
+# duration of the current system runtime.
+amzn2023cis_journald_runtimekeepfree: 100G
+# This variable sets the maximum time that logs are retained on disk.
+# Logs older than the specified duration are deleted.
+# Values are Xm, Xh, Xday, Xweek, Xmonth, Xyear.
+# For example: "2week" i.e. two weeks
+amzn2023cis_journald_maxfilesec: 1month
+
+## Control 5.2.1.3 - Ensure audit_backlog_limit is sufficient
+# This variable represents the audit backlog limit, i.e. the maximum number of audit records that the
+# system can buffer in memory, if the audit subsystem is unable to process them in real-time.
+# Buffering in memory is useful in situations, where the audit system is overwhelmed
+# with incoming audit events, and needs to temporarily store them until they can be processed.
+# This variable should be set to a sufficient value. The CIS baseline recommends at least `8192`.
 amzn2023cis_audit_back_log_limit: '8192'
 
-# The max_log_file parameter should be based on your sites policy
+## Control 5.2.2.1 - Ensure audit log storage size is configured
+# This variable specifies the maximum size in MB that an audit log file can reach,
+# before it is archived or deleted to make space for the new audit data.
+# This should be set based on your sites policy. CIS does not provide a specific value.
 amzn2023cis_max_log_file_size: '10'
 
-### 4.1.3.x audit template
+## Control 5.2.2.x - Configure Data Retention
+# This variable controls how the audit system behaves when
+# log files are getting too full and space is getting too low.
+amzn2023cis_auditd:
+    # This variable tells the system what action to take when the system has detected
+    # that it is starting to get low on disk space.
+    # The options for setting this variable are as follows:
+    # "ignore"  - the system does nothing when presented with the aforementioned issue;
+    # "syslog" - a message is sent to the system log about disk space running low;
+    # "email"  - the system sends an email notification to the email address
+    #            specified in the "action_mail_acct" variable;
+    # "exec"   - the system executes a custom command when disk space is running
+    #            low;
+    # "suspend" - the system suspends recording audit events until more space is available;
+    # "single"  - the audit daemon will put the computer system in single user mode;
+    # "halt"    - the system is halted when disk space is critically low;
+    space_left_action: email
+    # This variable specifies an e-mail address or alias to which any alert messages
+    # should be sent. The default setting is root, but you can enter any local or
+    # remote account as long as e-mail and the network are properly configured on
+    # your system and /usr/lib/sendmail exists.
+    action_mail_acct: root
+    # This variable tells the system what action to take when the system has detected
+    # that it is low on disk space.
+    # The options for setting this variable are as follows:
+    # "ignore"  - the system does nothing when presented with the aforementioned issue;
+    # "syslog"  - a message is sent to the system log about disk space running low;
+    # "email"  - the system sends an email notification to the email address
+    #            specified in the "action_mail_acct" variable;
+    # "exec"   - the system executes a custom command when disk space is running
+    #            low;
+    # "suspend" - the system suspends recording audit events until more space is available;
+    # "single"  - the audit daemon will put the computer system in single user mode;
+    # "halt"    - the system is halted when disk space is critically low;
+    # CIS prescribes either `halt` or `single`.
+    admin_space_left_action: halt
+    # This variable determines what action the audit system should take when the maximum
+    # size of a log file is reached.
+    # The options for setting this variable are as follows:
+    # "ignore"    - the system does nothing when the size of a log file is full;
+    # "syslog"    - a message is sent to the system log indicating the problem;
+    # "suspend"   - the system suspends recording audit events until the log file is cleared or rotated;
+    # "rotate"    - the log file is rotated (archived) and a new empty log file is created;
+    # "keep_logs" - the system attempts to keep as many logs as possible without violating disk
+    #               space constraints;
+    # CIS prescribes the value `keep_logs`.
+    max_log_file_action: keep_logs
+
+## Control 5.2.3.x - Audit template
+# This variable's value controls the execution of a main task
+# responsible for importing the yml file needed for configuring
+# the auditd rules (auditd.yml). The default value is 'false',
+# but tasks responsible for the configuration mentioned earlier,
+# are setting it to 'true'.
 update_audit_template: false
 
-## Advanced option found in auditd post
+# This variable is used to condition the execution of a POST task
+# from the "auditd.yml" file. That task implements an advanced option
+# and it only gets executed if this variable's value is set to 'true'.
+# The advance option sets users whose actions are not logged by auditd.
 amzn2023cis_allow_auditd_uid_user_exclusions: false
 
-# This can be used to configure other keys in auditd.conf
-amzn2023cis_auditd_extra_conf: {}
+# This variable can be used to configure other keys in auditd.conf
 # Example:
 # amzn2023cis_auditd_extra_conf:
 #     admin_space_left: '10%'
+amzn2023cis_auditd_extra_conf:
+    # This variable governs the threshold(MegaBytes) under which the audit daemon should perform a
+    # specific action to alert that the system is running low on disk space. Must be lower than
+    # the 'space_left' variable.
+    admin_space_left: 50
+    # This variable governs the threshold(MegaBytes) under which the audit daemon should perform a
+    # specific action to alert that the system is running low on disk space(last chance to do something
+    # before running out of disk space). Must be lower than the 'space_left' variable.
+    space_left: 75
 
-## Preferred method of logging
-## Whether rsyslog or journald preferred method for local logging
-## Affects rsyslog cis 4.2.1.3 and journald cis 4.2.2.5
-amzn2023cis_syslog_service: rsyslog
-amzn2023cis_rsyslog_ansiblemanaged: true
-
-#### 4.2.1.6 remote and destation log server name
-amzn2023cis_remote_log_server: false
-amzn2023cis_remote_log_host: logagg.example.com
-amzn2023cis_remote_log_port: 514
-amzn2023cis_remote_log_protocol: tcp
-amzn2023cis_remote_log_retrycount: 100
-amzn2023cis_remote_log_queuesize: 1000
-
-#### 4.2.1.7
-amzn2023cis_system_is_log_server: false
-
-# 4.2.2.1.2
-# amzn2023cis_journal_upload_url is the ip address to upload the journal entries to
-amzn2023cis_journal_upload_url: 192.168.50.42
-# The paths below have the default paths/files, but allow user to create custom paths/filenames
-amzn2023cis_journal_upload_serverkeyfile: "/etc/ssl/private/journal-upload.pem"
-amzn2023cis_journal_servercertificatefile: "/etc/ssl/certs/journal-upload.pem"
-amzn2023cis_journal_trustedcertificatefile: "/etc/ssl/ca/trusted.pem"
-
-# 4.2.2.1
-# The variables below related to journald, please set these to your site specific values
-# amzn2023cis_journald_systemmaxuse is the max amount of disk space the logs will use
-amzn2023cis_journald_systemmaxuse: 10M
-# amzn2023cis_journald_systemkeepfree is the amount of disk space to keep free
-amzn2023cis_journald_systemkeepfree: 100G
-amzn2023cis_journald_runtimemaxuse: 10M
-amzn2023cis_journald_runtimekeepfree: 100G
-# amzn2023cis_journald_MaxFileSec is how long in time to keep log files. Values are Xm, Xh, Xday, Xweek, Xmonth, Xyear, for example 2week is two weeks
-amzn2023cis_journald_maxfilesec: 1month
-
-#### 4.3
+## Control 5.3 - Ensure logrotate is configured
+# This variable is used to specify the regularity of
+# log file rotation.
 amzn2023cis_logrotate: "daily"
 
-## Section4 vars
+##
+## Section 6 Control Variables
+##
 
-# This will allow use of drop in files when CIS adopts them.
-amzn2023cis_sshd_config_file: /etc/ssh/sshd_config
-
-amzn2023cis_sshd:
-    clientalivecountmax: 3
-    clientaliveinterval: 900
-    logingracetime: 60
-    # WARNING: make sure you understand the precedence when working with these values!!
-    # allowusers:
-    # allowgroups: systems dba
-    # denyusers:
-    # denygroups:
-
-# 4.2.5 SSH LogLevel setting. Options are INFO or VERBOSE
-amzn2023cis_ssh_loglevel: INFO
-
-# 4.2.19 SSH MaxSessions setting. Must be 4 our less
-amzn2023cis_ssh_maxsessions: 4
-amzn2023cis_inactivelock:
-    lock_days: 30
-
-amzn2023cis_use_authconfig: false
-# 4.3.1/4.3.2 Custom authselect profile settings. Settings in place now will fail, they are place holders from the control example
-# Due to the way many multiple options and ways to configure this control needs to be enabled and settings adjusted to minimise risk
-amzn2023cis_authselect:
-    custom_profile_name: custom-profile
-    default_file_to_copy: "sssd --symlink-meta"
-    options: with-sudo with-faillock without-nullok
-
-# 4.3.1 Enable automation to create custom profile settings, using the settings above
-amzn2023cis_authselect_custom_profile_create: false
-
-# 4.3.2 Enable automation to select custom profile options, using the settings above
-amzn2023cis_authselect_custom_profile_select: false
-
-amzn2023cis_pass:
-    max_days: 365
-    min_days: 1
-    warn_age: 7
-
-# UID settings for interactive users
-# These are discovered via logins.def if set true
-discover_int_uid: false
-min_int_uid: 1000
-max_int_uid: 65533
-
-# 4.3.3 var log location variable
-amzn2023cis_sudolog_location: "/var/log/sudo.log"
-
-#### 4.3.6
-amzn2023cis_sudo_timestamp_timeout: 15
-
-# 4.3.7
-amzn2023cis_sugroup: nosugroup
-
-### 4.4.2 authselect and faillock
-## This option is used at your own risk it will enable faillock for users
-## Only to be used on a new clean system if not using authselect
-## THIS CAN BREAK ACCESS EVEN FOR ROOT - UNDERSTAND RISKS ##
-amzn2023cis_add_faillock_without_authselect: false
-# This needs to be set to ACCEPT
-amzn2023cis_4_4_2_risks: NEVER
-
-# Session timeout setting file (TMOUT setting can be set in multiple files)
-# Timeout value is in seconds. (60 seconds * 10 = 600)
-amzn2023cis_shell_session_timeout:
-    file: /etc/profile.d/tmout.sh
-    timeout: 600
-# Allow ansible to expire password for account with a last changed date in the future. False will just display users in violation, true will expire those users passwords
-amzn2023cis_futurepwchgdate_autofix: true
-
-# 4.5.1
-## PAM
-amzn2023cis_pam_password:
-    minlen: 14
-    minclass: 4
-
-amzn2023cis_pam_faillock:
-    unlock_time: 900
-    deny: 5
-    remember: 5
-
-## Section6 vars
-
+## Control 6.1.9 - Ensure permissions on /etc/gshadow- are configured
+# This variable contains the name of the file where the list
+# of package discrepancies can be found!
 amzn2023cis_rpm_audit_file: /var/tmp/rpm_file_check
 
-# Allow ansible to adjust world-writable files. False will just display world-writable files, True will remove world-writable
+## Control 6.1.10 - Audit system file permissions
+# The following variable is a toggle for enabling/disabling the automated
+# removal of world-writable permissions from all files.
+# Possible values are 'true' and 'false'.
 amzn2023cis_no_world_write_adjust: true
-amzn2023cis_passwd_label: "{{ (this_item | default(item)).id }}: {{ (this_item | default(item)).dir }}"
 
-# This will allow the removal of .netrc, .forward or .rhosts if found from user home_dirs
+## Control 6.2.10 - Ensure local interactive user home directories are configured
+# The minimum and maximum UIDs to be used when enforcing
+# and checking control 6.2.10 can either be discovered
+# automatically via logins.def or set manually in this
+# file.
+# If min/maxx UIDs are to be discovered automatically,
+# set this variable to 'true', otherwise to 'false'.
+discover_int_uid: false
+# This variable sets the minimum number from which to search for UID
+# Note that the value will be dynamically overwritten if variable "dicover_int_uid" has
+# been set to 'true'.
+min_int_uid: 1000
+# This variable sets the maximum number at which the search stops for UID
+# Note that the value will be dynamically overwritten if variable "dicover_int_uid" has
+# been set to 'true'.
+max_int_uid: 65533
+
+## Control 6.2.11 - Ensure local interactive user dot files access is configured
+# This variable will allow the removal of .netrc, .forward or .rhosts files.
 amzn2023cis_remove_other_dot_files: false
-
+# This variable states if filesystem links should be followed or not.
 amzn2023cis_6_2_11_home_follow_symlinks: false
 
 #### Goss Configuration Settings ####
