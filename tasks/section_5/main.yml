@@ -37,7 +37,3 @@
 - name: "SECTION | 5.3 | Configure LogRotate"
   ansible.builtin.import_tasks:
       file: cis_5.3.yml
-
-- name: "SECTION | 5.3 | Configure logrotate"
-  ansible.builtin.import_tasks:
-      file: cis_5.3.yml
