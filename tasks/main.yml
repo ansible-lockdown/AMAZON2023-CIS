@@ -31,7 +31,7 @@
       - name: Ensure root password is set
         ansible.builtin.assert:
             that: root_passwd_set.rc == 0
-            fail_msg: "You have rule 5.6.6 enabled this requires that you have a root password set"
+            fail_msg: "You have rule 4.6.6 enabled this requires that you have a root password set"
             success_msg: "You have a root password set"
   tags:
       - level1-server
