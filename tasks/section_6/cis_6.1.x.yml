@@ -191,6 +191,11 @@
         when:
             - amzn2023cis_6_1_10_perms_results.stdout_lines is defined
             - amzn2023cis_no_world_write_adjust
+
+      - name: "6.1.10 | PATCH | Ensure sticky bit is set on all world-writable directories"
+        ansible.builtin.shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | xargs chmod a+t
+        changed_when: false
+        failed_when: false
   when:
       - amzn2023cis_rule_6_1_10
   tags:
@@ -198,6 +203,7 @@
       - patch
       - files
       - permissions
+      - stickybits
       - rule_6.1.10
       - nist_sp800-53r5_AC-3
       - nist_sp800-53r5_MP-2
@@ -275,21 +281,6 @@
       - files
       - permissions
       - rule_6.1.11
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
-
-- name: "6.1.12 | PATCH | Ensure sticky bit is set on all world-writable directories"
-  ansible.builtin.shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | xargs chmod a+t
-  changed_when: false
-  failed_when: false
-  when:
-      - amzn2023cis_rule_6_1_12
-  tags:
-      - level1-server
-      - patch
-      - stickybits
-      - permissons
-      - rule_6.1.12
       - nist_sp800-53r5_AC-3
       - nist_sp800-53r5_MP-2
 
