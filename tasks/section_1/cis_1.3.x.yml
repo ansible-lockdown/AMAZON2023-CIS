@@ -66,7 +66,7 @@
         /sbin/autrace p+i+n+u+g+s+b+acl+xattrs+sha512
       validate: aide -D --config %s
   when:
-      - amzn2023cis_rule_1_3_2
+      - amzn2023cis_rule_1_3_3
   tags:
       - level1-server
       - aide

@@ -38,7 +38,6 @@
   notify: Change_requires_reboot
   when:
       - item.mount == "/home"
-      - amzn2023cis_rule_1_1_7_1
       - amzn2023cis_rule_1_1_7_2 or
         amzn2023cis_rule_1_1_7_3
   tags:
@@ -47,6 +46,5 @@
       - mounts
       - rule_1.1.7.2
       - rule_1.1.7.3
-      - rule_1.1.7.4
       - nist_sp800-53r5_AC-3
       - nist_sp800-53r5_MP-2
