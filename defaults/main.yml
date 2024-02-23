@@ -89,52 +89,74 @@ skip_reboot: true
 # changes!
 change_requires_reboot: false
 
-###
-### Settings for associated Audit role using Goss
-###
+##########################################
+### Goss is required on the remote host ###
+## Refer to vars/auditd.yml for any other settings ##
+#### Basic external goss audit enablement settings ####
+#### Precise details - per setting can be found at the bottom of this file ####
 
-# Note that there are also variables regarding the retrieval
-# and configuration of Goss and the audit role at the end
-# of this file.
-
+## Audit setup
 # Audits are carried out using Goss. This variable
 # determines whether execution of the role prepares for auditing
 # by installing the required binary.
 setup_audit: false
-## How to retrive audit binary
-# Options are copy or download, using either the path
-# provided in variable `audit_local_copy` for copying or
-# the url given in variable `audit_files_url` for downloading.
+
+## Enable audits to run - this runs the audit and get the latest content
+# This variable governs whether the audit using the
+# separately maintained audit role using Goss
+# is carried out.
+run_audit: false
+
+# Only run Audit do not remediate
+audit_only: false
+# This will enable files to be copied back to control node(part of audit_only)
+fetch_audit_files: false
+# Path to copy the files to will create dir structure(part of audit_only)
+audit_capture_files_dir: /some/location to copy to on control node
+
+## How to retrieve audit binary(Goss)
+# Options are 'copy' or 'download' - detailed settings at the bottom of this file
+# - if 'copy':
+#    - the filepath mentioned via the below 'audit_bin_copy_location' var will be used to access already downloaded Goss
+# - if 'download':
+#    - the GitHub Goss-releases URL will be used for a fresh-download, via 'audit_bin_url' and 'audit_pkg_arch_name' vars
 get_audit_binary_method: download
+
+## if get_audit_binary_method is 'copy', the following var needs to be updated for your environment
+## it is expected that it will be copied from somewhere accessible to the control node
+## e.g copy from ansible control node to remote host
+audit_bin_copy_location: /some/accessible/path
 
 ## How to retrieve the audit role
 # The role for auditing is maintained separately.
 # This variable specifies the method of how to get the audit role
+# options are git/copy/get_url other e.g. if you wish to run from already downloaded conf
 # onto the system. The options are as follows:
-# "git"       - clone from git repository as specified in variable "audit_file_git"
-#               in the version specified by variable "audit_git_version";
-# "copy"      - copy from path as specified in variable "audit_local_copy";
-# "download"  - download from url as specified in variable "audit_files_url";
+# - 'git': clone audit content from GitHub REPOSITORY, set up via `audit_file_git` var, and
+#          VERSION(e.g. branch, tag name), set up via `audit_git_version` var.
+# - 'copy': copy from path as specified in variable `audit_conf_copy`.
+# - 'archive': same as 'copy', only that the specified filepath needs to be unpacked.
+# - 'get_url': Download from url as specified in variable `audit_files_url`
 audit_content: git
 
-## Enable audits to run
-# This variable governs whether the audit, using
-# the separately maintained audit role using Goss,
-# is carried out.
-run_audit: false
+# This variable(only used when 'audit_content' is 'copy' or 'archive') should
+# contain the filepath with audit-content to be copied/unarchived on server:
+audit_conf_copy: "some path to copy from"
 
+# This variable(only used when 'audit_content' is 'get_url') should
+# contain the URL from where the audit-content must be downloaded on server:
+audit_files_url: "some url maybe s3?"
+
+# Run heavy tests - some tests can have more impact on a system enabling these can have greater impact on a system
+audit_run_heavy_tests: true
+
+# Timeout for those cmds that take longer to run where timeout set
 # This variable specifies the timeout (in ms) for audit commands that
 # take a very long time: if a command takes too long to complete,
 # it will be forcefully terminated after the specified duration.
-audit_cmd_timeout: 60000
+audit_cmd_timeout: 120000
 
-## Resource-intensive Tests
-# This variable governs whether resource-intensive audit tests are carried out
-amzn2023cis_run_heavy_tests: true
-
-###
-### End Audit Settings for associcated Audit role using Goss
-###
+### End Goss enablements ####
 
 ## The following variables correspond with the CIS rule IDs or paragraph numbers
 ## defined in the CIS benchmark documents.
@@ -1206,47 +1228,3 @@ audit_run_script_environment:
     AUDIT_BIN: "{{ audit_bin }}"
     AUDIT_FILE: 'goss.yml'
     AUDIT_CONTENT_LOCATION: "{{ audit_out_dir }}"
-
-### Goss binary settings ###
-audit_bin_release: v0.4.0
-audit_bin_version:
-    AMD64_checksum: 'sha256:9cb37863d3d25e2af80cb5cf55198c0c115b2477724153ba9afd0a2e544cb46e'
-    ARM64_checksum: 'sha256:ce364fad93f9c0702e73767d60fddbb87a8c5f2a586b0d99ec823e8331e6a73b'
-audit_bin_path: /usr/local/bin/
-audit_bin: "{{ audit_bin_path }}goss"
-audit_format: json
-
-# if get_goss_file == download change accordingly
-audit_bin_url: "https://github.com/goss-org/goss/releases/download/{{ audit_bin_release }}/goss-linux-"
-
-## if get_goss_file - copy the following needs to be updated for your environment
-## it is expected that it will be copied from somewhere accessible to the control node
-## e.g copy from ansible control node to remote host
-copy_goss_from_path: /some/accessible/path
-
-### Goss Audit Benchmark file ###
-## managed by the control audit_content
-# git
-audit_file_git: "https://github.com/ansible-lockdown/{{ benchmark }}-Audit.git"
-audit_git_version: "benchmark_{{ benchmark_version }}"
-
-# copy:
-audit_local_copy: "some path to copy from"
-
-# get_url:
-audit_files_url: "some url maybe s3?"
-
-## Goss configuration information
-# Where the goss configs and outputs are stored
-audit_out_dir: '/opt'
-audit_conf_dir: "{{ audit_out_dir }}/{{ benchmark }}-Audit/"
-pre_audit_outfile: "{{ audit_out_dir }}/{{ ansible_facts.hostname }}-{{ benchmark }}_pre_scan_{{ ansible_facts.date_time.epoch }}.{{ audit_format }}"
-post_audit_outfile: "{{ audit_out_dir }}/{{ ansible_facts.hostname }}-{{ benchmark }}_post_scan_{{ ansible_facts.date_time.epoch }}.{{ audit_format }}"
-
-## The following should not need changing
-goss_file: "{{ audit_conf_dir }}goss.yml"
-audit_vars_path: "{{ audit_conf_dir }}/vars/{{ ansible_facts.hostname }}.yml"
-audit_results: |
-      The pre remediation results are: {{ pre_audit_summary }}.
-      The post remediation results are: {{ post_audit_summary }}.
-      Full breakdown can be found in {{ audit_out_dir }}
