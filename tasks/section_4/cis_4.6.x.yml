@@ -92,7 +92,7 @@
       - name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set umask for /etc/login.defs and /etc/profile"
         ansible.builtin.lineinfile:
             path: "{{ item.path }}"
-            regexp: '(?i)(umask\s*\d\d\d)'
+            regexp: '(?i)^\s*umask\s*\d{3,4}'
             line: '{{ item.line }} 027'
         with_items:
             - { path: '/etc/profile', line: 'umask' }
@@ -101,7 +101,7 @@
       - name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set umask for /etc/bashrc"
         ansible.builtin.replace:
             path: /etc/bashrc
-            regexp: '\s+umask\s*\d\d\d'
+            regexp: '^\s*umask\s*\d{3,4}'
             replace: '\numask 027'
 
       - name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Editing USERGROUPS_ENAB"
