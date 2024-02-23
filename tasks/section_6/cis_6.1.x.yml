@@ -216,7 +216,7 @@
         failed_when: false
         check_mode: false
         register: amzn2023cis_6_1_11_audit
-        loop: "{{ ansible_mounts }}"
+        loop: "{{ ansible_facts.mounts }}"
         loop_control:
             label: "{{ item.mount }}"
         when:
@@ -243,7 +243,7 @@
         failed_when: false
         changed_when: false
         register: amzn2023cis_6_1_11_audit
-        loop: "{{ ansible_mounts }}"
+        loop: "{{ ansible_facts.mounts }}"
         loop_control:
             label: "{{ item.mount }}"
         when:
@@ -291,7 +291,7 @@
         failed_when: false
         changed_when: false
         register: amzn2023cis_6_1_12_suid_perms
-        loop: "{{ ansible_mounts }}"
+        loop: "{{ ansible_facts.mounts }}"
         loop_control:
             label: "{{ item.mount }}"
 
@@ -314,7 +314,7 @@
         failed_when: false
         changed_when: false
         register: amzn2023cis_6_1_12_sgid_perms
-        loop: "{{ ansible_mounts }}"
+        loop: "{{ ansible_facts.mounts }}"
         loop_control:
             label: "{{ item.mount }}"
 

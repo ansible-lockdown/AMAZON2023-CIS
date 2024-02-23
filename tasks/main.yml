@@ -5,9 +5,9 @@
   when:
       - os_check
   ansible.builtin.assert:
-      that: (ansible_distribution == 'Amazon' and ansible_distribution_major_version is version_compare('2023', '=='))
-      fail_msg: "This role can only be run against Supported OSs. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
-      success_msg: "This role is running against a supported OS {{ ansible_distribution }} {{ ansible_distribution_major_version }}"
+      that: (ansible_facts.distribution == 'Amazon' and ansible_facts.distribution_major_version is version_compare('2023', '=='))
+      fail_msg: "This role can only be run against Supported OSs. {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }} is not supported."
+      success_msg: "This role is running against a supported OS {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }}"
   tags:
       - always
 
