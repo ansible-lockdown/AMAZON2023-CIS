@@ -7,6 +7,7 @@
   - audit_only: true
 
 - Many Prs and associated
+  massive thanks to @DianaMariaDDM for all the PRs and Issues and time
 
 ## 0.91
 
