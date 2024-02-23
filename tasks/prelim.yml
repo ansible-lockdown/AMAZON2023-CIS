@@ -132,6 +132,8 @@
       state: latest
   when:
       - amzn2023cis_rule_1_2_4
+  tags:
+      - always
 
 - name: "PRELIM | Section 4.1 | Configure cron"
   ansible.builtin.package:
