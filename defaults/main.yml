@@ -841,14 +841,6 @@ amzn2023cis_ssh_loglevel: INFO
 # from a given connection. This number should be 10 or less.
 amzn2023cis_ssh_maxsessions: 4
 
-# This variable controls the execution of a preliminary task that
-# installs authconfig. Authconfig is a command-line
-# utility used for configuring authentication and identity
-# sources on Linux systems.
-# If this variable's value is set to 'true' then authconfig
-# will be installed, otherwise, it will not be installed.
-amzn2023cis_use_authconfig: false
-
 ## Control 4.3.3 - Ensure sudo log file exists
 # This variable contains the path to the sudo
 # log file.
