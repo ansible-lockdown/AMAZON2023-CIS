@@ -213,17 +213,15 @@
       - rule_5.2.4.6
       - rule_5.2.4.7
 
-- name: "PRELIM | 4.3.3 | Find all sudoers files."
+- name: "PRELIM | 4.3.4 | Find all sudoers files."
   ansible.builtin.shell: "find /etc/sudoers /etc/sudoers.d/ -type f ! -name '*~' ! -name '*.*'"
   changed_when: false
   failed_when: false
   check_mode: false
   register: amzn2023cis_sudoers_files
   when:
-      - amzn2023cis_rule_4_3_3 or
-        amzn2023cis_rule_4_3_4
+      - amzn2023cis_rule_4_3_4
   tags:
-      - rule_4.3.3
       - rule_4.3.4
       - sudo
       - patch
