@@ -6,7 +6,7 @@
 - audit_only option now added
   - audit_only: true
 
-- Many Prs and associated
+- Many Prs and associated issues
   massive thanks to @DianaMariaDDM for all the PRs and Issues and time
 
 ## 0.91
