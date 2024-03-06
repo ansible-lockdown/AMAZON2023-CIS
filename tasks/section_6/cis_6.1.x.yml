@@ -177,7 +177,7 @@
 - name: "6.1.10 | PATCH | Ensure world writable files and directories are secured"
   block:
       - name: "6.1.10 | AUDIT | Ensure world writable files and directories are secured | Get list of world-writable files"
-        ansible.builtin.shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -0002
+        ansible.builtin.shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find \( ! -path "*/containerd/*" -a ! -path "*/kubelet/pods/*" -a ! -path "/snap/*" \) -xdev -type f -perm -0002
         failed_when: false
         changed_when: false
         register: amzn2023cis_6_1_10_perms_results
@@ -216,7 +216,7 @@
         failed_when: false
         check_mode: false
         register: amzn2023cis_6_1_11_audit
-        loop: "{{ ansible_mounts }}"
+        loop: "{{ ansible_facts.mounts }}"
         loop_control:
             label: "{{ item.mount }}"
         when:
@@ -243,7 +243,7 @@
         failed_when: false
         changed_when: false
         register: amzn2023cis_6_1_11_audit
-        loop: "{{ ansible_mounts }}"
+        loop: "{{ ansible_facts.mounts }}"
         loop_control:
             label: "{{ item.mount }}"
         when:
@@ -291,7 +291,7 @@
         failed_when: false
         changed_when: false
         register: amzn2023cis_6_1_12_suid_perms
-        loop: "{{ ansible_mounts }}"
+        loop: "{{ ansible_facts.mounts }}"
         loop_control:
             label: "{{ item.mount }}"
 
@@ -314,7 +314,7 @@
         failed_when: false
         changed_when: false
         register: amzn2023cis_6_1_12_sgid_perms
-        loop: "{{ ansible_mounts }}"
+        loop: "{{ ansible_facts.mounts }}"
         loop_control:
             label: "{{ item.mount }}"
 

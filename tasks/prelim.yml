@@ -15,14 +15,7 @@
   ansible.builtin.include_tasks:
       file: parse_etc_password.yml
   tags:
-      - rule_5.5.2
-      - rule_5.6.2
-      - rule_6.2.9
-      - rule_6.2.10
-      - rule_6.2.11
-      - amzn2023cis_section5
-      - amzn2023cis_section6
-      - level1-server
+      - always
 
 - name: "PRELIM | Interactive User accounts"
   ansible.builtin.shell: 'cat /etc/passwd | grep -Ev "nologin|/sbin" | cut -d: -f6'
@@ -93,7 +86,7 @@
 
 - name: "PRELIM | Section 1.1 | Create list of mount points"
   ansible.builtin.set_fact:
-      mount_names: "{{ ansible_mounts | map(attribute='mount') | list }}"
+      mount_names: "{{ ansible_facts.mounts | map(attribute='mount') | list }}"
   tags:
       - level1-server
 
@@ -132,6 +125,8 @@
       state: latest
   when:
       - amzn2023cis_rule_1_2_4
+  tags:
+      - always
 
 - name: "PRELIM | Section 4.1 | Configure cron"
   ansible.builtin.package:
