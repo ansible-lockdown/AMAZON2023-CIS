@@ -208,6 +208,16 @@
       - rule_5.2.4.6
       - rule_5.2.4.7
 
+- name: "PRELIM | Install authselect"
+  ansible.builtin.package:
+      name: authselect
+      state: present
+  become: true
+  when:
+      - "authselect" not in ansible_facts.packages
+  tags:
+      - always
+
 - name: "PRELIM | 4.3.4 | Find all sudoers files."
   ansible.builtin.shell: "find /etc/sudoers /etc/sudoers.d/ -type f ! -name '*~' ! -name '*.*'"
   changed_when: false
