@@ -214,7 +214,7 @@
       state: present
   become: true
   when:
-      - "authselect" not in ansible_facts.packages
+      - '"authselect" not in ansible_facts.packages'
   tags:
       - always
 
