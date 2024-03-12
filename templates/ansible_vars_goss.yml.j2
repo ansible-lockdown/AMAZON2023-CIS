@@ -6,10 +6,10 @@
 benchmark_version: '1.0.0'
 
 # If run via script this is discovered and set
-host_os_distribution: {{ ansible_distribution | lower }}
+host_os_distribution: {{ ansible_facts.distribution | lower }}
 
 #  timeout for each command to run where set - default = 10seconds/10000ms
-timeout_ms: 60000
+timeout_ms: {{ audit_cmd_timeout }}
 amzn2023cis_run_heavy_tests: {{ audit_run_heavy_tests }}
 
 amzn2023cis_section1: {{ amzn2023cis_section1 }}
