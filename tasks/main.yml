@@ -43,7 +43,7 @@
 - name: Setup rules if container
   when:
       - ansible_connection == 'docker' or
-        ansible_virtualization_type in ["docker", "lxc", "openvz", "podman", "container"]
+        ansible_facts.virtualization_type in ["docker", "lxc", "openvz", "podman", "container"]
   block:
       - name: Discover and set container variable if required
         ansible.builtin.set_fact:
