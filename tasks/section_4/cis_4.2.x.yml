@@ -353,7 +353,7 @@
   ansible.builtin.lineinfile:
       path: "{{ item.path }}"
       regexp: '^(#)?MaxAuthTries \d'
-      line: 'MaxAuthTries 4'
+      line: 'MaxAuthTries {{ amzn2023cis_ssh_maxsauthtries }}'
       validate: sshd -t -f %s
   with_items:
       - "{{ sshd_d_conf_files.files }}"
