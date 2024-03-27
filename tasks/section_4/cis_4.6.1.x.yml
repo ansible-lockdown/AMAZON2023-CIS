@@ -82,19 +82,19 @@
             regexp: '^PASS_WARN_AGE'
             line: "PASS_WARN_AGE {{ amzn2023cis_pass['warn_age'] }}"
 
-      - name: "4.6.1.3 | AUDIT | Ensure password expiration warning days is 7 or more | Get existing users PASS_MIN_DAYS"
-        ansible.builtin.shell: "awk -F: '/^[^:]+:[^!*]/ && $6< {{ amzn2023cis_pass['warn_days'] }} {print $1}' /etc/shadow"
+      - name: "4.6.1.3 | AUDIT | Ensure password expiration warning days is 7 or more | Get existing users WARN_DAYS"
+        ansible.builtin.shell: "awk -F: '/^[^:]+:[^!*]/ && $6< {{ amzn2023cis_pass['warn_age'] }} {print $1}' /etc/shadow"
         changed_when: false
         failed_when: false
         register: discovered_warn_days
 
-      - name: "4.6.1.3 | PATCH | Ensure password expiration warning days is 7 or more | Set existing users PASS_WARN_DAYS"
-        ansible.builtin.shell: "chage --warndays {{ amzn2023cis_pass['warn_days'] }} {{ item }}"
+      - name: "4.6.1.3 | PATCH | Ensure password expiration warning days is 7 or more | Set existing users WARN_DAYS"
+        ansible.builtin.shell: "chage --warndays {{ amzn2023cis_pass['warn_age'] }} {{ item }}"
         loop: "{{ discovered_warn_days.stdout_lines }}"
         when:
             - discovered_warn_days.stdout_lines | length > 0
             - item in discovered_interactive_usernames.stdout
-            - amzn2023cis_force_user_warndays
+            - amzn2023cis_force_user_warnage
   when:
       - amzn2023cis_rule_4_6_1_3
   tags:

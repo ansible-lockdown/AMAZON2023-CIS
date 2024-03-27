@@ -968,7 +968,7 @@ amzn2023cis_force_user_maxdays: false
 amzn2023cis_force_user_mindays: false
 
 # 4.6.1.3 Allow the interactive users not in compliance to force the warndays change
-amzn2023cis_force_user_warndays: false
+amzn2023cis_force_user_warnage: false
 
 ## Control 4.6.1.4 - Ensure inactive password lock is 30 days or less
 amzn2023cis_inactivelock:
