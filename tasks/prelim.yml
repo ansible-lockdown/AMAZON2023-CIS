@@ -2,25 +2,34 @@
 
 # Preliminary tasks that should always be run
 # List users in order to look files inside each home directory
-- name: "PRELIM | List users accounts"
-  ansible.builtin.shell: "awk -F: '{print $1}' /etc/passwd"
-  changed_when: false
-  check_mode: false
-  register: users
+
+- name: "PRELIM | AUDIT | Interactive Users"
   tags:
-      - level1-server
-      - users
+      - always
+  ansible.builtin.shell: >
+      grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '(!index($7, "sbin/nologin") && $7 != "/bin/nologin" && $7 != "/bin/false") { print $1 }'
+  changed_when: false
+  register: discovered_interactive_usernames
+
+- name: "PRELIM | AUDIT | Interactive User accounts home directories"
+  tags:
+      - always
+  ansible.builtin.shell: >
+      grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '(!index($7, "sbin/nologin") && $7 != "/bin/nologin" && $7 != "/bin/false") { print $6 }'
+  changed_when: false
+  register: discovered_interactive_users_home
+
+- name: "PRELIM | AUDIT | Interactive UIDs"
+  tags:
+      - always
+  ansible.builtin.shell: >
+      grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '(!index($7, "sbin/nologin") && $7 != "/bin/nologin" && $7 != "/bin/false") { print $3 }'
+  changed_when: false
+  register: discovered_interactive_uids
 
 - name: "PRELIM | capture /etc/password variables"
   ansible.builtin.include_tasks:
       file: parse_etc_password.yml
-  tags:
-      - always
-
-- name: "PRELIM | Interactive User accounts"
-  ansible.builtin.shell: 'cat /etc/passwd | grep -Ev "nologin|/sbin" | cut -d: -f6'
-  changed_when: false
-  register: interactive_users_home
   tags:
       - always
 
