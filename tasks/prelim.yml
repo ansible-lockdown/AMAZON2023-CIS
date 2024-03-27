@@ -2,25 +2,34 @@
 
 # Preliminary tasks that should always be run
 # List users in order to look files inside each home directory
-- name: "PRELIM | List users accounts"
-  ansible.builtin.shell: "awk -F: '{print $1}' /etc/passwd"
-  changed_when: false
-  check_mode: false
-  register: users
+
+- name: "PRELIM | AUDIT | Interactive Users"
   tags:
-      - level1-server
-      - users
+      - always
+  ansible.builtin.shell: >
+      grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '(!index($7, "sbin/nologin") && $7 != "/bin/nologin" && $7 != "/bin/false") { print $1 }'
+  changed_when: false
+  register: discovered_interactive_usernames
+
+- name: "PRELIM | AUDIT | Interactive User accounts home directories"
+  tags:
+      - always
+  ansible.builtin.shell: >
+      grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '(!index($7, "sbin/nologin") && $7 != "/bin/nologin" && $7 != "/bin/false") { print $6 }'
+  changed_when: false
+  register: discovered_interactive_users_home
+
+- name: "PRELIM | AUDIT | Interactive UIDs"
+  tags:
+      - always
+  ansible.builtin.shell: >
+      grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '(!index($7, "sbin/nologin") && $7 != "/bin/nologin" && $7 != "/bin/false") { print $3 }'
+  changed_when: false
+  register: discovered_interactive_uids
 
 - name: "PRELIM | capture /etc/password variables"
   ansible.builtin.include_tasks:
       file: parse_etc_password.yml
-  tags:
-      - always
-
-- name: "PRELIM | Interactive User accounts"
-  ansible.builtin.shell: 'cat /etc/passwd | grep -Ev "nologin|/sbin" | cut -d: -f6'
-  changed_when: false
-  register: interactive_users_home
   tags:
       - always
 
@@ -175,6 +184,31 @@
   tags:
       - always
 
+- name: "PRELIM | 4.3.4 | Find all sudoers files."
+  ansible.builtin.shell: "find /etc/sudoers /etc/sudoers.d/ -type f ! -name '*~' ! -name '*.*'"
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  register: amzn2023cis_sudoers_files
+  when:
+      - amzn2023cis_rule_4_3_4
+  tags:
+      - rule_4.3.4
+      - sudo
+      - patch
+
+- name: "PRELIM | 4.4.x | Install authselect"
+  ansible.builtin.package:
+      name: authselect
+      state: present
+  become: true
+  when:
+      - '"authselect" not in ansible_facts.packages'
+      - amzn2023cis_rule_4_4_1
+      - amzn2023cis_rule_4_4_2
+  tags:
+      - always
+
 - name: "PRELIM | Section 5.2 | Configure System Accounting (auditd)"
   ansible.builtin.package:
       name: audit
@@ -207,19 +241,6 @@
       - rule_5.2.4.5
       - rule_5.2.4.6
       - rule_5.2.4.7
-
-- name: "PRELIM | 4.3.4 | Find all sudoers files."
-  ansible.builtin.shell: "find /etc/sudoers /etc/sudoers.d/ -type f ! -name '*~' ! -name '*.*'"
-  changed_when: false
-  failed_when: false
-  check_mode: false
-  register: amzn2023cis_sudoers_files
-  when:
-      - amzn2023cis_rule_4_3_4
-  tags:
-      - rule_4.3.4
-      - sudo
-      - patch
 
 - name: "PRELIM | Discover Interactive UID MIN and MIN from logins.def"
   block:

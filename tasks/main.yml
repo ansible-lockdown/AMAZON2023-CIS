@@ -2,12 +2,12 @@
 # tasks file for AMAZON2023
 
 - name: Check OS version and family
-  when:
-      - os_check
   ansible.builtin.assert:
       that: (ansible_facts.distribution == 'Amazon' and ansible_facts.distribution_major_version is version_compare('2023', '=='))
       fail_msg: "This role can only be run against Supported OSs. {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }} is not supported."
       success_msg: "This role is running against a supported OS {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }}"
+  when:
+      - os_check
   tags:
       - always
 
@@ -42,8 +42,8 @@
 
 - name: Setup rules if container
   when:
-      - ansible_connection == 'docker' or
-        ansible_facts.virtualization_type in ["docker", "lxc", "openvz", "podman", "container"]
+      - ansible_connection == 'docker' or ( ansible_virtualization_type is defined and
+        ansible_virtualization_type in ["docker", "lxc", "openvz", "podman", "container"])
   block:
       - name: Discover and set container variable if required
         ansible.builtin.set_fact:
