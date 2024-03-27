@@ -63,7 +63,7 @@
 - name: "5.2.4.5 | PATCH | Ensure audit configuration files are 640 or more restrictive"
   ansible.builtin.file:
       path: "{{ item.path }}"
-      mode: g-rx,o-rwx
+      mode: g-wx,o-rwx
   loop: "{{ auditd_conf_files.files | default([]) }}"
   loop_control:
       label: "{{ item.path }}"
