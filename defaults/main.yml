@@ -860,8 +860,8 @@ amzn2023cis_ssh_loglevel: INFO
 
 ## Control 4.2.16 - Ensure SSH MaxAuthTries is set to 4 or less
 # This variable contains the maximum number of authentication attempts permitted
-# per connection. This number should be 10 or less.
-amzn2023cis_ssh_maxsauthtries: 4
+# per connection. This number should be 4 or less.
+amzn2023cis_ssh_maxauthtries: 4
 
 ## Control 4.2.18 - Ensure SSH MaxSessions is set to 10 or less
 # This variable contains the maximum number of open sessions permitted
