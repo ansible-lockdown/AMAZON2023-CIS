@@ -184,6 +184,31 @@
   tags:
       - always
 
+- name: "PRELIM | 4.3.4 | Find all sudoers files."
+  ansible.builtin.shell: "find /etc/sudoers /etc/sudoers.d/ -type f ! -name '*~' ! -name '*.*'"
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  register: amzn2023cis_sudoers_files
+  when:
+      - amzn2023cis_rule_4_3_4
+  tags:
+      - rule_4.3.4
+      - sudo
+      - patch
+
+- name: "PRELIM | 4.4.x | Install authselect"
+  ansible.builtin.package:
+      name: authselect
+      state: present
+  become: true
+  when:
+      - '"authselect" not in ansible_facts.packages'
+      - rule_4.4.1
+      - rule_4.4.2
+  tags:
+      - always
+
 - name: "PRELIM | Section 5.2 | Configure System Accounting (auditd)"
   ansible.builtin.package:
       name: audit
@@ -216,19 +241,6 @@
       - rule_5.2.4.5
       - rule_5.2.4.6
       - rule_5.2.4.7
-
-- name: "PRELIM | 4.3.4 | Find all sudoers files."
-  ansible.builtin.shell: "find /etc/sudoers /etc/sudoers.d/ -type f ! -name '*~' ! -name '*.*'"
-  changed_when: false
-  failed_when: false
-  check_mode: false
-  register: amzn2023cis_sudoers_files
-  when:
-      - amzn2023cis_rule_4_3_4
-  tags:
-      - rule_4.3.4
-      - sudo
-      - patch
 
 - name: "PRELIM | Discover Interactive UID MIN and MIN from logins.def"
   block:

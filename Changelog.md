@@ -2,15 +2,21 @@
 
 ## 1.0.1
 
-- #59 thanks to @DianaMariaDDM
-- #62 thanks to @DianaMariaDDM
-  - extended with new options to force changes for 4.6.1.1|2|3 default false
-    - amzn2023cis_force_user_maxdays
-    - amzn2023cis_force_user_mindays
-    - amzn2023cis_force_user_warndays
+- thanks to @DianaMariaDDM
+  - #59
+  - #60
+  - #61
+  - #62
+
+- #64 thanks to @tom-henderson
+
+- extended with new options to force changes for 4.6.1.1|2|3 default false
+  - amzn2023cis_force_user_maxdays
+  - amzn2023cis_force_user_mindays
+  - amzn2023cis_force_user_warndays
 
 - pre-commit updates
-- #63 thanks to @tom-henderson
+
 - general tidy up
 
 ## 1.0 Multiple changes
