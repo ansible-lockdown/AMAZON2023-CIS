@@ -204,8 +204,8 @@
   become: true
   when:
       - '"authselect" not in ansible_facts.packages'
-      - rule_4.4.1
-      - rule_4.4.2
+      - rule_4_4_1
+      - rule_4_4_2
   tags:
       - always
 
