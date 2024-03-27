@@ -317,7 +317,7 @@
             etype: group
             permissions: rx
             state: present
-        loop: "{{ interactive_users_home.stdout_lines }}"
+        loop: "{{ discovered_interactive_users_home.stdout_lines }}"
         when: not system_is_container
 
       - name: "6.2.10 | PATCH | Ensure local interactive user home directories exist | Set other ACL"
@@ -327,7 +327,7 @@
             etype: other
             permissions: 0
             state: present
-        loop: "{{ interactive_users_home.stdout_lines }}"
+        loop: "{{ discovered_interactive_users_home.stdout_lines }}"
         when: not system_is_container
   when:
       - amzn2023cis_rule_6_2_10
@@ -368,9 +368,9 @@
             path: "{{ item }}"
             state: absent
         loop:
-            - "{{ interactive_users_home.stdout_lines }}/.netrc"
-            - "{{ interactive_users_home.stdout_lines }}/.rhosts"
-            - "{{ interactive_users_home.stdout_lines }}/.forward"
+            - "{{ discovered_interactive_users_home.stdout_lines }}/.netrc"
+            - "{{ discovered_interactive_users_home.stdout_lines }}/.rhosts"
+            - "{{ discovered_interactive_users_home.stdout_lines }}/.forward"
         when: amzn2023cis_remove_other_dot_files
 
   when:
