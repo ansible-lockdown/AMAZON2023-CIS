@@ -33,7 +33,7 @@
       fstype: "{{ item.fstype }}"
       state: present
       opts: defaults,{% if amzn2023cis_rule_1_1_4_2 %}noexec,{% endif %}{% if amzn2023cis_rule_1_1_4_3 %}nosuid,{% endif %}{% if amzn2023cis_rule_1_1_4_4 %}nodev{% endif %}
-  loop: "{{ ansible_mounts }}"
+  loop: "{{ ansible_facts.mounts }}"
   loop_control:
       label: "{{ item.device }}"
   notify: Change_requires_reboot

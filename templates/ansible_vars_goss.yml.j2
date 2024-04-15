@@ -6,11 +6,11 @@
 benchmark_version: '1.0.0'
 
 # If run via script this is discovered and set
-host_os_distribution: {{ ansible_distribution | lower }}
+host_os_distribution: {{ ansible_facts.distribution | lower }}
 
 #  timeout for each command to run where set - default = 10seconds/10000ms
-timeout_ms: 60000
-amzn2023cis_run_heavy_tests: {{ amzn2023cis_run_heavy_tests }}
+timeout_ms: {{ audit_cmd_timeout }}
+amzn2023cis_run_heavy_tests: {{ audit_run_heavy_tests }}
 
 amzn2023cis_section1: {{ amzn2023cis_section1 }}
 amzn2023cis_section2: {{ amzn2023cis_section2 }}
@@ -463,33 +463,20 @@ amzn2023cis_sugroup: {{ amzn2023cis_sugroup }}
 
 ## Section 5
 
+amzn2023cis_system_is_log_server: {{ amzn2023cis_system_is_log_server }}
 
-## Set if host is a logserver
+## syslog
+amzn2023cis_is_syslog_server: {{ amzn2023cis_system_is_log_server }}
+amzn2023cis_syslog_service: "{{ amzn2023cis_syslog_service }}"
 amzn2023cis_remote_log_server: {{ amzn2023cis_remote_log_server }}
 
-# Remote logserver settings
+#### remote and destination log server name
 amzn2023cis_remote_log_host: {{ amzn2023cis_remote_log_host }}
 amzn2023cis_remote_log_port: {{ amzn2023cis_remote_log_port }}
 amzn2023cis_remote_log_protocol: {{ amzn2023cis_remote_log_protocol }}
 amzn2023cis_remote_log_retrycount: {{ amzn2023cis_remote_log_retrycount }}
 amzn2023cis_remote_log_queuesize: {{ amzn2023cis_remote_log_queuesize }}
 
-## syslog
-amzn2023cis_is_syslog_server: {{ amzn2023cis_system_is_log_server }}
-amzn2023cis_syslog_service: "{{ amzn2023cis_syslog_service }}"
-amzn2023cis_remote_log_server: "{{ amzn2023cis_remote_log_server }}"
-
-#### remote and destination log server name
-amzn2023cis_remote_log_server: false
-amzn2023cis_remote_log_host: logagg.example.com
-amzn2023cis_remote_log_port: 514
-amzn2023cis_remote_log_protocol: tcp
-amzn2023cis_remote_log_retrycount: 100
-amzn2023cis_remote_log_queuesize: 1000
-
-amzn2023cis_system_is_log_server: {{ amzn2023cis_system_is_log_server }}
-
-#
 # amzn2023cis_journal_upload_url is the ip address to upload the journal entries to
 amzn2023cis_journal_upload_url: 192.168.50.42
 

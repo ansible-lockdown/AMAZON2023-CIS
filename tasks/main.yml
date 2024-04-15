@@ -2,12 +2,12 @@
 # tasks file for AMAZON2023
 
 - name: Check OS version and family
+  ansible.builtin.assert:
+      that: (ansible_facts.distribution == 'Amazon' and ansible_facts.distribution_major_version is version_compare('2023', '=='))
+      fail_msg: "This role can only be run against Supported OSs. {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }} is not supported."
+      success_msg: "This role is running against a supported OS {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }}"
   when:
       - os_check
-  ansible.builtin.assert:
-      that: (ansible_distribution == 'Amazon' and ansible_distribution_major_version is version_compare('2023', '=='))
-      fail_msg: "This role can only be run against Supported OSs. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
-      success_msg: "This role is running against a supported OS {{ ansible_distribution }} {{ ansible_distribution_major_version }}"
   tags:
       - always
 
@@ -31,7 +31,7 @@
       - name: Ensure root password is set
         ansible.builtin.assert:
             that: root_passwd_set.rc == 0
-            fail_msg: "You have rule 5.6.6 enabled this requires that you have a root password set"
+            fail_msg: "You have rule 4.6.6 enabled this requires that you have a root password set"
             success_msg: "You have a root password set"
   tags:
       - level1-server
@@ -42,8 +42,8 @@
 
 - name: Setup rules if container
   when:
-      - ansible_connection == 'docker' or
-        ansible_virtualization_type in ["docker", "lxc", "openvz", "podman", "container"]
+      - ansible_connection == 'docker' or ( ansible_virtualization_type is defined and
+        ansible_virtualization_type in ["docker", "lxc", "openvz", "podman", "container"])
   block:
       - name: Discover and set container variable if required
         ansible.builtin.set_fact:
@@ -92,13 +92,22 @@
       - prelim_tasks
       - always
 
-- name: Run pre_remediation audit
+- name: Include audit specific variables
   when:
+      - run_audit or audit_only
+      - setup_audit
+  tags:
+      - setup_audit
       - run_audit
-  ansible.builtin.include_tasks:
-      file: pre_remediation_audit.yml
+  ansible.builtin.include_vars: audit.yml
+
+- name: Include pre-remediation audit tasks
+  when:
+      - run_audit or audit_only
+      - setup_audit
   tags:
       - run_audit
+  ansible.builtin.import_tasks: pre_remediation_audit.yml
 
 - name: Run Section 1 tasks
   when:

@@ -1,6 +1,6 @@
 ---
 
-- name: "4.2.1 | Ensure permissions on /etc/ssh/sshd_config are configured"
+- name: "4.2.1 | PATCH | Ensure permissions on /etc/ssh/sshd_config are configured"
   ansible.builtin.file:
       path: "/etc/ssh/sshd_config"
       owner: root
@@ -125,10 +125,13 @@
 
 - name: "4.2.5 | PATCH | Ensure SSH LogLevel is appropriate"
   ansible.builtin.lineinfile:
-      path: "{{ amzn2023cis_sshd_config_file }}"
+      path: "{{ item.path }}"
       regexp: "^#LogLevel|^LogLevel"
       line: 'LogLevel {{ amzn2023cis_ssh_loglevel }}'
       validate: sshd -t -f %s
+  with_items:
+      - "{{ sshd_d_conf_files.files }}"
+      - "{{ main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_5
   tags:
@@ -142,10 +145,13 @@
 
 - name: "4.2.6 | PATCH | Ensure SSH PAM is enabled"
   ansible.builtin.lineinfile:
-      path: "{{ amzn2023cis_sshd_config_file }}"
+      path: "{{ item.path }}"
       regexp: "^#UsePAM|^UsePAM"
       line: 'UsePAM yes'
       validate: sshd -t -f %s
+  with_items:
+      - "{{ sshd_d_conf_files.files }}"
+      - "{{ main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_6
   tags:
@@ -161,10 +167,13 @@
 
 - name: "4.2.7 | PATCH | Ensure SSH root login is disabled"
   ansible.builtin.lineinfile:
-      path: "{{ amzn2023cis_sshd_config_file }}"
+      path: "{{ item.path }}"
       regexp: "^#PermitRootLogin|^PermitRootLogin"
       line: 'PermitRootLogin no'
       validate: sshd -t -f %s
+  with_items:
+      - "{{ sshd_d_conf_files.files }}"
+      - "{{ main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_7
   tags:
@@ -176,10 +185,13 @@
 
 - name: "4.2.8 | PATCH | Ensure SSH HostbasedAuthentication is disabled"
   ansible.builtin.lineinfile:
-      path: "{{ amzn2023cis_sshd_config_file }}"
+      path: "{{ item.path }}"
       regexp: "^#HostbasedAuthentication|^HostbasedAuthentication"
       line: 'HostbasedAuthentication no'
       validate: sshd -t -f %s
+  with_items:
+      - "{{ sshd_d_conf_files.files }}"
+      - "{{ main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_8
   tags:
@@ -195,10 +207,13 @@
 
 - name: "4.2.9 | PATCH | Ensure SSH PermitEmptyPasswords is disabled"
   ansible.builtin.lineinfile:
-      path: "{{ amzn2023cis_sshd_config_file }}"
+      path: "{{ item.path }}"
       regexp: "^#PermitEmptyPasswords|^PermitEmptyPasswords"
       line: 'PermitEmptyPasswords no'
       validate: sshd -t -f %s
+  with_items:
+      - "{{ sshd_d_conf_files.files }}"
+      - "{{ main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_9
   tags:
@@ -214,10 +229,13 @@
 
 - name: "4.2.10 | PATCH | Ensure SSH PermitUserEnvironment is disabled"
   ansible.builtin.lineinfile:
-      path: "{{ amzn2023cis_sshd_config_file }}"
+      path: "{{ item.path }}"
       regexp: "^#PermitUserEnvironment|^PermitUserEnvironment"
       line: 'PermitUserEnvironment no'
       validate: sshd -t -f %s
+  with_items:
+      - "{{ sshd_d_conf_files.files }}"
+      - "{{ main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_10
   tags:
@@ -252,10 +270,13 @@
 
 - name: "4.2.12 | PATCH | Ensure SSH X11 forwarding is disabled"
   ansible.builtin.lineinfile:
-      path: "{{ amzn2023cis_sshd_config_file }}"
+      path: "{{ item.path }}"
       regexp: "^#X11Forwarding|^X11Forwarding"
       line: 'X11Forwarding no'
       validate: sshd -t -f %s
+  with_items:
+      - "{{ sshd_d_conf_files.files }}"
+      - "{{ main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_12
   tags:
@@ -267,10 +288,13 @@
 
 - name: "4.2.13 | PATCH | Ensure SSH AllowTcpForwarding is disabled"
   ansible.builtin.lineinfile:
-      path: "{{ amzn2023cis_sshd_config_file }}"
+      path: "{{ item.path }}"
       regexp: "^#AllowTcpForwarding|^AllowTcpForwarding"
       line: 'AllowTcpForwarding no'
       validate: sshd -t -f %s
+  with_items:
+      - "{{ sshd_d_conf_files.files }}"
+      - "{{ main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_13
   tags:
@@ -327,10 +351,13 @@
 
 - name: "4.2.16 | PATCH | Ensure SSH MaxAuthTries is set to 4 or less"
   ansible.builtin.lineinfile:
-      path: "{{ amzn2023cis_sshd_config_file }}"
+      path: "{{ item.path }}"
       regexp: '^(#)?MaxAuthTries \d'
-      line: 'MaxAuthTries 4'
+      line: 'MaxAuthTries {{ amzn2023cis_ssh_maxauthtries }}'
       validate: sshd -t -f %s
+  with_items:
+      - "{{ sshd_d_conf_files.files }}"
+      - "{{ main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_16
   tags:
@@ -342,10 +369,13 @@
 
 - name: "4.2.17 | PATCH | Ensure SSH MaxStartups is configured"
   ansible.builtin.lineinfile:
-      path: "{{ amzn2023cis_sshd_config_file }}"
+      path: "{{ item.path }}"
       regexp: "^#MaxStartups|^MaxStartups"
       line: 'MaxStartups 10:30:60'
       validate: sshd -t -f %s
+  with_items:
+      - "{{ sshd_d_conf_files.files }}"
+      - "{{ main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_17
   tags:
@@ -361,10 +391,13 @@
 
 - name: "4.2.18 | PATCH | Ensure SSH MaxSessions is set to 10 or less"
   ansible.builtin.lineinfile:
-      path: "{{ amzn2023cis_sshd_config_file }}"
+      path: "{{ item.path }}"
       regexp: "^#MaxSessions|^MaxSessions"
       line: 'MaxSessions {{ amzn2023cis_ssh_maxsessions }}'
       validate: sshd -t -f %s
+  with_items:
+      - "{{ sshd_d_conf_files.files }}"
+      - "{{ main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_18
   tags:
@@ -380,10 +413,13 @@
 
 - name: "4.2.19 | PATCH | Ensure SSH LoginGraceTime is set to one minute or less"
   ansible.builtin.lineinfile:
-      path: "{{ amzn2023cis_sshd_config_file }}"
+      path: "{{ item.path }}"
       regexp: "^#LoginGraceTime|^LoginGraceTime"
       line: "LoginGraceTime {{ amzn2023cis_sshd['logingracetime'] }}"
       validate: sshd -t -f %s
+  with_items:
+      - "{{ sshd_d_conf_files.files }}"
+      - "{{ main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_19
   tags:
@@ -397,17 +433,23 @@
   block:
       - name: "4.2.20 | PATCH | Ensure SSH Idle Timeout Interval is configured | Add line in sshd_config for ClientAliveInterval"
         ansible.builtin.lineinfile:
-            path: "{{ amzn2023cis_sshd_config_file }}"
+            path: "{{ item.path }}"
             regexp: '^ClientAliveInterval'
             line: "ClientAliveInterval {{ amzn2023cis_sshd['clientaliveinterval'] }}"
             validate: sshd -t -f %s
+        with_items:
+            - "{{ sshd_d_conf_files.files }}"
+            - "{{ main_sshd_cfg.stat }}"
 
       - name: "4.2.20 | PATCH | Ensure SSH Idle Timeout Interval is configured | Ensure SSH ClientAliveCountMax set to <= 3"
         ansible.builtin.lineinfile:
-            path: "{{ amzn2023cis_sshd_config_file }}"
+            path: "{{ item.path }}"
             regexp: '^ClientAliveCountMax'
             line: "ClientAliveCountMax {{ amzn2023cis_sshd['clientalivecountmax'] }}"
             validate: sshd -t -f %s
+        with_items:
+            - "{{ sshd_d_conf_files.files }}"
+            - "{{ main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_20
   tags:

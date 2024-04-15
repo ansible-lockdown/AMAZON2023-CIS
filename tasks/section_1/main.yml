@@ -54,7 +54,7 @@
       file: cis_1.5.x.yml
 
 - name: "SECTION | 1.6 | Mandatory Access Control"
-  ansible.builtin.include_tasks:
+  ansible.builtin.import_tasks:
       file: cis_1.6.1.x.yml
   when: not amzn2023cis_selinux_disable
 
@@ -67,5 +67,5 @@
       file: cis_1.8.yml
 
 - name: "SECTION | 1.9 | Crypto policies"
-  ansible.builtin.include_tasks:
+  ansible.builtin.import_tasks:
       file: cis_1.9.yml
