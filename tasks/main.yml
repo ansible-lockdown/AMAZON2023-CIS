@@ -162,7 +162,7 @@
       file: post_remediation_audit.yml
   tags:
       - run_audit
-      
+
 - name: Show Audit Summary
   when:
       - run_audit
