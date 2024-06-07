@@ -17,5 +17,5 @@ warn_count: 0
 
 gpg_key_package: "system-release"
 
-os_gpg_key_pubkey_name: gpg-pubkey-d832c631-63977702
+os_gpg_key_pubkey_name: gpg-pubkey-d832c631-6515c85e  # pragma: allowlist secret
 os_gpg_key_pubkey_content: "Amazon Linux <amazon-linux@amazon.com> d832c631"
