@@ -128,7 +128,7 @@ os_check: false
 - libselinux-python
 - pip packages
   - jmespath
-- collections found in collections/requirememnts.yml
+- collections found in collections/requirements.yml
 
 pre-commit is available if installed on your host for pull request testing.
 
