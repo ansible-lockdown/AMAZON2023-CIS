@@ -124,8 +124,7 @@ os_check: false
 
 - Python3
 - Ansible 2.10+
-- python-def
-- libselinux-python
+- python3-libselinux (installed in prereqs if required)
 - pip packages
   - jmespath
 - collections found in collections/requirements.yml
