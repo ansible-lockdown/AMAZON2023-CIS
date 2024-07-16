@@ -292,5 +292,6 @@
 - name: "PRELIM | Gather the package facts after prelim"
   ansible.builtin.package_facts:
       manager: auto
+  no_log: "{{ suppress_package_facts_logging | default(false) }}"
   tags:
       - always

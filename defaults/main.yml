@@ -1238,3 +1238,4 @@ audit_run_script_environment:
 #### Logging Configuration Settings ####
 # Set to true in order to supress the various tasks from logging
 suppress_package_facts_logging: false
+suppress_etc_passwd_logging: false
