@@ -1234,3 +1234,7 @@ audit_run_script_environment:
     AUDIT_BIN: "{{ audit_bin }}"
     AUDIT_FILE: 'goss.yml'
     AUDIT_CONTENT_LOCATION: "{{ audit_out_dir }}"
+
+#### Logging Configuration Settings ####
+# Set to true in order to supress the various tasks from logging
+suppress_package_facts_logging: false
