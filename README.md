@@ -124,11 +124,8 @@ os_check: false
 
 - Python3
 - Ansible 2.10+
-- python-def
-- libselinux-python
-- pip packages
-  - jmespath ( complete list found in requirements.txt)
-- collections found in collections/requirememnts.yml
+- python3-libselinux (installed in prereqs if required)
+- collections found in collections/requirements.yml
 
 pre-commit is available if installed on your host for pull request testing.
 
