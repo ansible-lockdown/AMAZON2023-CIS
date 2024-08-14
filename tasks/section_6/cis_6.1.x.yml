@@ -211,7 +211,7 @@
 - name: "6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist"
   block:
       - name: "6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Finding all unowned files or directories"
-        ansible.builtin.shell: find "{{ item.mount }}" -xdev -nouser
+        ansible.builtin.shell: find {{ item.mount }} -xdev -nouser -not -fstype nfs
         changed_when: false
         failed_when: false
         check_mode: false
@@ -234,11 +234,11 @@
 
       - name: "6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Displaying any unowned files or directories"
         ansible.builtin.debug:
-            msg: "Warning!! Missing owner on items in {{ amzn2023cis_6_1_11_audit | json_query('results[*].stdout_lines[*]') | flatten }}"  # noqa jinja[invalid]
+            msg: "Warning!! Missing owner on items in {{ amzn2023cis_6_1_11_audit.results | map(attribute='stdout_lines') | flatten }}"  # noqa jinja[invalid]
         when: amzn2023cis_6_1_11_unowned_files_found
 
       - name: "6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Finding all ungrouped files or directories"
-        ansible.builtin.shell: find "{{ item.mount }}" -xdev -nogroup
+        ansible.builtin.shell: find {{ item.mount }} -xdev -nogroup -not -fstype nfs
         check_mode: false
         failed_when: false
         changed_when: false
@@ -261,7 +261,7 @@
 
       - name: "6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Displaying all ungrouped files or directories"
         ansible.builtin.debug:
-            msg: "Warning!! Missing group on items in {{ amzn2023cis_6_1_11_audit | json_query('results[*].stdout_lines[*]') | flatten }}"  # noqa jinja[invalid]
+            msg: "Warning!! Missing group on items in {{ amzn2023cis_6_1_11_audit.results | map(attribute='stdout_lines') | flatten }}"  # noqa jinja[invalid]
         when: amzn2023cis_6_1_11_ungrouped_files_found
 
       - name: "6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist | warning"
@@ -306,7 +306,7 @@
 
       - name: "6.1.12 | AUDIT | Ensure SUID and SGID files are reviewed | Alert SUID exist"
         ansible.builtin.debug:
-            msg: "Warning!! SUID set on items in {{ amzn2023cis_6_1_12_suid_perms | json_query('results[*].stdout_lines[*]') | flatten }}"  # noqa jinja[invalid]
+            msg: "Warning!! SUID set on items in {{ amzn2023cis_6_1_12_suid_perms.results | map(attribute='stdout_lines') | flatten }}"  # noqa jinja[invalid]
         when: amzn2023cis_6_1_12_suid_found
 
       - name: "6.1.12 | AUDIT | Ensure SUID and SGID files are reviewed | Find all SGID executables"
@@ -329,7 +329,7 @@
 
       - name: "6.1.12 | AUDIT | Ensure SUID and SGID files are reviewed | Alert SGID exist"
         ansible.builtin.debug:
-            msg: "Warning!! SGID set on items in {{ amzn2023cis_6_1_12_sgid_perms | json_query('results[*].stdout_lines[*]') | flatten }}"  # noqa jinja[invalid]
+            msg: "Warning!! SGID set on items in {{ amzn2023cis_6_1_12_sgid_perms.results | map(attribute='stdout_lines') | flatten }}"  # noqa jinja[invalid]
         when: amzn2023cis_6_1_12_sgid_found
 
       - name: "6.1.12 | AUDIT | Ensure SUID and SGID files are reviewed | Alert SUID/SGID exist | warning"
