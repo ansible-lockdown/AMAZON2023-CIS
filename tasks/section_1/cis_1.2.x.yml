@@ -110,7 +110,7 @@
   when:
       - amzn2023cis_rule_1_2_4
   tags:
-      - level1-server
+      - level2-server
       - manual
       - audit
       - rule_1.2.4
