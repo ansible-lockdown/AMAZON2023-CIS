@@ -234,7 +234,7 @@
 
       - name: "6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Displaying any unowned files or directories"
         ansible.builtin.debug:
-            msg: "Warning!! Missing owner on items in {{ amzn2023cis_6_1_11_audit.results | map(attribute='stdout_lines') | flatten }}"  # noqa jinja[invalid]
+            msg: "Warning!! Missing owner on items in {{ amzn2023cis_6_1_11_audit.results | map(attribute='stdout_lines', default=[]) | flatten }}"  # noqa jinja[invalid]
         when: amzn2023cis_6_1_11_unowned_files_found
 
       - name: "6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Finding all ungrouped files or directories"
@@ -261,7 +261,7 @@
 
       - name: "6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Displaying all ungrouped files or directories"
         ansible.builtin.debug:
-            msg: "Warning!! Missing group on items in {{ amzn2023cis_6_1_11_audit.results | map(attribute='stdout_lines') | flatten }}"  # noqa jinja[invalid]
+            msg: "Warning!! Missing group on items in {{ amzn2023cis_6_1_11_audit.results | map(attribute='stdout_lines', default=[]) | flatten }}"  # noqa jinja[invalid]
         when: amzn2023cis_6_1_11_ungrouped_files_found
 
       - name: "6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist | warning"
