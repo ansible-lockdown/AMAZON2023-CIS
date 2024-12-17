@@ -30,7 +30,7 @@
         ansible.builtin.template:
             src: "etc/modprobe.d/modprobe.conf.j2"
             dest: "/etc/modprobe.d/{{ item }}.conf"
-            mode: '0600'
+            mode: 'u-x,go-rwx'
             owner: root
             group: root
         loop:
@@ -42,7 +42,7 @@
             regexp: "^(#)?blacklist {{ protocol }}(\\s|$)"
             line: "blacklist {{ protocol }}"
             create: true
-            mode: '0600'
+            mode: 'u-x,go-rwx'
   vars:
       protocol: dccp
   when:
@@ -60,7 +60,7 @@
         ansible.builtin.template:
             src: "etc/modprobe.d/modprobe.conf.j2"
             dest: "/etc/modprobe.d/{{ item }}.conf"
-            mode: '0600'
+            mode: 'u-x,go-rwx'
             owner: root
             group: root
         loop:
@@ -72,7 +72,7 @@
             regexp: "^(#)?blacklist {{ protocol }}(\\s|$)"
             line: "blacklist {{ protocol }}"
             create: true
-            mode: '0600'
+            mode: 'u-x,go-rwx'
   vars:
       protocol: sctp
   when:
@@ -91,7 +91,7 @@
         ansible.builtin.template:
             src: "etc/modprobe.d/modprobe.conf.j2"
             dest: "/etc/modprobe.d/{{ item }}.conf"
-            mode: '0600'
+            mode: 'u-x,go-rwx'
             owner: root
             group: root
         loop:
@@ -103,7 +103,7 @@
             regexp: "^(#)?blacklist {{ protocol }}(\\s|$)"
             line: "blacklist {{ protocol }}"
             create: true
-            mode: '0600'
+            mode: 'u-x,go-rwx'
   vars:
       protocol: rds
   when:
@@ -121,7 +121,7 @@
         ansible.builtin.template:
             src: "etc/modprobe.d/modprobe.conf.j2"
             dest: "/etc/modprobe.d/{{ item }}.conf"
-            mode: '0600'
+            mode: 'u-x,go-rwx'
             owner: root
             group: root
         loop:
@@ -133,7 +133,7 @@
             regexp: "^(#)?blacklist {{ protocol }}(\\s|$)"
             line: "blacklist {{ protocol }}"
             create: true
-            mode: '0600'
+            mode: 'u-x,go-rwx'
   vars:
       protocol: tipc
   when:

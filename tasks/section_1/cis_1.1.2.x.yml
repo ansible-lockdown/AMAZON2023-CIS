@@ -62,7 +62,7 @@
       dest: /etc/systemd/system/tmp.mount
       owner: root
       group: root
-      mode: '0644'
+      mode: 'u-x,go-wx'
   notify: Systemd restart tmp.mount
   when:
       - amzn2023cis_tmp_svc

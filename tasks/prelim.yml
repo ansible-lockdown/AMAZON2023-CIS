@@ -173,7 +173,7 @@
       path: "{{ amzn2023cis_sshd_config_file }}"
       owner: root
       group: root
-      mode: '0600'
+      mode: 'u-x,o-rwx'
       state: touch
   when:
       - amzn2023cis_sshd_config_file != '/etc/ssh/sshd_config'

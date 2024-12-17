@@ -5,7 +5,7 @@
       path: "/etc/ssh/sshd_config"
       owner: root
       group: root
-      mode: '0600'
+      mode: 'u-x,go-rwx'
   when:
       - amzn2023cis_rule_4_2_1
   tags:
@@ -32,7 +32,7 @@
             path: "{{ item.path }}"
             owner: root
             group: root
-            mode: '0600'
+            mode: 'u-x,go-rwx'
         loop: "{{ amzn2023cis_4_2_2_ssh_private_host_key.files }}"
         loop_control:
             label: "{{ item.path }}"
@@ -62,7 +62,7 @@
             path: "{{ item.path }}"
             owner: root
             group: root
-            mode: '0644'
+            mode: 'u-x,go-wx'
         loop: "{{ amzn2023cis_4_2_3_ssh_public_host_key.files }}"
         loop_control:
             label: "{{ item.path }}"
