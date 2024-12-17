@@ -254,7 +254,7 @@
                   state: directory
                   owner: root
                   group: root
-                  mode: "0755"
+                  mode: 'u+x,go-w'
                   follow: false
               loop: "{{ root_path_perms.results }}"
               loop_control:
@@ -357,7 +357,7 @@
       - name: "6.2.11 | AUDIT | Ensure local interactive user dot files access is configured | update permissions"
         ansible.builtin.file:
             path: "{{ item.path }}"
-            mode: go-w
+            mode: 'go-w'
             follow: "{{ amzn2023cis_6_2_11_home_follow_symlinks }}"
         loop: "{{ user_dot_files.files }}"
         loop_control:

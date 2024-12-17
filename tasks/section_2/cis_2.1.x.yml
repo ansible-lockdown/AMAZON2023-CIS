@@ -22,7 +22,7 @@
             dest: /etc/chrony.d/chrony.conf
             owner: root
             group: root
-            mode: '0644'
+            mode: 'u-x,go-wx'
 
       - name: "2.1.2 | PATCH | Ensure chrony is configured | modify /etc/sysconfig/chronyd | 1"
         ansible.builtin.lineinfile:
@@ -30,7 +30,7 @@
             regexp: "^(#)?OPTIONS"
             line: "OPTIONS=\"-u chrony\""
             create: true
-            mode: '0644'
+            mode: 'u-x,go-wx'
   when:
       - amzn2023cis_rule_2_1_2
       - not system_is_container

@@ -5,7 +5,7 @@
       path: /etc/passwd
       owner: root
       group: root
-      mode: '0644'
+      mode: 'u-x,go-wx'
   when:
       - amzn2023cis_rule_6_1_1
   tags:
@@ -21,7 +21,7 @@
       path: /etc/passwd-
       owner: root
       group: root
-      mode: '0644'
+      mode: 'u-x,go-wx'
   when:
       - amzn2023cis_rule_6_1_2
   tags:
@@ -37,7 +37,7 @@
       path: /etc/group-
       owner: root
       group: root
-      mode: '0644'
+      mode: 'u-x,go-wx'
   when:
       - amzn2023cis_rule_6_1_3
   tags:
@@ -53,7 +53,7 @@
       path: /etc/group-
       owner: root
       group: root
-      mode: '0644'
+      mode: 'u-x,go-wx'
   when:
       - amzn2023cis_rule_6_1_4
   tags:
@@ -69,7 +69,7 @@
       path: /etc/shadow
       owner: root
       group: root
-      mode: '0000'
+      mode: 'ugo-rwx'
   when:
       - amzn2023cis_rule_6_1_5
   tags:
@@ -85,7 +85,7 @@
       path: /etc/shadow-
       owner: root
       group: root
-      mode: '0000'
+      mode: 'ugo-rwx'
   when:
       - amzn2023cis_rule_6_1_6
   tags:
@@ -101,7 +101,7 @@
       path: /etc/gshadow
       owner: root
       group: root
-      mode: '0000'
+      mode: 'ugo-rwx'
   when:
       - amzn2023cis_rule_6_1_7
   tags:
@@ -117,7 +117,7 @@
       path: /etc/gshadow-
       owner: root
       group: root
-      mode: '0000'
+      mode: 'ugo-rwx'
   when:
       - amzn2023cis_rule_6_1_8
   tags:
@@ -144,7 +144,7 @@
                   content: "{{ amzn2023cis_6_1_9_packages_rpm.stdout }}"
                   owner: root
                   group: root
-                  mode: '0640'
+                  mode: 'u-x,g-wx,o-rwx'
 
             - name: "6.1.9 | AUDIT | Audit system file permissions | Message out alert for package descrepancies"
               ansible.builtin.debug:
@@ -185,7 +185,7 @@
       - name: "6.1.10 | PATCH | Ensure world writable files and directories are secured | Adjust world-writable files if they exist (Configurable)"
         ansible.builtin.file:
             path: '{{ item }}'
-            mode: o-w
+            mode: 'o-w'
             state: touch
         loop: "{{ amzn2023cis_6_1_10_perms_results.stdout_lines }}"
         when:

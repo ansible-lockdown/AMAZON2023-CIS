@@ -22,7 +22,7 @@
       path: /etc/crontab
       owner: root
       group: root
-      mode: '0600'
+      mode: 'u-x,go-rwx'
   when:
       - amzn2023cis_rule_4_1_2
   tags:
@@ -39,7 +39,7 @@
       state: directory
       owner: root
       group: root
-      mode: '0700'
+      mode: 'u+x,go-rwx'
   when:
       - amzn2023cis_rule_4_1_3
   tags:
@@ -56,7 +56,7 @@
       state: directory
       owner: root
       group: root
-      mode: '0700'
+      mode: 'u+x,go-rwx'
   when:
       - amzn2023cis_rule_4_1_4
   tags:
@@ -73,7 +73,7 @@
       state: directory
       owner: root
       group: root
-      mode: '0700'
+      mode: 'u+x,go-rwx'
   when:
       - amzn2023cis_rule_4_1_5
   tags:
@@ -89,7 +89,7 @@
       state: directory
       owner: root
       group: root
-      mode: '0700'
+      mode: 'u+x,go-rwx'
   when:
       - amzn2023cis_rule_4_1_6
   tags:
@@ -105,7 +105,7 @@
       state: directory
       owner: root
       group: root
-      mode: '0700'
+      mode: 'u+x,go-rwx'
   when:
       - amzn2023cis_rule_4_1_7
   tags:
@@ -134,7 +134,7 @@
             state: '{{ "file" if  amzn2023cis_5_1_8_cron_allow_state.stat.exists else "touch" }}'
             owner: root
             group: root
-            mode: '0600'
+            mode: 'u-x,go-rwx'
   when:
       - amzn2023cis_rule_4_1_8
   tags:
@@ -163,7 +163,7 @@
             state: '{{ "file" if  amzn2023cis_5_1_9_at_allow_state.stat.exists else "touch" }}'
             owner: root
             group: root
-            mode: '0600'
+            mode: 'u-x,go-rwx'
   when:
       - amzn2023cis_rule_4_1_9
   tags:
