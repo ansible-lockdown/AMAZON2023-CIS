@@ -1,6 +1,6 @@
 ---
 
-- name: Amazon 2023 cis benchmark
+- name: Apply Amazon Linux 2023 CIS hardening
   hosts: all
   become: true
 
