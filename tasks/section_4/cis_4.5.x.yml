@@ -30,7 +30,7 @@
       - level1-server
       - patch
       - rule_4.5.1
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_IA-5
 
 - name: "4.5.2 | PATCH | Ensure lockout for failed password attempts is configured"
   block:
@@ -75,8 +75,8 @@
       - level1-server
       - patch
       - rule_4.5.2
-      - nist_sp800-53r5_AC-1
-      - nist_sp800-53r5_AC-2
+      - NIST800-53R5_AC-1
+      - NIST800-53R5_AC-2
 
 - name: "4.5.3 | PATCH | Ensure password reuse is limited | pwquality"
   ansible.builtin.lineinfile:
@@ -89,7 +89,7 @@
       - level1-server
       - patch
       - rule_4.5.3
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_IA-5
 
 - name: "4.5.4 | PATCH | Ensure password hashing algorithm is SHA-512"
   block:
@@ -122,4 +122,4 @@
       - level1-server
       - patch
       - rule_4.5.4
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_IA-5

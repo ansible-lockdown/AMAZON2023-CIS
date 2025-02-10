@@ -13,8 +13,8 @@
       - patch
       - nftables
       - rule_3.4.1.1
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_CA-9
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_CA-9
 
 - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use"
   block:

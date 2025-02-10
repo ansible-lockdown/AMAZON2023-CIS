@@ -31,7 +31,7 @@
       - patch
       - rule_1.1.1.1
       - squashfs
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "1.1.1.2 | PATCH | Ensure mounting of udf filesystems is disabled"
   block:
@@ -94,7 +94,7 @@
       - patch
       - rule_1.1.1.3
       - cramfs
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "1.1.1.4 | PATCH | Ensure mounting of freevxfs filesystems is disabled"
   block:
@@ -126,7 +126,7 @@
       - patch
       - rule_1.1.1.4
       - freevxfs
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "1.1.1.5 | PATCH | Ensure mounting of jffs2 filesystems is disabled"
   block:
@@ -158,7 +158,7 @@
       - patch
       - rule_1.1.1.5
       - jffs2
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "1.1.1.6 | PATCH | Ensure mounting of hfs filesystems is disabled"
   block:
@@ -190,7 +190,7 @@
       - patch
       - rule_1.1.1.6
       - hfs
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "1.1.1.7 | PATCH | Ensure mounting of hfsplus filesystems is disabled"
   block:
@@ -222,4 +222,4 @@
       - patch
       - rule_1.1.1.7
       - hfsplus
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7

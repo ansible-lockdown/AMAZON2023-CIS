@@ -22,7 +22,7 @@
       - audit
       - mounts
       - rule_1.1.8.1
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: |
        "1.1.8.2 | PATCH | Ensure nodev option set on /dev/shm partition | Set nodev option
@@ -46,5 +46,5 @@
       - rule_1.1.8.2
       - rule_1.1.8.3
       - rule_1.1.8.4
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2

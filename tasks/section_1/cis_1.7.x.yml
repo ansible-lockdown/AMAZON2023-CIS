@@ -14,7 +14,7 @@
       - banner
       - patch
       - rule_1.7.1
-      - nist_sp800-53r5_CM-3
+      - NIST800-53R5_CM-3
 
 - name: "1.7.2 | PATCH | Ensure local login warning banner is configured properly"
   block:
@@ -37,9 +37,9 @@
       - level1-server
       - patch
       - rule_1.7.2
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-3
-      - nist_sp800-53r5_CM-6
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-3
+      - NIST800-53R5_CM-6
 
 - name: "1.7.3 | PATCH | Ensure remote login warning banner is configured properly"
   block:
@@ -63,9 +63,9 @@
       - banner
       - patch
       - rule_1.7.3
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-3
-      - nist_sp800-53r5_CM-6
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-3
+      - NIST800-53R5_CM-6
 
 - name: "1.7.4 | PATCH | Ensure permissions on /etc/motd are configured"
   ansible.builtin.file:
@@ -80,8 +80,8 @@
       - perms
       - patch
       - rule_1.7.4
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "1.7.5 | PATCH | Ensure permissions on /etc/issue are configured"
   ansible.builtin.file:
@@ -96,8 +96,8 @@
       - perms
       - patch
       - rule_1.7.5
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "1.7.6 | PATCH | Ensure permissions on /etc/issue.net are configured"
   ansible.builtin.file:
@@ -112,5 +112,5 @@
       - perms
       - patch
       - rule_1.7.6
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2

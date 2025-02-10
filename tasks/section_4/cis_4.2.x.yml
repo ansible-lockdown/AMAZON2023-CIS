@@ -14,8 +14,8 @@
       - ssh
       - permissions
       - rule_4.2.1
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "4.2.2 | PATCH | Ensure permissions on SSH private host key files are configured"
   block:
@@ -44,8 +44,8 @@
       - ssh
       - permissions
       - rule_4.2.2
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "4.2.3 | PATCH | Ensure permissions on SSH public host key files are configured"
   block:
@@ -73,8 +73,8 @@
       - patch
       - ssh
       - rule_4.2.3
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "4.2.4 | PATCH | Ensure SSH access is limited"
   block:
@@ -120,8 +120,8 @@
       - patch
       - ssh
       - rule_4.2.4
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "4.2.5 | PATCH | Ensure SSH LogLevel is appropriate"
   ansible.builtin.lineinfile:
@@ -139,9 +139,9 @@
       - patch
       - sshs
       - rule_4.2.5
-      - nist_sp800-53r5_AU-2
-      - nist_sp800-53r5_AU-12
-      - nist_sp800-53r5_SI-5
+      - NIST800-53R5_AU-2
+      - NIST800-53R5_AU-12
+      - NIST800-53R5_SI-5
 
 - name: "4.2.6 | PATCH | Ensure SSH PAM is enabled"
   ansible.builtin.lineinfile:
@@ -159,11 +159,11 @@
       - patch
       - ssh
       - rule_4.2.6
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "4.2.7 | PATCH | Ensure SSH root login is disabled"
   ansible.builtin.lineinfile:
@@ -181,7 +181,7 @@
       - patch
       - ssh
       - rule_4.2.7
-      - nist_sp800-53r5_AC-6
+      - NIST800-53R5_AC-6
 
 - name: "4.2.8 | PATCH | Ensure SSH HostbasedAuthentication is disabled"
   ansible.builtin.lineinfile:
@@ -199,11 +199,11 @@
       - patch
       - ssh
       - rule_4.2.8
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "4.2.9 | PATCH | Ensure SSH PermitEmptyPasswords is disabled"
   ansible.builtin.lineinfile:
@@ -221,11 +221,11 @@
       - patch
       - ssh
       - rule_4.2.9
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "4.2.10 | PATCH | Ensure SSH PermitUserEnvironment is disabled"
   ansible.builtin.lineinfile:
@@ -243,11 +243,11 @@
       - patch
       - ssh
       - rule_4.2.10
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "4.2.11 | PATCH | Ensure SSH IgnoreRhosts is enabled"
   ansible.builtin.lineinfile:
@@ -262,11 +262,11 @@
       - patch
       - ssh
       - rule_4.2.11
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "4.2.12 | PATCH | Ensure SSH X11 forwarding is disabled"
   ansible.builtin.lineinfile:
@@ -284,7 +284,7 @@
       - patch
       - ssh
       - rule_4.2.12
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "4.2.13 | PATCH | Ensure SSH AllowTcpForwarding is disabled"
   ansible.builtin.lineinfile:
@@ -302,11 +302,11 @@
       - patch
       - ssh
       - rule_4.2.13
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "4.2.14 | PATCH | Ensure system-wide crypto policy is not over-ridden"
   block:
@@ -327,9 +327,9 @@
       - patch
       - ssh
       - rule_4.2.14
-      - nist_sp800-53r5_SC-8
-      - nist_sp800-53r5_AC-17
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_SC-8
+      - NIST800-53R5_AC-17
+      - NIST800-53R5_IA-5
 
 - name: "4.2.15 | PATCH | Ensure SSH warning banner is configured"
   ansible.builtin.lineinfile:
@@ -343,11 +343,11 @@
       - patch
       - ssh
       - rule_4.2.15
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "4.2.16 | PATCH | Ensure SSH MaxAuthTries is set to 4 or less"
   ansible.builtin.lineinfile:
@@ -365,7 +365,7 @@
       - patch
       - ssh
       - rule_4.2.16
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 - name: "4.2.17 | PATCH | Ensure SSH MaxStartups is configured"
   ansible.builtin.lineinfile:
@@ -383,11 +383,11 @@
       - patch
       - ssh
       - rule_4.2.17
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "4.2.18 | PATCH | Ensure SSH MaxSessions is set to 10 or less"
   ansible.builtin.lineinfile:
@@ -405,11 +405,11 @@
       - patch
       - ssh
       - rule_4.2.18
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "4.2.19 | PATCH | Ensure SSH LoginGraceTime is set to one minute or less"
   ansible.builtin.lineinfile:
@@ -427,7 +427,7 @@
       - patch
       - ssh
       - rule_4.2.19
-      - nist_sp800-53r5_CM-6
+      - NIST800-53R5_CM-6
 
 - name: "4.2.20 | PATCH | Ensure SSH Idle Timeout Interval is configured"
   block:
@@ -457,8 +457,8 @@
       - patch
       - ssh
       - rule_4.2.20
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5

@@ -11,8 +11,8 @@
       - level1-server
       - patch
       - rule_2.1.1
-      - nist_sp800-53r5_AU-3
-      - nist_sp800-53r5_AU-12
+      - NIST800-53R5_AU-3
+      - NIST800-53R5_AU-12
 
 - name: "2.1.2 | PATCH | Ensure chrony is configured"
   block:
@@ -38,5 +38,5 @@
       - level1-server
       - patch
       - rule_2.1.2
-      - nist_sp800-53r5_AU-3
-      - nist_sp800-53r5_AU-12
+      - NIST800-53R5_AU-3
+      - NIST800-53R5_AU-12

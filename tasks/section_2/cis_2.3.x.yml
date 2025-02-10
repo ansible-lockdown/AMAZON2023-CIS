@@ -13,7 +13,7 @@
       - patch
       - telnet
       - rule_2.3.1
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "2.3.2 | PATCH | Ensure LDAP client is not installed"
   ansible.builtin.package:
@@ -28,7 +28,7 @@
       - patch
       - ldap
       - rule_2.3.2
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "2.3.3 | PATCH | Ensure FTP client is not installed"
   ansible.builtin.package:
@@ -43,4 +43,4 @@
       - patch
       - ftp
       - rule_2.3.3
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7

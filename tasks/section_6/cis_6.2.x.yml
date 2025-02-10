@@ -27,7 +27,7 @@
       - patch
       - accounts
       - rule_6.2.1
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_IA-5
 
 - name: "6.2.2 | PATCH | Ensure password fields are not empty"
   ansible.builtin.shell: passwd -l {{ item }}
@@ -42,7 +42,7 @@
       - patch
       - accounts
       - rule_6.2.2
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_IA-5
 
 - name: "6.2.3 | AUDIT | Ensure all groups in /etc/passwd exist in /etc/group"
   block:
@@ -72,11 +72,11 @@
       - accounts
       - groups
       - rule_6.2.3
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "6.2.4 | AUDIT | Ensure no duplicate UIDs exist"
   block:
@@ -105,11 +105,11 @@
       - accounts
       - users
       - rule_6.2.4
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "6.2.5 | AUDIT | Ensure no duplicate GIDs exist"
   block:
@@ -139,11 +139,11 @@
       - accounts
       - groups
       - rule_6.2.5
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "6.2.6 | AUDIT | Ensure no duplicate user names exist"
   block:
@@ -172,11 +172,11 @@
       - accounts
       - users
       - rule_6.2.6
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "6.2.7 | AUDIT | Ensure no duplicate group names exist"
   block:
@@ -206,11 +206,11 @@
       - accounts
       - groups
       - rule_6.2.7
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "6.2.8 | PATCH | Ensure root PATH Integrity"
   block:
@@ -270,11 +270,11 @@
       - patch
       - paths
       - rule_6.2.8
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "6.2.9 | PATCH | Ensure root is the only UID 0 account"
   ansible.builtin.shell: passwd -l {{ item }}
@@ -290,11 +290,11 @@
       - accounts
       - users
       - rule_6.2.9
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "6.2.10 | PATCH | Ensure local interactive user home directories exist"
   block:
@@ -336,11 +336,11 @@
       - patch
       - users
       - rule_6.2.10
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "6.2.11 | PATCH | Ensure local interactive user dot files access is configured"
   block:
@@ -381,8 +381,8 @@
       - users
       - permissions
       - rule_6.2.11
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
