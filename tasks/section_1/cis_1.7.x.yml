@@ -27,7 +27,7 @@
             mode: 'u-x,go-wx'
 
       - name: "1.7.2 | PATCH | Ensure local login warning banner is configured properly | Ensure symlink"
-        ansible.builtin.template:
+        ansible.builtin.file:
             src: /usr/lib/issue
             dest: /etc/issue
             state: link
@@ -52,7 +52,7 @@
             mode: 'u-x,go-wx'
 
       - name: "1.7.3 | PATCH | Ensure remote login warning banner is configured properly | Ensure symlink"
-        ansible.builtin.template:
+        ansible.builtin.file:
             src: /usr/lib/issue.net
             dest: /etc/issue.net
             state: link
