@@ -54,7 +54,7 @@
       - name: "4.6.1.2 | PATCH | Ensure minimum days between password changes is configured | Set existing users PASS_MIN_DAYS"
         ansible.builtin.user:
             name: "{{ item }}"
-            password_expire_max: "{{ amzn2023cis_pass['min_days'] }}"
+            password_expire_min: "{{ amzn2023cis_pass['min_days'] }}"
         loop: "{{ discovered_min_days.stdout_lines }}"
         when:
             - discovered_min_days.stdout_lines | length > 0
