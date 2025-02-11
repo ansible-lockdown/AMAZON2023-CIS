@@ -12,9 +12,9 @@
       - patch
       - rsyslog
       - rule_5.1.1.1
-      - nist_sp800-53r5_AU-3
-      - nist_sp800-53r5_AU-12
-      - nist_sp800-53r5_SI-5
+      - NIST800-53R5_AU-3
+      - NIST800-53R5_AU-12
+      - NIST800-53R5_SI-5
 
 - name: "5.1.1.2 | PATCH | Ensure rsyslog Service is enabled"
   ansible.builtin.systemd:
@@ -27,8 +27,8 @@
       - patch
       - rsyslog
       - rule_5.1.1.2
-      - nist_sp800-53r5_AU-3
-      - nist_sp800-53r5_AU-12
+      - NIST800-53R5_AU-3
+      - NIST800-53R5_AU-12
 
 - name: "5.1.1.3 | PATCH | Ensure journald is configured to send logs to rsyslog"
   ansible.builtin.lineinfile:
@@ -44,12 +44,12 @@
       - patch
       - rsyslog
       - rule_5.1.1.3
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_AU-2
-      - nist_sp800-53r5_AU-4
-      - nist_sp800-53r5_AU-12
-      - nist_sp800-53r5_MP-2
-      - nist_sp800-53r5_SI-5
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_AU-2
+      - NIST800-53R5_AU-4
+      - NIST800-53R5_AU-12
+      - NIST800-53R5_MP-2
+      - NIST800-53R5_SI-5
 
 - name: "5.1.1.4 | PATCH | Ensure rsyslog default file permissions configured"
   ansible.builtin.lineinfile:
@@ -64,9 +64,9 @@
       - patch
       - rsyslog
       - rule_5.1.1.4
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_AC-6
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_AC-6
+      - NIST800-53R5_MP-2
 
 - name: "5.1.1.5 | PATCH | Ensure logging is configured"
   block:
@@ -167,9 +167,9 @@
       - patch
       - rsyslog
       - rule_5.1.1.5
-      - nist_sp800-53r5_AU-2
-      - nist_sp800-53r5_AU-7
-      - nist_sp800-53r5_AU-12
+      - NIST800-53R5_AU-2
+      - NIST800-53R5_AU-7
+      - NIST800-53R5_AU-12
 
 - name: "5.1.1.6 | PATCH | Ensure rsyslog is configured to send logs to a remote log host"
   ansible.builtin.blockinfile:
@@ -192,7 +192,7 @@
       - patch
       - rsyslog
       - rule_5.1.1.6
-      - nist_sp800-53r5_AU-6
+      - NIST800-53R5_AU-6
 
 - name: "5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote client"
   block:
@@ -226,7 +226,7 @@
       - patch
       - rsyslog
       - rule_5.1.1.7
-      - nist_sp800-53r5_AU-2
-      - nist_sp800-53r5_AU-7
-      - nist_sp800-53r5_AU-12
-      - nist_sp800-53r5_CM-6
+      - NIST800-53R5_AU-2
+      - NIST800-53R5_AU-7
+      - NIST800-53R5_AU-12
+      - NIST800-53R5_CM-6

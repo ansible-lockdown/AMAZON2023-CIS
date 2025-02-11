@@ -30,11 +30,11 @@
       - sysctl
       - patch
       - rule_3.2.1
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "3.2.2 | PATCH | Ensure packet redirect sending is disabled"
   block:
@@ -53,8 +53,8 @@
       - patch
       - sysctl
       - rule_3.2.2
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5

@@ -21,7 +21,7 @@
       - audit
       - mounts
       - rule_1.1.7.1
-      - nist_sp800-53r5_CM-6
+      - NIST800-53R5_CM-6
 
 - name: |
     "1.1.7.2 | PATCH | Ensure nodev option set on /home partition
@@ -46,5 +46,5 @@
       - mounts
       - rule_1.1.7.2
       - rule_1.1.7.3
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2

@@ -33,4 +33,4 @@
       - mounts
       - removable_storage
       - rule_1.1.9
-      - nist_sp800-53r5_SI-3
+      - NIST800-53R5_SI-3

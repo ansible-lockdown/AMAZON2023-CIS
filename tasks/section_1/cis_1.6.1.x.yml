@@ -10,8 +10,8 @@
       - level1-server
       - patch
       - rule_1.6.1.1
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "1.6.1.2 | PATCH | Ensure SELinux is not disabled in bootloader configuration"
   ansible.builtin.replace:
@@ -31,7 +31,7 @@
       - scored
       - patch
       - rule_1.6.1.2
-      - nist_sp800-53r5_SI-7
+      - NIST800-53R5_SI-7
 
 # State set to enforcing because control 1.6.1.5 requires enforcing to be set
 - name: "1.6.1.3 | PATCH | Ensure SELinux policy is configured"
@@ -47,8 +47,8 @@
       - selinux
       - patch
       - rule_1.6.1.3
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "1.6.1.4 | PATCH | Ensure the SELinux state is not disabled"
   ansible.posix.selinux:
@@ -63,8 +63,8 @@
       - selinux
       - patch
       - rule_1.6.1.4
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "1.6.1.5 | PATCH | Ensure the SELinux state is enforcing"
   ansible.posix.selinux:
@@ -80,8 +80,8 @@
       - selinux
       - patch
       - rule_1.6.1.5
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_SI-6
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_SI-6
 
 - name: "1.6.1.6 | AUDIT | Ensure no unconfined services exist"
   block:
@@ -109,8 +109,8 @@
       - audit
       - services
       - rule_1.6.1.6
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "1.6.1.7 | PATCH | Ensure SETroubleshoot is not installed"
   ansible.builtin.package:
@@ -124,8 +124,8 @@
       - selinux
       - patch
       - rule_1.6.1.7
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "1.6.1.8 | PATCH | Ensure the MCS Translation Service (mcstrans) is not installed"
   ansible.builtin.package:
@@ -137,4 +137,4 @@
       - level1-server
       - patch
       - rule_1.6.1.8
-      - nist_sp800-53r5_SI-4
+      - NIST800-53R5_SI-4

@@ -26,7 +26,7 @@
       - patch
       - authselect
       - rule_4.4.1
-      - nist_sp800-53r5_CA-5
+      - NIST800-53R5_CA-5
 
 - name: "4.4.2 | PATCH | Ensure authselect includes with-faillock | with auth select profile"
   block:
@@ -82,8 +82,8 @@
       - patch
       - authselect
       - rule_4.4.2
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5

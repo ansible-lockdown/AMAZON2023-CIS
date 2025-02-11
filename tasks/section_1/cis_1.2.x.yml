@@ -29,7 +29,7 @@
       - manual
       - patch
       - rule_1.2.1
-      - nist_sp800-53r5_SI-2
+      - NIST800-53R5_SI-2
 
 - name: "1.2.2 | PATCH | Ensure gpgcheck is globally activated"
   block:
@@ -53,7 +53,7 @@
       - level1-server
       - patch
       - rule_1.2.2
-      - nist_sp800-53r5_SI-3
+      - NIST800-53R5_SI-3
 
 - name: "1.2.3 | AUDIT | Ensure package manager repositories are configured"
   block:
@@ -82,7 +82,7 @@
       - manual
       - audit
       - rule_1.2.3
-      - nist_sp800-53r5_SI-3
+      - NIST800-53R5_SI-3
 
 - name: "1.2.4 | AUDIT | Ensure repo_gpgcheck is globally activated"
   block:
@@ -114,4 +114,4 @@
       - manual
       - audit
       - rule_1.2.4
-      - nist_sp800-53r5_SI-3
+      - NIST800-53R5_SI-3

@@ -11,7 +11,7 @@
       - patch
       - auditd
       - rule_5.2.3.1
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.2 | PATCH | Ensure actions as another user are always logged"
@@ -24,7 +24,7 @@
       - patch
       - auditd
       - rule_5.2.3.2
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.3 | PATCH | Ensure events that modify the sudo log file are collected"
@@ -37,7 +37,7 @@
       - patch
       - auditd
       - rule_5.2.3.3
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.4 | PATCH | Ensure events that modify date and time information are collected"
@@ -50,8 +50,8 @@
       - patch
       - auditd
       - rule_5.2.3.4
-      - nist_sp800-53r5_AU-3
-      - nist_sp800-53r5_CM-6
+      - NIST800-53R5_AU-3
+      - NIST800-53R5_CM-6
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.5 | PATCH | Ensure events that modify the system's network environment are collected"
@@ -64,8 +64,8 @@
       - patch
       - auditd
       - rule_5.2.3.5
-      - nist_sp800-53r5_AU-3
-      - nist_sp800-53r5_CM-6
+      - NIST800-53R5_AU-3
+      - NIST800-53R5_CM-6
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.6 | PATCH | Ensure use of privileged commands is collected"
@@ -88,7 +88,7 @@
       - patch
       - auditd
       - rule_5.2.3.6
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.7 | PATCH | Ensure unsuccessful unauthorized file access attempts are collected"
@@ -101,7 +101,7 @@
       - patch
       - auditd
       - rule_5.2.3.7
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.8 | PATCH | Ensure events that modify user/group information are collected"
@@ -114,7 +114,7 @@
       - patch
       - auditd
       - rule_5.2.3.8
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.9 | PATCH | Ensure discretionary access control permission modification events are collected"
@@ -127,8 +127,8 @@
       - patch
       - auditd
       - rule_5.2.3.9
-      - nist_sp800-53r5_AU-3
-      - nist_sp800-53r5_CM-6
+      - NIST800-53R5_AU-3
+      - NIST800-53R5_CM-6
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.10 | PATCH | Ensure successful file system mounts are collected"
@@ -141,7 +141,7 @@
       - patch
       - auditd
       - rule_5.2.3.10
-      - nist_sp800-53r5_CM-6
+      - NIST800-53R5_CM-6
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.11 | PATCH | Ensure session initiation information is collected"
@@ -154,7 +154,7 @@
       - patch
       - auditd
       - rule_5.2.3.11
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.12 | PATCH | Ensure login and logout events are collected"
@@ -167,7 +167,7 @@
       - patch
       - auditd
       - rule_5.2.3.12
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.13 | PATCH | Ensure file deletion events by users are collected"
@@ -180,8 +180,8 @@
       - auditd
       - patch
       - rule_5.2.3.13
-      - nist_sp800-53r5_AU-12
-      - nist_sp800-53r5_SC-7
+      - NIST800-53R5_AU-12
+      - NIST800-53R5_SC-7
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.14 | PATCH | Ensure events that modify the system's Mandatory Access Controls are collected"
@@ -194,8 +194,8 @@
       - patch
       - auditd
       - rule_5.2.3.14
-      - nist_sp800-53r5_AU-3
-      - nist_sp800-53r5_CM-6
+      - NIST800-53R5_AU-3
+      - NIST800-53R5_CM-6
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.15 | PATCH | Ensure successful and unsuccessful attempts to use the chcon command are recorded"
@@ -208,9 +208,9 @@
       - patch
       - auditd
       - rule_5.2.3.15
-      - nist_sp800-53r5_AU-2
-      - nist_sp800-53r5_AU-12
-      - nist_sp800-53r5_SI-5
+      - NIST800-53R5_AU-2
+      - NIST800-53R5_AU-12
+      - NIST800-53R5_SI-5
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.16 | PATCH | Ensure successful and unsuccessful attempts to use the setfacl command are recorded"
@@ -223,9 +223,9 @@
       - patch
       - auditd
       - rule_5.2.3.16
-      - nist_sp800-53r5_AU-2
-      - nist_sp800-53r5_AU-12
-      - nist_sp800-53r5_SI-5
+      - NIST800-53R5_AU-2
+      - NIST800-53R5_AU-12
+      - NIST800-53R5_SI-5
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.17 | PATCH | Ensure successful and unsuccessful attempts to use the chacl command are recorded"
@@ -238,9 +238,9 @@
       - patch
       - auditd
       - rule_5.2.3.17
-      - nist_sp800-53r5_AU-2
-      - nist_sp800-53r5_AU-12
-      - nist_sp800-53r5_SI-5
+      - NIST800-53R5_AU-2
+      - NIST800-53R5_AU-12
+      - NIST800-53R5_SI-5
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.18 | PATCH | Ensure successful and unsuccessful attempts to use the usermod command are recorded"
@@ -253,9 +253,9 @@
       - patch
       - auditd
       - rule_5.2.3.18
-      - nist_sp800-53r5_AU-2
-      - nist_sp800-53r5_AU-12
-      - nist_sp800-53r5_SI-5
+      - NIST800-53R5_AU-2
+      - NIST800-53R5_AU-12
+      - NIST800-53R5_SI-5
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.19 | PATCH | Ensure kernel module loading and unloading is collected"
@@ -268,8 +268,8 @@
       - patch
       - auditd
       - rule_5.2.3.19
-      - nist_sp800-53r5_AU-3
-      - nist_sp800-53r5_CM-6
+      - NIST800-53R5_AU-3
+      - NIST800-53R5_CM-6
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.20 | PATCH | Ensure the audit configuration is immutable"
@@ -282,10 +282,10 @@
       - patch
       - auditd
       - rule_5.2.3.20
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_AU-3
-      - nist_sp800-53r5_AU-12
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_AU-3
+      - NIST800-53R5_AU-12
+      - NIST800-53R5_MP-2
 
 - name: "5.2.3.21 | AUDIT | Ensure the running and on disk configuration is the same"
   ansible.builtin.debug:
@@ -299,7 +299,7 @@
       - patch
       - auditd
       - rule_5.2.3.21
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 - name: Auditd | 5.2.3 | Auditd controls updated
   ansible.builtin.debug:
