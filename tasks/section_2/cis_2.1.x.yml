@@ -11,8 +11,8 @@
       - level1-server
       - patch
       - rule_2.1.1
-      - nist_sp800-53r5_AU-3
-      - nist_sp800-53r5_AU-12
+      - NIST800-53R5_AU-3
+      - NIST800-53R5_AU-12
 
 - name: "2.1.2 | PATCH | Ensure chrony is configured"
   block:
@@ -22,7 +22,7 @@
             dest: /etc/chrony.d/chrony.conf
             owner: root
             group: root
-            mode: '0644'
+            mode: 'u-x,go-wx'
 
       - name: "2.1.2 | PATCH | Ensure chrony is configured | modify /etc/sysconfig/chronyd | 1"
         ansible.builtin.lineinfile:
@@ -30,7 +30,7 @@
             regexp: "^(#)?OPTIONS"
             line: "OPTIONS=\"-u chrony\""
             create: true
-            mode: '0644'
+            mode: 'u-x,go-wx'
   when:
       - amzn2023cis_rule_2_1_2
       - not system_is_container
@@ -38,5 +38,5 @@
       - level1-server
       - patch
       - rule_2.1.2
-      - nist_sp800-53r5_AU-3
-      - nist_sp800-53r5_AU-12
+      - NIST800-53R5_AU-3
+      - NIST800-53R5_AU-12

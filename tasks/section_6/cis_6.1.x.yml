@@ -5,7 +5,7 @@
       path: /etc/passwd
       owner: root
       group: root
-      mode: '0644'
+      mode: 'u-x,go-wx'
   when:
       - amzn2023cis_rule_6_1_1
   tags:
@@ -13,15 +13,15 @@
       - patch
       - permissions
       - rule_6.1.1
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "6.1.2 | PATCH | Ensure permissions on /etc/passwd- are configured"
   ansible.builtin.file:
       path: /etc/passwd-
       owner: root
       group: root
-      mode: '0644'
+      mode: 'u-x,go-wx'
   when:
       - amzn2023cis_rule_6_1_2
   tags:
@@ -29,15 +29,15 @@
       - patch
       - permissions
       - rule_6.1.2
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "6.1.3 | PATCH | Ensure permissions on /etc/group are configured"
   ansible.builtin.file:
       path: /etc/group-
       owner: root
       group: root
-      mode: '0644'
+      mode: 'u-x,go-wx'
   when:
       - amzn2023cis_rule_6_1_3
   tags:
@@ -45,15 +45,15 @@
       - patch
       - permissions
       - rule_6.1.3
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "6.1.4 | PATCH | Ensure permissions on /etc/group- are configured"
   ansible.builtin.file:
       path: /etc/group-
       owner: root
       group: root
-      mode: '0644'
+      mode: 'u-x,go-wx'
   when:
       - amzn2023cis_rule_6_1_4
   tags:
@@ -61,15 +61,15 @@
       - patch
       - permissionss
       - rule_6.1.4
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "6.1.5 | PATCH | Ensure permissions on /etc/shadow are configured"
   ansible.builtin.file:
       path: /etc/shadow
       owner: root
       group: root
-      mode: '0000'
+      mode: 'ugo-rwx'
   when:
       - amzn2023cis_rule_6_1_5
   tags:
@@ -77,15 +77,15 @@
       - patch
       - permissions
       - rule_6.1.5
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "6.1.6 | PATCH | Ensure permissions on /etc/shadow- are configured"
   ansible.builtin.file:
       path: /etc/shadow-
       owner: root
       group: root
-      mode: '0000'
+      mode: 'ugo-rwx'
   when:
       - amzn2023cis_rule_6_1_6
   tags:
@@ -93,15 +93,15 @@
       - patch
       - permissions
       - rule_6.1.6
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "6.1.7 | PATCH | Ensure permissions on /etc/gshadow are configured"
   ansible.builtin.file:
       path: /etc/gshadow
       owner: root
       group: root
-      mode: '0000'
+      mode: 'ugo-rwx'
   when:
       - amzn2023cis_rule_6_1_7
   tags:
@@ -109,15 +109,15 @@
       - patch
       - permissions
       - rule_6.1.7
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "6.1.8 | PATCH | Ensure permissions on /etc/gshadow- are configured"
   ansible.builtin.file:
       path: /etc/gshadow-
       owner: root
       group: root
-      mode: '0000'
+      mode: 'ugo-rwx'
   when:
       - amzn2023cis_rule_6_1_8
   tags:
@@ -125,8 +125,8 @@
       - patch
       - permissions
       - rule_6.1.8
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "6.1.9 | AUDIT | Audit system file permissions"
   block:
@@ -144,7 +144,7 @@
                   content: "{{ amzn2023cis_6_1_9_packages_rpm.stdout }}"
                   owner: root
                   group: root
-                  mode: '0640'
+                  mode: 'u-x,g-wx,o-rwx'
 
             - name: "6.1.9 | AUDIT | Audit system file permissions | Message out alert for package descrepancies"
               ansible.builtin.debug:
@@ -166,13 +166,13 @@
       - audit
       - permissions
       - rule_6.1.9
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "6.1.10 | PATCH | Ensure world writable files and directories are secured"
   block:
@@ -185,7 +185,7 @@
       - name: "6.1.10 | PATCH | Ensure world writable files and directories are secured | Adjust world-writable files if they exist (Configurable)"
         ansible.builtin.file:
             path: '{{ item }}'
-            mode: o-w
+            mode: 'o-w'
             state: touch
         loop: "{{ amzn2023cis_6_1_10_perms_results.stdout_lines }}"
         when:
@@ -205,8 +205,8 @@
       - permissions
       - stickybits
       - rule_6.1.10
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist"
   block:
@@ -281,8 +281,8 @@
       - files
       - permissions
       - rule_6.1.11
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "6.1.12 | AUDIT | Ensure SUID and SGID files are reviewed"
   block:
@@ -349,10 +349,10 @@
       - audit
       - files
       - rule_6.1.12
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2

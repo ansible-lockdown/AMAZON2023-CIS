@@ -11,7 +11,7 @@
       - patch
       - sudo
       - rule_4.3.1
-      - nist_sp800-53r5_AC-6
+      - NIST800-53R5_AC-6
 
 - name: "4.3.2 | PATCH | Ensure sudo commands use pty"
   ansible.builtin.lineinfile:
@@ -54,7 +54,7 @@
       - patch
       - sudo
       - rule_4.3.4
-      - nist_sp800-53r5_AC-6
+      - NIST800-53R5_AC-6
 
 - name: "4.3.5 | PATCH | Ensure sudo authentication timeout is configured correctly"
   block:
@@ -87,7 +87,7 @@
       - patch
       - sudo
       - rule_4.3.5
-      - nist_sp800-53r5_AC-6
+      - NIST800-53R5_AC-6
 
 - name: "4.3.6 | PATCH | Ensure access to the su command is restricted"
   block:
@@ -116,5 +116,5 @@
       - patch
       - sudo
       - rule_4.3.6
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2

@@ -20,7 +20,7 @@
       - audit
       - mounts
       - rule_1.1.2.1
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 # via fstab
 - name: |
@@ -50,7 +50,7 @@
       - rule_1.1.2.2
       - rule_1.1.2.3
       - rule_1.1.2.4
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 # via systemd
 - name: |
@@ -62,7 +62,7 @@
       dest: /etc/systemd/system/tmp.mount
       owner: root
       group: root
-      mode: '0644'
+      mode: 'u-x,go-wx'
   notify: Systemd restart tmp.mount
   when:
       - amzn2023cis_tmp_svc
@@ -76,6 +76,6 @@
       - rule_1.1.2.2
       - rule_1.1.2.3
       - rule_1.1.2.4
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2

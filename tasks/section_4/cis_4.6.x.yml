@@ -42,10 +42,10 @@
       - patch
       - accounts
       - rule_4.6.2
-      - nist_sp800-53r5_AC-2
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_AC-5
-      - nist_sp800-53r5_MP-5
+      - NIST800-53R5_AC-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_AC-5
+      - NIST800-53R5_MP-5
 
 - name: "4.6.3 | PATCH | Ensure default user shell timeout is 900 seconds or less"
   ansible.builtin.blockinfile:
@@ -53,7 +53,7 @@
       state: "{{ item.state }}"
       marker: "# {mark} - CIS benchmark - Ansible-lockdown"
       create: true
-      mode: '0644'
+      mode: 'u-x,go-wx'
       block: |
         TMOUT={{ amzn2023cis_shell_session_timeout.timeout }}
         export TMOUT
@@ -68,7 +68,7 @@
       - patch
       - accounts
       - rule_4.6.3
-      - nist_sp800-53r5_AC-11
+      - NIST800-53R5_AC-11
 
 - name: "4.6.4 | PATCH | Ensure default group for the root account is GID 0"
   ansible.builtin.user:
@@ -81,11 +81,11 @@
       - patch
       - accounts
       - rule_4.6.4
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive"
   block:
@@ -112,8 +112,8 @@
       - patch
       - accounts
       - rule_4.6.5
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
 
 - name: "4.6.6 | PATCH | Ensure root password is set"
   ansible.builtin.debug:
@@ -126,7 +126,7 @@
       - accounts
       - root
       - rule_4.6.6
-      - nist_sp800-53r5_AC-2
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_AC-5
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_AC-5
+      - NIST800-53R5_MP-2

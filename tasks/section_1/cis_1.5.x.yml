@@ -16,7 +16,7 @@
       - patch
       - sysctl
       - rule_1.5.1
-      - nist_sp800-53r5_CM-6
+      - NIST800-53R5_CM-6
 
 - name: "1.5.2 | PATCH | Ensure ptrace_scope is restricted"
   block:
@@ -34,7 +34,7 @@
       - patch
       - sysctl
       - rule_1.5.2
-      - nist_sp800-53r5_CM-6
+      - NIST800-53R5_CM-6
 
 - name: "1.5.3 | PATCH | Ensure core dump storage is disabled"
   ansible.builtin.lineinfile:
@@ -49,7 +49,7 @@
       - level1-server
       - patch
       - rule_1.5.3
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "1.5.4 | PATCH | Ensure core dump backtraces are disabled"
   ansible.builtin.lineinfile:
@@ -63,4 +63,4 @@
       - patch
       - sysctl
       - rule_1.5.4
-      - nist_sp800-53r5_CM-6
+      - NIST800-53R5_CM-6

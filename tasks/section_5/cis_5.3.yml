@@ -53,4 +53,4 @@
       - patch
       - logrotate
       - rule_5.3
-      - nist_sp800-53r5_AU-8
+      - NIST800-53R5_AU-8

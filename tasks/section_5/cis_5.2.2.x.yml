@@ -13,7 +13,7 @@
       - patch
       - auditd
       - rule_5.2.2.1
-      - nist_sp800-53r5_AU-8
+      - NIST800-53R5_AU-8
 
 - name: "5.2.2.2 | PATCH | Ensure audit logs are not automatically deleted"
   ansible.builtin.lineinfile:
@@ -28,7 +28,7 @@
       - patch
       - auditd
       - rule_5.2.2.2
-      - nist_sp800-53r5_AU-8
+      - NIST800-53R5_AU-8
 
 - name: "5.2.2.3 | PATCH | Ensure system is disabled when audit logs are full"
   ansible.builtin.lineinfile:
@@ -47,10 +47,10 @@
       - patch
       - auditd
       - rule_5.2.2.3
-      - nist_sp800-53r5_AU-2
-      - nist_sp800-53r5_AU-8
-      - nist_sp800-53r5_AU-12
-      - nist_sp800-53r5_SI-5
+      - NIST800-53R5_AU-2
+      - NIST800-53R5_AU-8
+      - NIST800-53R5_AU-12
+      - NIST800-53R5_SI-5
 
 - name: PATCH | Configure other keys for auditd.conf
   ansible.builtin.lineinfile:

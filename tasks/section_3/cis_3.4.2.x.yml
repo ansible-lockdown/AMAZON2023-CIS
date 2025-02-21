@@ -19,8 +19,8 @@
       - patch
       - firewalld
       - rule_3.4.2.1
-      - nist_sp800-53r5_CA-9
-      - nist_sp800-53r5_SC-7
+      - NIST800-53R5_CA-9
+      - NIST800-53R5_SC-7
 
 - name: "3.4.2.2 | AUDIT | Ensure at least one nftables table exists"
   block:
@@ -67,7 +67,7 @@
       - patch
       - nftables
       - rule_3.4.2.2
-      - nist_sp800-53r5_CA-9
+      - NIST800-53R5_CA-9
 
 - name: "3.4.2.3 | PATCH | Ensure nftables base chains exist"
   block:
@@ -116,8 +116,8 @@
       - patch
       - nftables
       - rule_3.4.2.3
-      - nist_sp800-53r5_CA-9
-      - nist_sp800-53r5_SC-7
+      - NIST800-53R5_CA-9
+      - NIST800-53R5_SC-7
 
 - name: "3.4.2.4 | PATCH | Ensure host based firewall loopback traffic is configured"
   block:
@@ -158,7 +158,7 @@
       - patch
       - nftables
       - rule_3.4.2.4
-      - nist_sp800-53r5_CA-9
+      - NIST800-53R5_CA-9
 
 - name: "3.4.2.4 | PATCH | Ensure host based firewall loopback traffic is configured | firewalld"
   ansible.posix.firewalld:
@@ -178,7 +178,7 @@
       - patch
       - firewalld
       - rule_3.4.2.4
-      - nist_sp800-53r5_CA-9
+      - NIST800-53R5_CA-9
 
 - name: "3.4.2.5 | AUDIT | Ensure firewalld drops unnecessary services and ports"
   block:
@@ -202,7 +202,7 @@
       - audit
       - firewalld
       - rule_3.4.2.5
-      - nist_sp800-53r5_CA-9
+      - NIST800-53R5_CA-9
 
 - name: "3.4.2.6 | PATCH | Ensure nftables established connections are configured"
   block:
@@ -249,7 +249,7 @@
       - patch
       - nftables
       - rule_3.4.2.6
-      - nist_sp800-53r5_CA-9
+      - NIST800-53R5_CA-9
 
 - name: "3.4.2.7 | PATCH | Ensure nftables default deny firewall policy"
   block:
@@ -300,4 +300,4 @@
       - patch
       - nftables
       - rule_3.4.2.7
-      - nist_sp800-53r5_CA-9
+      - NIST800-53R5_CA-9

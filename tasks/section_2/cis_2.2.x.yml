@@ -12,7 +12,7 @@
       - patch
       - x11
       - rule_2.2.1
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "2.2.2 | PATCH | Ensure Avahi Server is not installed"
   ansible.builtin.package:
@@ -43,7 +43,7 @@
       - patch
       - cups
       - rule_2.2.3
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "2.2.4 | PATCH | Ensure DHCP Server is not installed"
   ansible.builtin.package:
@@ -58,7 +58,7 @@
       - patch
       - dhcp
       - rule_2.2.4
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "2.2.5 | PATCH | Ensure DNS Server is not installed"
   ansible.builtin.package:
@@ -73,7 +73,7 @@
       - patch
       - dns
       - rule_2.2.5
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "2.2.6 | PATCH | Ensure an FTP Server is not installed"
   ansible.builtin.package:
@@ -88,7 +88,7 @@
       - patch
       - vsftpd
       - rule_2.2.6
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "2.2.7 | PACH | Ensure TFTP Server is not installed"
   ansible.builtin.package:
@@ -103,7 +103,7 @@
       - patch
       - tftp
       - rule_2.2.7
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "2.2.8 | PATCH | Ensure a web server is not installed"
   block:
@@ -131,7 +131,7 @@
       - nginx
       - webserver
       - rule_2.2.8
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "2.2.9 | PATCH | Ensure IMAP and POP3 server is not installed"
   block:
@@ -162,7 +162,7 @@
       - imap
       - pop3
       - rule_2.2.9
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "2.2.10 | PATCH | Ensure Samba is not installed"
   ansible.builtin.package:
@@ -177,7 +177,7 @@
       - patch
       - samba
       - rule_2.2.10
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "2.2.11 | PATCH | Ensure HTTP Proxy Server is not installed"
   ansible.builtin.package:
@@ -192,7 +192,7 @@
       - patch
       - squid
       - rule_2.2.11
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "2.2.12 | PATCH | Ensure net-snmp is not installed or smpd service is not enabled"
   block:
@@ -217,7 +217,7 @@
       - patch
       - snmp
       - rule_2.2.12
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "2.2.13 | PATCH | Ensure telnet-server is not installed"
   ansible.builtin.package:
@@ -232,7 +232,7 @@
       - patch
       - telnet
       - rule_2.2.13
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "2.2.14 | PATCH | Ensure dnsmasq is not installed"
   ansible.builtin.package:
@@ -247,7 +247,7 @@
       - patch
       - dnsmasq
       - rule_2.2.14
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "2.2.15 | PATCH | Ensure mail transfer agent is configured for local-only mode"
   ansible.builtin.lineinfile:
@@ -264,7 +264,7 @@
       - patch
       - postfix
       - rule_2.2.15
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 # The name title of the service says mask the service, but the fix allows for both options
 # Options available in default/main if to remove the package default is false just mask the server service
@@ -294,8 +294,8 @@
       - nfs
       - services
       - rule_2.2.16
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
 
 # The name title of the service says mask the service, but the fix allows for both options
 # Options available in default/main if to remove the package default is false just mask the server service
@@ -333,8 +333,8 @@
       - patch
       - rpc
       - rule_2.2.17
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
 
 # The name title of the service says mask the service, but the fix allows for both options
 # Options available in default/main if to remove the package default is false just mask the server service
@@ -364,5 +364,5 @@
       - patch
       - rsync
       - rule_2.2.18
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7

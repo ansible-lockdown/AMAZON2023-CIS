@@ -37,7 +37,7 @@
       - rule_5.2.4.1
       - rule_5.2.4.2
       - rule_5.2.4.3
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 - name: "5.2.4.4 | PATCH | Ensure the audit log directory is 0750 or more restrictive"
   block:
@@ -50,7 +50,7 @@
         ansible.builtin.file:
             path: "{{ audit_discovered_logfile.stdout | dirname }}"
             state: directory
-            mode: '0750'
+            mode: 'u+x,g-w,o-rwx'
         when: not auditlog_dir.stat.mode is match('07(0|5)0')
   when:
       - amzn2023cis_rule_5_2_4_4
@@ -63,7 +63,7 @@
 - name: "5.2.4.5 | PATCH | Ensure audit configuration files are 640 or more restrictive"
   ansible.builtin.file:
       path: "{{ item.path }}"
-      mode: g-wx,o-rwx
+      mode: 'g-wx,o-rwx'
   loop: "{{ auditd_conf_files.files | default([]) }}"
   loop_control:
       label: "{{ item.path }}"
@@ -74,7 +74,7 @@
       - patch
       - auditd
       - rule_5.2.4.5
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 - name: "5.2.4.6 | PATCH | Ensure audit configuration files are owned by root"
   ansible.builtin.file:
@@ -90,7 +90,7 @@
       - patch
       - auditd
       - rule_5.2.4.6
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 - name: "5.2.4.7 | PATCH | Ensure audit configuration files belong to group root"
   ansible.builtin.file:
@@ -106,7 +106,7 @@
       - patch
       - auditd
       - rule_5.2.4.7
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 - name: "5.2.4.8 | PATCH | Ensure audit tools are 755 or more restrictive"
   block:
@@ -125,7 +125,7 @@
       - name: "5.2.4.8 | PATCH | Ensure audit tools are 755 or more restrictive | set if required"
         ansible.builtin.file:
             path: "{{ item.item }}"
-            mode: '0750'
+            mode: 'u+x,g-w,o-rwx'
 
         loop: "{{ audit_bins.results }}"
         loop_control:
@@ -138,7 +138,7 @@
       - patch
       - auditd
       - rule_5.2.4.8
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 - name: "5.2.4.9 | PATCH | Ensure audit tools are owned by root"
   ansible.builtin.file:
@@ -159,7 +159,7 @@
       - patch
       - auditd
       - rule_5.2.4.9
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 - name: "5.2.4.10 | PATCH | Ensure audit tools belong to group root"
   ansible.builtin.file:
@@ -179,4 +179,4 @@
       - patch
       - auditd
       - rule_5.2.4.10
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3

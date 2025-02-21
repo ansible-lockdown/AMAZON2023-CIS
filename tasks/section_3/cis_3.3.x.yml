@@ -27,11 +27,11 @@
       - sysctl
       - patch
       - rule_3.3.1
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "3.3.2 | PATCH | Ensure ICMP redirects are not accepted"
   block:
@@ -61,11 +61,11 @@
       - sysctl
       - patch
       - rule_3.3.2
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "3.3.3 | PATCH | Ensure secure ICMP redirects are not accepted"
   block:
@@ -84,11 +84,11 @@
       - sysctl
       - patch
       - rule_3.3.3
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "3.3.4 | PATCH | Ensure suspicious packets are logged"
   block:
@@ -107,7 +107,7 @@
       - sysctl
       - patch
       - rule_3.3.4
-      - nist_sp800-53r5_AU-3
+      - NIST800-53R5_AU-3
 
 - name: "3.3.5 | PATCH | Ensure broadcast ICMP requests are ignored"
   block:
@@ -126,11 +126,11 @@
       - sysctl
       - patch
       - rule_3.3.5
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "3.3.6 | PATCH | Ensure bogus ICMP responses are ignored"
   block:
@@ -149,11 +149,11 @@
       - sysctl
       - patch
       - rule_3.3.6
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "3.3.7 | PATCH | Ensure Reverse Path Filtering is enabled"
   block:
@@ -172,11 +172,11 @@
       - sysctl
       - patch
       - rule_3.3.7
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "3.3.8 | PATCH | Ensure TCP SYN Cookies is enabled"
   block:
@@ -195,11 +195,11 @@
       - sysctl
       - patch
       - rule_3.3.8
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5
 
 - name: "3.3.9 | PATCH | Ensure IPv6 router advertisements are not accepted"
   block:
@@ -219,8 +219,8 @@
       - sysctl
       - patch
       - rule_3.3.9
-      - nist_sp800-53r5_CM-1
-      - nist_sp800-53r5_CM-2
-      - nist_sp800-53r5_CM-6
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_IA-5
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-2
+      - NIST800-53R5_CM-6
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_IA-5

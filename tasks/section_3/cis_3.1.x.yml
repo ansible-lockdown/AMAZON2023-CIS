@@ -22,7 +22,7 @@
       - ipv6
       - networking
       - rule_3.1.1
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "3.1.2 | PATCH | Ensure DCCP is disabled"
   block:
@@ -30,7 +30,7 @@
         ansible.builtin.template:
             src: "etc/modprobe.d/modprobe.conf.j2"
             dest: "/etc/modprobe.d/{{ item }}.conf"
-            mode: '0600'
+            mode: 'u-x,go-rwx'
             owner: root
             group: root
         loop:
@@ -42,7 +42,7 @@
             regexp: "^(#)?blacklist {{ protocol }}(\\s|$)"
             line: "blacklist {{ protocol }}"
             create: true
-            mode: '0600'
+            mode: 'u-x,go-rwx'
   vars:
       protocol: dccp
   when:
@@ -52,7 +52,7 @@
       - patch
       - tipc
       - rule_3.1.2
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "3.1.3 | PATCH | Ensure SCTP is disabled"
   block:
@@ -60,7 +60,7 @@
         ansible.builtin.template:
             src: "etc/modprobe.d/modprobe.conf.j2"
             dest: "/etc/modprobe.d/{{ item }}.conf"
-            mode: '0600'
+            mode: 'u-x,go-rwx'
             owner: root
             group: root
         loop:
@@ -72,7 +72,7 @@
             regexp: "^(#)?blacklist {{ protocol }}(\\s|$)"
             line: "blacklist {{ protocol }}"
             create: true
-            mode: '0600'
+            mode: 'u-x,go-rwx'
   vars:
       protocol: sctp
   when:
@@ -82,8 +82,8 @@
       - patch
       - tipc
       - rule_3.1.3
-      - nist_sp800-53r5_SI-4
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_SI-4
+      - NIST800-53R5_CM-7
 
 - name: "3.1.4 | PATCH | Ensure RDS is disabled"
   block:
@@ -91,7 +91,7 @@
         ansible.builtin.template:
             src: "etc/modprobe.d/modprobe.conf.j2"
             dest: "/etc/modprobe.d/{{ item }}.conf"
-            mode: '0600'
+            mode: 'u-x,go-rwx'
             owner: root
             group: root
         loop:
@@ -103,7 +103,7 @@
             regexp: "^(#)?blacklist {{ protocol }}(\\s|$)"
             line: "blacklist {{ protocol }}"
             create: true
-            mode: '0600'
+            mode: 'u-x,go-rwx'
   vars:
       protocol: rds
   when:
@@ -113,7 +113,7 @@
       - patch
       - tipc
       - rule_3.1.4
-      - nist_sp800-53r5_CM-7
+      - NIST800-53R5_CM-7
 
 - name: "3.1.5 | PATCH | Ensure TIPC is disabled"
   block:
@@ -121,7 +121,7 @@
         ansible.builtin.template:
             src: "etc/modprobe.d/modprobe.conf.j2"
             dest: "/etc/modprobe.d/{{ item }}.conf"
-            mode: '0600'
+            mode: 'u-x,go-rwx'
             owner: root
             group: root
         loop:
@@ -133,7 +133,7 @@
             regexp: "^(#)?blacklist {{ protocol }}(\\s|$)"
             line: "blacklist {{ protocol }}"
             create: true
-            mode: '0600'
+            mode: 'u-x,go-rwx'
   vars:
       protocol: tipc
   when:
@@ -143,5 +143,5 @@
       - patch
       - tipc
       - rule_3.1.5
-      - nist_sp800-53r5_CM-7
-      - nist_sp800-53r5_SI-4
+      - NIST800-53R5_CM-7
+      - NIST800-53R5_SI-4

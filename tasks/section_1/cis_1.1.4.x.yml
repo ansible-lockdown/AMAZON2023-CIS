@@ -50,5 +50,5 @@
       - rule_1.1.4.2
       - rule_1.1.4.3
       - rule_1.1.4.4
-      - nist_sp800-53r5_AC-3
-      - nist_sp800-53r5_MP-2
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
