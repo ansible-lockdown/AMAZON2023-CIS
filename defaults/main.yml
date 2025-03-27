@@ -980,6 +980,11 @@ amzn2023cis_shell_session_timeout:
     # CIS states that this value shall never exceed 900 or be equal to 0.
     timeout: 600
 
+## Control 4.6.5 Ensure default user umask is 027 or more restrictive
+# The following variable specifies the "umask" to set in the `/etc/bashrc` and `/etc/profile` and `/etc/login.defs`.
+# The value needs to be `027` or more restrictive to comply with CIS standards
+amzn2023cis_umask: '027'
+
 ##
 ## Section 5 Control Variables
 ##
