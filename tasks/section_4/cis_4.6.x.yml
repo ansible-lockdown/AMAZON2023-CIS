@@ -93,7 +93,7 @@
         ansible.builtin.replace:
             path: "{{ item }}"
             regexp: ^(?i)(\s*umask)\s+(?!\d*[2,7]7)\d{3,4}
-            replace: '\1 027'
+            replace: '\1 {{ amzn2023cis_umask }}'
         loop:
             - /etc/bashrc
             - /etc/profile
