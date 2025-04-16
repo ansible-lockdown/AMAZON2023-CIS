@@ -3,7 +3,7 @@
 
 # This variable is used to state if the system where
 # the role is executed is a container image or not.
-# The role discovers this dinamically and sets this
+# The role discovers this dynamically and sets this
 # variable's value to 'true' or it leaves it unchanged
 # ('false') based on its findings.
 system_is_container: false
@@ -56,7 +56,7 @@ amzn2023cis_selinux_disable: false
 # the traditional BIOS. The variable is used in a task
 # that ensures the necessary permissions on the bootloader
 # config are in place. Setting the value to 'true', will mean
-# that those permisions will be set for the configuration of
+# that those permissions will be set for the configuration of
 # BIOS boot. Setting it to 'false', will mean that the Legacy
 # Boot (BIOS boot) is not in use, which means that the
 # permissions will have to be set for the configuration of
@@ -72,7 +72,7 @@ python2_bin: /bin/python2.7
 create_benchmark_facts: true
 ansible_facts_path: /etc/ansible/facts.d
 
-## Benchmark name and profile used by audting control role
+## Benchmark name and profile used by auditing control role
 # The audit variable can be found at the base
 benchmark: AMAZON2023-CIS
 benchmark_version: 'v1.0.0'
@@ -116,7 +116,7 @@ audit_capture_files_dir: /some/location to copy to on control node
 
 # How to retrieve audit binary
 # Options are copy or download - detailed settings at the bottom of this file
-# you will need to access to either github or the file already dowmloaded
+# you will need to access to either github or the file already downloaded
 get_audit_binary_method: download
 
 ## if get_audit_binary_method - copy the following needs to be updated for your environment
@@ -146,7 +146,7 @@ audit_log_dir: '/opt'
 fetch_audit_output: false
 
 # Method of getting,uploading the summary files
-## Ensure access and permissions are avaiable for these to occur.
+## Ensure access and permissions are available for these to occur.
 ## options are
 # fetch - fetches from server and moves to location on the ansible controller (could be a mount point available to controller)
 # copy - copies file to a location available to the managed node
@@ -650,7 +650,7 @@ amzn2023cis_snmp_server: false
 ## Control 2.2.12 - Ensure net-snmp is not installed or the snmpd service is not enabled
 # The following variable is used to determine if snmp should be removed
 # If snmp is installed, it is masked by default therefore it complies
-# from the very begining with CIS's requirements! Given the fact that
+# from the very beginning with CIS's requirements! Given the fact that
 # many packages or applications include snmp as a dependency, it would
 # be best to leave this variable's value set to 'false'.
 amzn2023cis_remove_snmp: false
@@ -1219,11 +1219,11 @@ amzn2023cis_no_world_write_adjust: true
 # set this variable to 'true', otherwise to 'false'.
 discover_int_uid: false
 # This variable sets the minimum number from which to search for UID
-# Note that the value will be dynamically overwritten if variable "dicover_int_uid" has
+# Note that the value will be dynamically overwritten if variable "discover_int_uid" has
 # been set to 'true'.
 min_int_uid: 1000
 # This variable sets the maximum number at which the search stops for UID
-# Note that the value will be dynamically overwritten if variable "dicover_int_uid" has
+# Note that the value will be dynamically overwritten if variable "discover_int_uid" has
 # been set to 'true'.
 max_int_uid: 65533
 
