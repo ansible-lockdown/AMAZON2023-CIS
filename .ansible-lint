@@ -3,7 +3,7 @@
 parseable: true
 quiet: true
 skip_list:
-  - 'package-latest'
-  - 'risky-shell-pipe'
+    - 'package-latest'
+    - 'risky-shell-pipe'
 use_default_rules: true
 verbosity: 0
