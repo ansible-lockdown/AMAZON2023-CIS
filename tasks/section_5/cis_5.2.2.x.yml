@@ -1,47 +1,35 @@
 ---
 
 - name: "5.2.2.1 | PATCH | Ensure audit log storage size is configured"
-  ansible.builtin.lineinfile:
-      path: /etc/audit/auditd.conf
-      regexp: "^max_log_file( |=)"
-      line: "max_log_file = {{ amzn2023cis_max_log_file_size }}"
-  notify: Restart auditd
-  when:
-      - amzn2023cis_rule_5_2_2_1
+  when: amzn2023cis_rule_5_2_2_1
   tags:
       - level2-server
       - patch
       - auditd
       - rule_5.2.2.1
       - NIST800-53R5_AU-8
-
-- name: "5.2.2.2 | PATCH | Ensure audit logs are not automatically deleted"
   ansible.builtin.lineinfile:
       path: /etc/audit/auditd.conf
-      regexp: "^max_log_file_action"
-      line: "max_log_file_action = {{ amzn2023cis_auditd['max_log_file_action'] }}"
+      regexp: "^max_log_file( |=)"
+      line: "max_log_file = {{ amzn2023cis_max_log_file_size }}"
   notify: Restart auditd
-  when:
-      - amzn2023cis_rule_5_2_2_2
+
+- name: "5.2.2.2 | PATCH | Ensure audit logs are not automatically deleted"
+  when: amzn2023cis_rule_5_2_2_2
   tags:
       - level2-server
       - patch
       - auditd
       - rule_5.2.2.2
       - NIST800-53R5_AU-8
-
-- name: "5.2.2.3 | PATCH | Ensure system is disabled when audit logs are full"
   ansible.builtin.lineinfile:
       path: /etc/audit/auditd.conf
-      regexp: "{{ item.regexp }}"
-      line: "{{ item.line }}"
+      regexp: "^max_log_file_action"
+      line: "max_log_file_action = {{ amzn2023cis_auditd['max_log_file_action'] }}"
   notify: Restart auditd
-  loop:
-      - { regexp: '^admin_space_left_action', line: 'admin_space_left_action = {{ amzn2023cis_auditd.admin_space_left_action }}' }
-      - { regexp: '^action_mail_acct', line: 'action_mail_acct = {{ amzn2023cis_auditd.action_mail_acct }}' }
-      - { regexp: '^space_left_action', line: 'space_left_action = {{ amzn2023cis_auditd.space_left_action }}' }
-  when:
-      - amzn2023cis_rule_5_2_2_3
+
+- name: "5.2.2.3 | PATCH | Ensure system is disabled when audit logs are full"
+  when: amzn2023cis_rule_5_2_2_3
   tags:
       - level2-server
       - patch
@@ -52,16 +40,25 @@
       - NIST800-53R5_AU-12
       - NIST800-53R5_SI-5
 
+  ansible.builtin.lineinfile:
+      path: /etc/audit/auditd.conf
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+  notify: Restart auditd
+  loop:
+      - { regexp: '^admin_space_left_action', line: 'admin_space_left_action = {{ amzn2023cis_auditd.admin_space_left_action }}' }
+      - { regexp: '^action_mail_acct', line: 'action_mail_acct = {{ amzn2023cis_auditd.action_mail_acct }}' }
+      - { regexp: '^space_left_action', line: 'space_left_action = {{ amzn2023cis_auditd.space_left_action }}' }
+
 - name: PATCH | Configure other keys for auditd.conf
+  when: amzn2023cis_auditd_extra_conf.keys() | length > 0
+  tags:
+      - level2-server
+      - patch
+      - auditd
   ansible.builtin.lineinfile:
       path: /etc/audit/auditd.conf
       regexp: "^{{ item }}( |=)"
       line: "{{ item }} = {{ amzn2023cis_auditd_extra_conf[item] }}"
   loop: "{{ amzn2023cis_auditd_extra_conf.keys() }}"
   notify: Restart auditd
-  when:
-      - amzn2023cis_auditd_extra_conf.keys() | length > 0
-  tags:
-      - level2-server
-      - patch
-      - auditd
