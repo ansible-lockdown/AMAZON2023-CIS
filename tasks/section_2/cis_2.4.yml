@@ -1,16 +1,27 @@
 ---
 
 - name: "2.4 | AUDIT | Ensure nonessential services listening on the system are removed or masked"
+  when:
+      - amzn2023cis_rule_2_4
+  tags:
+      - level1-server
+      - manual
+      - audit
+      - services
+      - rule_2.4
+      - NIST800-53R5_CM-7
+  vars:
+      warn_control_id: '2.4'
   block:
-      - name: "2.4 | AUDIT | Ensure nonessential services listening on the system are removed or masked | Get list of services"
-        ansible.builtin.shell: systemctl list-units --type=service
+      - name: "2.4 | AUDIT | Ensure nonessential services listening on the system are removed or masked | Get list of services"  # noqa: command-instead-of-module
+        ansible.builtin.command: systemctl list-units --type=service
         changed_when: false
         failed_when: false
         check_mode: false
         register: amzn2023cis_2_4_services
 
-      - name: "2.4 | AUDIT | Ensure nonessential services listening on the system are removed or masked | Get list of sockets"
-        ansible.builtin.shell: systemctl list-units --type=sockets
+      - name: "2.4 | AUDIT | Ensure nonessential services listening on the system are removed or masked | Get list of sockets"  # noqa: command-instead-of-module
+        ansible.builtin.command: systemctl list-units --type=sockets
         changed_when: false
         failed_when: false
         check_mode: false
@@ -27,14 +38,3 @@
       - name: "2.4 | AUDIT | Ensure nonessential services listening on the system are removed or masked | Warn Count"
         ansible.builtin.import_tasks:
             file: warning_facts.yml
-  vars:
-      warn_control_id: '2.4'
-  when:
-      - amzn2023cis_rule_2_4
-  tags:
-      - level1-server
-      - manual
-      - audit
-      - services
-      - rule_2.4
-      - NIST800-53R5_CM-7

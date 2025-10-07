@@ -72,7 +72,7 @@
             state: present
 
       - name: "PRELIM | Gather system-wide crypto-policy"
-        ansible.builtin.shell: 'update-crypto-policies --show'
+        ansible.builtin.command: 'update-crypto-policies --show'
         changed_when: false
         check_mode: false
         register: prelim_system_wide_crypto_policy
@@ -191,9 +191,9 @@
 
 - name: "PRELIM | 4.4.x | Install authselect"
   when:
-    - '"authselect" not in ansible_facts.packages'
-    - amzn2023cis_rule_4_4_1
-    - amzn2023cis_rule_4_4_2
+      - '"authselect" not in ansible_facts.packages'
+      - amzn2023cis_rule_4_4_1
+      - amzn2023cis_rule_4_4_2
   tags: always
   ansible.builtin.package:
       name: authselect

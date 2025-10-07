@@ -1,19 +1,25 @@
 ---
 
 - name: "1.6.1.1 | PATCH | Ensure SELinux is installed"
-  ansible.builtin.package:
-      name: libselinux
-      state: present
-  when:
-      - amzn2023cis_rule_1_6_1_1
+  when: amzn2023cis_rule_1_6_1_1
   tags:
       - level1-server
       - patch
       - rule_1.6.1.1
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
+  ansible.builtin.package:
+      name: libselinux
+      state: present
 
 - name: "1.6.1.2 | PATCH | Ensure SELinux is not disabled in bootloader configuration"
+  when: amzn2023cis_rule_1_6_1_2
+  tags:
+      - level1-server
+      - scored
+      - patch
+      - rule_1.6.1.2
+      - NIST800-53R5_SI-7
   ansible.builtin.replace:
       path: /etc/default/grub
       regexp: '{{ item }}'
@@ -24,21 +30,9 @@
   register: selinux_grub_patch
   ignore_errors: true  # noqa ignore-errors
   notify: Grub2cfg
-  when:
-      - amzn2023cis_rule_1_6_1_2
-  tags:
-      - level1-server
-      - scored
-      - patch
-      - rule_1.6.1.2
-      - NIST800-53R5_SI-7
 
 # State set to enforcing because control 1.6.1.5 requires enforcing to be set
 - name: "1.6.1.3 | PATCH | Ensure SELinux policy is configured"
-  ansible.posix.selinux:
-      conf: /etc/selinux/config
-      policy: "{{ amzn2023cis_selinux_pol }}"
-      state: "{{ amzn2023cis_selinux_enforce }}"
   when:
       - not amzn2023cis_selinux_disable
       - amzn2023cis_rule_1_6_1_3
@@ -49,12 +43,12 @@
       - rule_1.6.1.3
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
-
-- name: "1.6.1.4 | PATCH | Ensure the SELinux state is not disabled"
   ansible.posix.selinux:
       conf: /etc/selinux/config
       policy: "{{ amzn2023cis_selinux_pol }}"
       state: "{{ amzn2023cis_selinux_enforce }}"
+
+- name: "1.6.1.4 | PATCH | Ensure the SELinux state is not disabled"
   when:
       - not amzn2023cis_selinux_disable
       - amzn2023cis_rule_1_6_1_4
@@ -65,12 +59,12 @@
       - rule_1.6.1.4
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
-
-- name: "1.6.1.5 | PATCH | Ensure the SELinux state is enforcing"
   ansible.posix.selinux:
       conf: /etc/selinux/config
       policy: "{{ amzn2023cis_selinux_pol }}"
-      state: enforcing
+      state: "{{ amzn2023cis_selinux_enforce }}"
+
+- name: "1.6.1.5 | PATCH | Ensure the SELinux state is enforcing"
   when:
       - not amzn2023cis_selinux_disable
       - amzn2023cis_selinux_enforce == 'enforcing'
@@ -82,8 +76,22 @@
       - rule_1.6.1.5
       - NIST800-53R5_AC-3
       - NIST800-53R5_SI-6
+  ansible.posix.selinux:
+      conf: /etc/selinux/config
+      policy: "{{ amzn2023cis_selinux_pol }}"
+      state: enforcing
 
 - name: "1.6.1.6 | AUDIT | Ensure no unconfined services exist"
+  when: amzn2023cis_rule_1_6_1_6
+  tags:
+      - level1-server
+      - audit
+      - services
+      - rule_1.6.1.6
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
+  vars:
+      warn_control_id: '1.6.1.6'
   block:
       - name: "1.6.1.6 | AUDIT | Ensure no unconfined services exist | Find the unconfined services"
         ansible.builtin.shell: ps -eZ | grep unconfined_service_t | egrep -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }'
@@ -100,22 +108,8 @@
         ansible.builtin.import_tasks:
             file: warning_facts.yml
         when: amzn2023cis_1_6_1_6_unconf_services.stdout | length > 0
-  vars:
-      warn_control_id: '1.6.1.6'
-  when:
-      - amzn2023cis_rule_1_6_1_6
-  tags:
-      - level1-server
-      - audit
-      - services
-      - rule_1.6.1.6
-      - NIST800-53R5_AC-3
-      - NIST800-53R5_MP-2
 
 - name: "1.6.1.7 | PATCH | Ensure SETroubleshoot is not installed"
-  ansible.builtin.package:
-      name: setroubleshoot
-      state: absent
   when:
       - amzn2023cis_rule_1_6_1_7
       - "'setroubleshoot' in ansible_facts.packages"
@@ -127,14 +121,17 @@
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
 
-- name: "1.6.1.8 | PATCH | Ensure the MCS Translation Service (mcstrans) is not installed"
   ansible.builtin.package:
-      name: mcstrans
+      name: setroubleshoot
       state: absent
-  when:
-      - amzn2023cis_rule_1_6_1_8
+
+- name: "1.6.1.8 | PATCH | Ensure the MCS Translation Service (mcstrans) is not installed"
+  when: amzn2023cis_rule_1_6_1_8
   tags:
       - level1-server
       - patch
       - rule_1.6.1.8
       - NIST800-53R5_SI-4
+  ansible.builtin.package:
+      name: mcstrans
+      state: absent

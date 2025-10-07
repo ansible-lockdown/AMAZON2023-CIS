@@ -1,6 +1,14 @@
 ---
 
 - name: "1.1.9 | PATCH | Disable USB Storage"
+  when: amzn2023cis_rule_1_1_9
+  tags:
+      - level1-server
+      - patch
+      - mounts
+      - removable_storage
+      - rule_1.1.9
+      - NIST800-53R5_SI-3
   block:
       - name: "1.1.9 | PATCH | Disable USB Storage | Edit modprobe config"
         ansible.builtin.lineinfile:
@@ -25,12 +33,3 @@
             line: "blacklist usb-storage"
             create: true
             mode: 'u-x,go-rwx'
-  when:
-      - amzn2023cis_rule_1_1_9
-  tags:
-      - level1-server
-      - patch
-      - mounts
-      - removable_storage
-      - rule_1.1.9
-      - NIST800-53R5_SI-3
