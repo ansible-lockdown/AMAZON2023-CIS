@@ -1,7 +1,10 @@
 ---
 
 - name: "4.4.1 | PATCH | Ensure custom authselect profile is used"
-  when: amzn2023cis_rule_4_4_1
+  when:
+      - amzn2023cis_rule_4_4_1
+      - amzn2023cis_authselect['custom_profile_name'] not in prelim_authselect_current_profile.stdout or
+        prelim_authselect_current_profile.stdout is not defined
   tags:
       - level1-server
       - manual
@@ -9,33 +12,10 @@
       - authselect
       - rule_4.4.1
       - NIST800-53R5_CA-5
-  block:
-      - name: "4.4.1 | PATCH | Ensure custom authselect profile is used | Create custom profiles"
-        when:
-            - amzn2023cis_authselect['custom_profile_name'] not in prelim_authselect_current_profile.stdout or
-              prelim_authselect_current_profile.stdout is not defined
-        ansible.builtin.command: "/usr/bin/authselect create-profile amzn2023cis_authselect['custom_profile_name'] -b amzn2023cis_authselect['default_profile_to_copy'] }}"
-        changed_when: true
-        args:
-            creates: "/etc/authselect/custom/{{ rhel8cis_authselect_custom_profile_name }}"
-
-      - name: "4.4.1 | AUDIT | Ensure custom authselect profile is used | Gather profiles"
-        ansible.builtin.shell: 'authselect current | grep "Profile ID: custom/"'
-        failed_when: false
-        changed_when: false
-        check_mode: false
-        register: discovered_profiles
-
-      - name: "4.4.1 | AUDIT | Ensure custom authselect profile is used | Show profiles"
-        ansible.builtin.debug:
-            msg:
-                - "Below are the current custom profiles"
-                - "{{ discovered_profiles.stdout_lines }}"
-
-      - name: "4.4.1 | PATCH | Ensure custom authselect profile is used | Create custom profiles"
-        when: amzn2023cis_authselect_custom_profile_create
-        ansible.builtin.command: authselect create-profile {{ amzn2023cis_authselect['custom_profile_name'] }} -b {{ amzn2023cis_authselect['default_file_to_copy'] }}
-        changed_when: true
+  ansible.builtin.command: "/usr/bin/authselect create-profile {{amzn2023cis_authselect['custom_profile_name'] }} -b {{ amzn2023cis_authselect['default_profile_to_copy'] }}"
+  changed_when: true
+  args:
+      creates: "/etc/authselect/custom/{{ amzn2023cis_authselect['custom_profile_name'] }}"
 
 - name: "4.4.2 | PATCH | Ensure authselect includes with-faillock | with auth select profile"
   when: amzn2023cis_rule_4_4_2
