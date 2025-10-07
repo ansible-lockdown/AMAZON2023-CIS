@@ -2,6 +2,15 @@
 
 - name: "4.4.1 | PATCH | Ensure custom authselect profile is used"
   block:
+      - name: "4.4.1 | PATCH | Ensure custom authselect profile is used | Create custom profiles"
+        when:
+            - amzn2023cis_authselect['custom_profile_name'] not in prelim_authselect_current_profile.stdout or
+              prelim_authselect_current_profile.stdout is not defined
+        ansible.builtin.command: "/usr/bin/authselect create-profile amzn2023cis_authselect['custom_profile_name'] -b amzn2023cis_authselect['default_profile_to_copy'] }}"
+        changed_when: true
+        args:
+            creates: "/etc/authselect/custom/{{ rhel8cis_authselect_custom_profile_name }}"
+
       - name: "4.4.1 | AUDIT | Ensure custom authselect profile is used | Gather profiles"
         ansible.builtin.shell: 'authselect current | grep "Profile ID: custom/"'
         failed_when: false
