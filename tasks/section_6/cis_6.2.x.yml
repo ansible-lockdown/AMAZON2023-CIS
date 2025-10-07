@@ -308,6 +308,7 @@
             state: directory
             owner: "{{ item.id }}"
             group: "{{ item.gid }}"
+            mode: 'u=rwx,g-w,o-rwx'
         register: discovered_home_dirs
         loop: "{{ amzn2023cis_passwd | selectattr('uid', '>=', min_int_uid | int) | selectattr('uid', '<=', max_int_uid | int) | list }}"
         loop_control:

@@ -11,7 +11,7 @@
       dest: /etc/audit/rules.d/99_auditd.rules
       owner: root
       group: root
-      mode: 0640
+      mode: 'u-x,g-wx,o-rwx'
   diff: "{{ amzn2023cis_auditd_file.stat.exists }}"  # Only run diff if not a new file
   register: amzn2023cis_auditd_template_updated
   notify:
@@ -39,7 +39,7 @@
       dest: /etc/audit/rules.d/98_auditd_exceptions.rules
       owner: root
       group: root
-      mode: 0640
+      mode: 'u-x,g-wx,o-rwx'
   diff: "{{ amzn2023cis_auditd_exception_file.stat.exists }}"
   notify: Restart auditd
   when:
