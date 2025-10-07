@@ -210,7 +210,6 @@
             name: net-snmp
             state: absent
 
-
       - name: "2.2.12 | PATCH | Ensure net-snmp is not installed or smpd service is not enabled | mask service"
         ansible.builtin.systemd:
             name: net-snmp
@@ -285,7 +284,6 @@
             name: nfs-utils
             state: absent
 
-
       - name: "2.2.16 | PATCH | Ensure nfs-utils is not installed or the nfs-server service is masked | mask service"
         when: amzn2023cis_nfs_server == "mask"
         ansible.builtin.systemd:
@@ -293,7 +291,6 @@
             masked: true
             state: stopped
             daemon_reload: true
-
 
 # The name title of the service says mask the service, but the fix allows for both options
 # Options available in default/main if to remove the package default is false just mask the server service
@@ -352,7 +349,6 @@
         ansible.builtin.package:
             name: rsync-daemon
             state: absent
-
 
       - name: "2.2.18 | PATCH | Ensure rsync-daemon is not installed or the rsyncd service is masked | mask service"
         when: amzn2023cis_rsync_server == "mask"

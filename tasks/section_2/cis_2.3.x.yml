@@ -15,7 +15,6 @@
       name: telnet
       state: absent
 
-
 - name: "2.3.2 | PATCH | Ensure LDAP client is not installed"
   when:
       - not amzn2023cis_openldap_clients_required
