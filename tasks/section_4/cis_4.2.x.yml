@@ -134,11 +134,9 @@
       regexp: "^#LogLevel|^LogLevel"
       line: 'LogLevel {{ amzn2023cis_ssh_loglevel }}'
       validate: sshd -t -f %s
-  loop:
+  with_items:
       - "{{ prelim_sshd_conf_files.files }}"
       - "{{ prelim_main_sshd_cfg.stat }}"
-  loop_control:
-      label: "{{ item.path }}"
 
 - name: "4.2.6 | PATCH | Ensure SSH PAM is enabled"
   when: amzn2023cis_rule_4_2_6
@@ -157,11 +155,9 @@
       regexp: "^#UsePAM|^UsePAM"
       line: 'UsePAM yes'
       validate: sshd -t -f %s
-  loop:
+  with_items:
       - "{{ prelim_sshd_conf_files.files }}"
       - "{{ prelim_main_sshd_cfg.stat }}"
-  loop_control:
-      label: "{{ item.path }}"
 
 - name: "4.2.7 | PATCH | Ensure SSH root login is disabled"
   when: amzn2023cis_rule_4_2_7
@@ -176,11 +172,9 @@
       regexp: "^#PermitRootLogin|^PermitRootLogin"
       line: 'PermitRootLogin no'
       validate: sshd -t -f %s
-  loop:
+  with_items:
       - "{{ prelim_sshd_conf_files.files }}"
       - "{{ prelim_main_sshd_cfg.stat }}"
-  loop_control:
-      label: "{{ item.path }}"
 
 - name: "4.2.8 | PATCH | Ensure SSH HostbasedAuthentication is disabled"
   when: amzn2023cis_rule_4_2_8
@@ -199,11 +193,9 @@
       regexp: "^#HostbasedAuthentication|^HostbasedAuthentication"
       line: 'HostbasedAuthentication no'
       validate: sshd -t -f %s
-  loop:
+  with_items:
       - "{{ prelim_sshd_conf_files.files }}"
       - "{{ prelim_main_sshd_cfg.stat }}"
-  loop_control:
-      label: "{{ item.path }}"
 
 - name: "4.2.9 | PATCH | Ensure SSH PermitEmptyPasswords is disabled"
   when: amzn2023cis_rule_4_2_9
@@ -222,11 +214,9 @@
       regexp: "^#PermitEmptyPasswords|^PermitEmptyPasswords"
       line: 'PermitEmptyPasswords no'
       validate: sshd -t -f %s
-  loop:
+  with_items:
       - "{{ prelim_sshd_conf_files.files }}"
       - "{{ prelim_main_sshd_cfg.stat }}"
-  loop_control:
-      label: "{{ item.path }}"
 
 - name: "4.2.10 | PATCH | Ensure SSH PermitUserEnvironment is disabled"
   when: amzn2023cis_rule_4_2_10
@@ -245,11 +235,9 @@
       regexp: "^#PermitUserEnvironment|^PermitUserEnvironment"
       line: 'PermitUserEnvironment no'
       validate: sshd -t -f %s
-  loop:
+  with_items:
       - "{{ prelim_sshd_conf_files.files }}"
       - "{{ prelim_main_sshd_cfg.stat }}"
-  loop_control:
-      label: "{{ item.path }}"
 
 - name: "4.2.11 | PATCH | Ensure SSH IgnoreRhosts is enabled"
   when: amzn2023cis_rule_4_2_11
@@ -282,11 +270,9 @@
       regexp: "^#X11Forwarding|^X11Forwarding"
       line: 'X11Forwarding no'
       validate: sshd -t -f %s
-  loop:
+  with_items:
       - "{{ prelim_sshd_conf_files.files }}"
       - "{{ prelim_main_sshd_cfg.stat }}"
-  loop_control:
-      label: "{{ item.path }}"
 
 - name: "4.2.13 | PATCH | Ensure SSH AllowTcpForwarding is disabled"
   when: amzn2023cis_rule_4_2_13
@@ -305,11 +291,9 @@
       regexp: "^#AllowTcpForwarding|^AllowTcpForwarding"
       line: 'AllowTcpForwarding no'
       validate: sshd -t -f %s
-  loop:
+  with_items:
       - "{{ prelim_sshd_conf_files.files }}"
       - "{{ prelim_main_sshd_cfg.stat }}"
-  loop_control:
-      label: "{{ item.path }}"
 
 - name: "4.2.14 | PATCH | Ensure system-wide crypto policy is not over-ridden"
   when: amzn2023cis_rule_4_2_14
@@ -364,11 +348,9 @@
       regexp: '^(#)?MaxAuthTries \d'
       line: 'MaxAuthTries {{ amzn2023cis_ssh_maxauthtries }}'
       validate: sshd -t -f %s
-  loop:
+  with_items:
       - "{{ prelim_sshd_conf_files.files }}"
       - "{{ prelim_main_sshd_cfg.stat }}"
-  loop_control:
-      label: "{{ item.path }}"
 
 - name: "4.2.17 | PATCH | Ensure SSH MaxStartups is configured"
   when: amzn2023cis_rule_4_2_17
@@ -387,11 +369,9 @@
       regexp: "^#MaxStartups|^MaxStartups"
       line: 'MaxStartups 10:30:60'
       validate: sshd -t -f %s
-  loop:
+  with_items:
       - "{{ prelim_sshd_conf_files.files }}"
       - "{{ prelim_main_sshd_cfg.stat }}"
-  loop_control:
-      label: "{{ item.path }}"
 
 - name: "4.2.18 | PATCH | Ensure SSH MaxSessions is set to 10 or less"
   when: amzn2023cis_rule_4_2_18
@@ -410,11 +390,9 @@
       regexp: "^#MaxSessions|^MaxSessions"
       line: 'MaxSessions {{ amzn2023cis_ssh_maxsessions }}'
       validate: sshd -t -f %s
-  loop:
+  with_items:
       - "{{ prelim_sshd_conf_files.files }}"
       - "{{ prelim_main_sshd_cfg.stat }}"
-  loop_control:
-      label: "{{ item.path }}"
 
 - name: "4.2.19 | PATCH | Ensure SSH LoginGraceTime is set to one minute or less"
   when: amzn2023cis_rule_4_2_19
@@ -429,11 +407,9 @@
       regexp: "^#LoginGraceTime|^LoginGraceTime"
       line: "LoginGraceTime {{ amzn2023cis_sshd['logingracetime'] }}"
       validate: sshd -t -f %s
-  loop:
+  with_items:
       - "{{ prelim_sshd_conf_files.files }}"
       - "{{ prelim_main_sshd_cfg.stat }}"
-  loop_control:
-      label: "{{ item.path }}"
 
 - name: "4.2.20 | PATCH | Ensure SSH Idle Timeout Interval is configured"
   when: amzn2023cis_rule_4_2_20
@@ -454,11 +430,9 @@
             regexp: '^ClientAliveInterval'
             line: "ClientAliveInterval {{ amzn2023cis_sshd['clientaliveinterval'] }}"
             validate: sshd -t -f %s
-        loop:
+        with_items:
             - "{{ prelim_sshd_conf_files.files }}"
             - "{{ prelim_main_sshd_cfg.stat }}"
-        loop_control:
-            label: "{{ item.path }}"
 
       - name: "4.2.20 | PATCH | Ensure SSH Idle Timeout Interval is configured | Ensure SSH ClientAliveCountMax set to <= 3"
         ansible.builtin.lineinfile:
@@ -466,8 +440,6 @@
             regexp: '^ClientAliveCountMax'
             line: "ClientAliveCountMax {{ amzn2023cis_sshd['clientalivecountmax'] }}"
             validate: sshd -t -f %s
-        loop:
+        with_items:
             - "{{ prelim_sshd_conf_files.files }}"
             - "{{ prelim_main_sshd_cfg.stat }}"
-        loop_control:
-            label: "{{ item.path }}"
