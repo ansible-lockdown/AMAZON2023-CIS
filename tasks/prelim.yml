@@ -168,7 +168,7 @@
   ansible.builtin.find:
       patterns: '*.conf'
       path: /etc/ssh/sshd_config.d
-  register: prelim_sshd_d_conf_files
+  register: prelim_sshd_conf_files
 
 - name: "PRELIM | Section 4.2 | SSH - Search for main cfg file"
   when: "'openssh-server' in ansible_facts.packages"
@@ -201,12 +201,12 @@
   become: true
 
 - name: "PRELIM | AUDIT | Check authselect profile is selected"
-  when: rhel8cis_allow_authselect_updates
+  when: amzn2023cis_allow_authselect_updates
   tags: always
   block:
       - name: "PRELIM | AUDIT | Check authselect profile name has been updated"
         ansible.builtin.assert:
-            that: amzn2023cis_authselect[custom_profile_name] != 'cis_example_profile'
+            that: amzn2023cis_authselect['custom_profile_name'] != 'cis_example_profile'
             fail_msg: "You still have the default name for your authselect profile"
 
       - name: "PRELIM | AUDIT | Check authselect profile is selected"

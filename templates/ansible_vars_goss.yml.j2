@@ -436,7 +436,7 @@ amzn2023cis_authselect_custom_profile_select: {{ amzn2023cis_authselect_custom_p
 ## Authselect select false if using AD or RHEL ID mgmt
 amzn2023cis_authselect:
   custom_profile_name: {{ amzn2023cis_authselect['custom_profile_name'] }}
-  default_file_to_copy: {{ amzn2023cis_authselect['default_file_to_copy'] }}
+  default_file_to_copy: {{ amzn2023cis_authselect['default_profile_to_copy'] }}
 
 ## Enable automation to create custom profile settings, using the setings above
 amzn2023cis_authselect_custom_profile_create: {{ amzn2023cis_authselect_custom_profile_create }}

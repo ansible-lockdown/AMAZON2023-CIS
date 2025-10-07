@@ -895,6 +895,12 @@ amzn2023cis_sugroup: nosugroup
 # Authselect is another authentication configuration tool
 # that aims to provide a more modern and modular approach
 # for authentication settings configuration.
+# Your host is part of Linux Identity Management.
+# Joining your host to an IdM domain with the ipa-client-install command automatically configures SSSD authentication on your host.
+# Your host is part of Active Directory via SSSD.
+# Calling the realm join command to join your host to an Active Directory domain automatically configures SSSD authentication on your host.
+amzn2023cis_allow_authselect_updates: true
+
 amzn2023cis_authselect:
     # This setting is just a placeholder taken from the CIS
     # examples, which might lead to failure. This setting needs
