@@ -93,9 +93,13 @@ skip_reboot: true
 # changes!
 change_requires_reboot: false
 
+###
+### Settings for associated Audit role using Goss
+###
+
 ###########################################
 ### Goss is required on the remote host ###
-### vars/audit.yml for other settings  ###
+### vars/auditd.yml for other settings  ###
 
 # Allow audit to setup the requirements including installing git (if option chosen and downloading and adding goss binary to system)
 setup_audit: false
@@ -107,11 +111,7 @@ audit_run_heavy_tests: true
 
 ## Only run Audit do not remediate
 audit_only: false
-### As part of audit_only ###
-# This will enable files to be copied back to control node in audit_only mode
-fetch_audit_files: false
-# Path to copy the files to will create dir structure in audit_only mode
-audit_capture_files_dir: /some/location to copy to on control node
+
 #############################
 
 # How to retrieve audit binary
@@ -124,6 +124,9 @@ get_audit_binary_method: download
 ## e.g copy from ansible control node to remote host
 audit_bin_copy_location: /some/accessible/path
 
+# Ability to limit the number of concurrent processes used by goss (default 50)
+audit_max_concurrent: 50
+
 # how to get audit files onto host options
 # options are git/copy/archive/get_url other e.g. if you wish to run from already downloaded conf
 audit_content: git
@@ -131,7 +134,7 @@ audit_content: git
 # If using either archive, copy, get_url:
 ## Note will work with .tar files - zip will require extra configuration
 ### If using get_url this is expecting github url in tar.gz format e.g.
-### https://github.com/ansible-lockdown/UBUNTU22-CIS-Audit/archive/refs/heads/benchmark-v1.0.0.tar.gz
+### https://github.com/ansible-lockdown/UBUNTU24-CIS-Audit/archive/refs/heads/benchmark-v1.0.0.tar.gz
 audit_conf_source: "some path or url to copy from"
 
 # Destination for the audit content to be placed on managed node
@@ -900,7 +903,7 @@ amzn2023cis_authselect:
     # This setting is just a placeholder taken from the CIS
     # examples, which might lead to failure. This setting needs
     # to be adjusted in order to minimise risk.
-    default_file_to_copy: "sssd --symlink-meta"
+    default_profile_to_copy: "sssd --symlink-meta"
     # This setting is just a placeholder taken from the CIS
     # examples, which might lead to failure. This setting needs
     # to be adjusted in order to minimise risk.
@@ -1232,10 +1235,3 @@ max_int_uid: 65533
 amzn2023cis_remove_other_dot_files: false
 # This variable states if filesystem links should be followed or not.
 amzn2023cis_6_2_11_home_follow_symlinks: false
-
-#### Goss Configuration Settings ####
-# Set correct env for the run_audit.sh script from https://github.com/ansible-lockdown/{{ benchmark }}-Audit.git"
-audit_run_script_environment:
-    AUDIT_BIN: "{{ audit_bin }}"
-    AUDIT_FILE: 'goss.yml'
-    AUDIT_CONTENT_LOCATION: "{{ audit_out_dir }}"
