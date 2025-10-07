@@ -117,18 +117,18 @@
   ansible.builtin.import_tasks:
       file: section_6/main.yml
 
-- name: run auditd logic
+- name: Run auditd logic
   when: update_audit_template
   tags: always
   ansible.builtin.import_tasks:
       file: auditd.yml
 
-- name: run post remediation tasks
+- name: Run post remediation tasks
   tags: always
   ansible.builtin.import_tasks:
       file: post.yml
 
-- name: run post_remediation audit
+- name: Run post_remediation audit
   tags: run_audit
   when: run_audit
   ansible.builtin.import_tasks:

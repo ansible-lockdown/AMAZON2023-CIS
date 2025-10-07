@@ -1,5 +1,4 @@
 ---
-
 - name: "5.3 | PATCH | Ensure logrotate is configured"
   when: amzn2023cis_rule_5_3
   tags:
@@ -24,23 +23,23 @@
       - name: "5.3 | PATCH | Ensure logrotate is configured | set default conf"
         ansible.builtin.replace:
             path: "/etc/logrotate.conf"
-            regexp: '^(\s*)(daily|weekly|monthly|yearly)$'
+            regexp: "^(\\s*)(daily|weekly|monthly|yearly)$"
             replace: "\\1{{ amzn2023cis_logrotate }}"
 
       - name: "5.3 | AUDIT | Ensure logrotate is configured | Get non default logrotate settings"
         ansible.builtin.find:
             paths: /etc/logrotate.d/
-            contains: '^(\s*)(?!{{ amzn2023cis_logrotate }})(daily|weekly|monthly|yearly)$'
+            contains: "^(\\s*)(?!{{ amzn2023cis_logrotate }})(daily|weekly|monthly|yearly)$"
         register: discovered_log_rotates
 
       - name: "5.3 | AUDIT | Ensure logrotate is configured"
         when: discovered_log_rotates.matched > 0
         vars:
-            warn_control_id: '5.3'
+            warn_control_id: "5.3"
         block:
             - name: "5.3 | AUDIT | Ensure logrotate is configured | generate file list"
               ansible.builtin.set_fact:
-                  logrotate_non_def_conf: "{{ discovered_log_rotates.files | map(attribute='path' ) | join(', ') }}"
+                  logrotate_non_def_conf: "{{ discovered_log_rotates.files | map(attribute='path') | join(', ') }}"
 
             - name: "5.3 | AUDIT | Ensure logrotate is configured | List configured files"
               ansible.builtin.debug:
