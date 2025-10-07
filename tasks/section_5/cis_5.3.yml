@@ -40,7 +40,7 @@
         block:
             - name: "5.3 | AUDIT | Ensure logrotate is configured | generate file list"
               ansible.builtin.set_fact:
-                  logrotate_non_def_conf: "{{ discovered_log_rotates.files | map(attribute='path') | join (', ') }}"
+                  logrotate_non_def_conf: "{{ discovered_log_rotates.files | map(attribute='path' ) | join(', ') }}"
 
             - name: "5.3 | AUDIT | Ensure logrotate is configured | List configured files"
               ansible.builtin.debug:

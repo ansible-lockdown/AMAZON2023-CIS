@@ -49,7 +49,7 @@
       - name: "5.2.4.4 | AUDIT | Ensure the audit log directory is 0750 or more restrictive | get current permissions"
         ansible.builtin.stat:
             path: "{{ discovered_auditd_logfile.stdout | dirname }}"
-        register:  discovered_auditlog_dir
+        register: discovered_auditlog_dir
 
       - name: "5.2.4.4 | PATCH | Ensure the audit log directory is 0750 or more restrictive | set"
         when: not discovered_auditlog_dir.stat.mode is match('07(0|5)0')
