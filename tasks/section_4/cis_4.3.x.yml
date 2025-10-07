@@ -46,7 +46,7 @@
       regexp: '^([^#].*)!authenticate(.*)'
       replace: '\1authenticate\2'
       validate: '/usr/sbin/visudo -cf %s'
-  loop: "{{ amzn2023cis_sudoers_files.stdout_lines }}"
+  loop: "{{ prelim_sudoers_files.stdout_lines }}"
   when:
       - amzn2023cis_rule_4_3_4
   tags:

@@ -64,7 +64,7 @@
   ansible.builtin.file:
       path: "{{ item.path }}"
       mode: 'g-wx,o-rwx'
-  loop: "{{ auditd_conf_files.files | default([]) }}"
+  loop: "{{ prelim_auditd_conf_files.files | default([]) }}"
   loop_control:
       label: "{{ item.path }}"
   when:
@@ -80,7 +80,7 @@
   ansible.builtin.file:
       path: "{{ item.path }}"
       owner: root
-  loop: "{{ auditd_conf_files.files }}"
+  loop: "{{ prelim_auditd_conf_files.files }}"
   loop_control:
       label: "{{ item.path }}"
   when:
@@ -96,7 +96,7 @@
   ansible.builtin.file:
       path: "{{ item.path }}"
       group: root
-  loop: "{{ auditd_conf_files.files }}"
+  loop: "{{ prelim_auditd_conf_files.files }}"
   loop_control:
       label: "{{ item.path }}"
   when:

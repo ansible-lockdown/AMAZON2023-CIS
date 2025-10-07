@@ -33,9 +33,9 @@
   ansible.builtin.shell: passwd -l {{ item }}
   changed_when: false
   failed_when: false
-  loop: "{{ empty_password_accounts.stdout_lines }}"
+  loop: "{{ prelim_empty_password_accounts.stdout_lines }}"
   when:
-      - empty_password_accounts.rc
+      - prelim_empty_password_accounts.rc
       - amzn2023cis_rule_6_2_2
   tags:
       - level1-server
@@ -280,9 +280,9 @@
   ansible.builtin.shell: passwd -l {{ item }}
   changed_when: false
   failed_when: false
-  loop: "{{ amzn2023cis_uid_zero_accounts_except_root.stdout_lines }}"
+  loop: "{{ prelim_uid_zero_accounts_except_root.stdout_lines }}"
   when:
-      - amzn2023cis_uid_zero_accounts_except_root.rc
+      - prelim_uid_zero_accounts_except_root.rc
       - amzn2023cis_rule_6_2_9
   tags:
       - level1-server
@@ -317,7 +317,7 @@
             etype: group
             permissions: rx
             state: present
-        loop: "{{ discovered_interactive_users_home.stdout_lines }}"
+        loop: "{{ prelim_interactive_users_home.stdout_lines }}"
         when: not system_is_container
 
       - name: "6.2.10 | PATCH | Ensure local interactive user home directories exist | Set other ACL"
@@ -327,7 +327,7 @@
             etype: other
             permissions: 0
             state: present
-        loop: "{{ discovered_interactive_users_home.stdout_lines }}"
+        loop: "{{ prelim_interactive_users_home.stdout_lines }}"
         when: not system_is_container
   when:
       - amzn2023cis_rule_6_2_10
@@ -368,9 +368,9 @@
             path: "{{ item }}"
             state: absent
         loop:
-            - "{{ discovered_interactive_users_home.stdout_lines }}/.netrc"
-            - "{{ discovered_interactive_users_home.stdout_lines }}/.rhosts"
-            - "{{ discovered_interactive_users_home.stdout_lines }}/.forward"
+            - "{{ prelim_interactive_users_home.stdout_lines }}/.netrc"
+            - "{{ prelim_interactive_users_home.stdout_lines }}/.rhosts"
+            - "{{ prelim_interactive_users_home.stdout_lines }}/.forward"
         when: amzn2023cis_remove_other_dot_files
 
   when:

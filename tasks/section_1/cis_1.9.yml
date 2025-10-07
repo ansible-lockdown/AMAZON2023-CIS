@@ -12,7 +12,7 @@
             update-crypto-policies
         notify: Change_requires_reboot
         when:
-            - amzn2023cis_system_wide_crypto_policy.stdout != amzn2023cis_full_crypto_policy
+            - prelim_system_wide_crypto_policy.stdout != amzn2023cis_full_crypto_policy
   when:
       - amzn2023cis_rule_1_9
 

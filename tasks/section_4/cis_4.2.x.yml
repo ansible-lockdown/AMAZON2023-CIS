@@ -25,7 +25,7 @@
             patterns: 'ssh_host_*_key'
             recurse: true
             file_type: any
-        register: amzn2023cis_4_2_2_ssh_private_host_key
+        register: discovered_ssh_private_host_key
 
       - name: "4.2.2 | PATCH | Ensure permissions on SSH private host key files are configured | Set permissions on SSH private host keys"
         ansible.builtin.file:
@@ -33,7 +33,7 @@
             owner: root
             group: root
             mode: 'u-x,go-rwx'
-        loop: "{{ amzn2023cis_4_2_2_ssh_private_host_key.files }}"
+        loop: "{{ discovered_ssh_private_host_key.files }}"
         loop_control:
             label: "{{ item.path }}"
   when:
@@ -55,7 +55,7 @@
             patterns: 'ssh_host_*_key.pub'
             recurse: true
             file_type: any
-        register: amzn2023cis_4_2_3_ssh_public_host_key
+        register: discovered_ssh_public_host_key
 
       - name: "4.2.3 | PATCH | Ensure permissions on SSH public host key files are configured | Set permissions on SSH public host keys"
         ansible.builtin.file:
@@ -63,7 +63,7 @@
             owner: root
             group: root
             mode: 'u-x,go-wx'
-        loop: "{{ amzn2023cis_4_2_3_ssh_public_host_key.files }}"
+        loop: "{{ discovered_ssh_public_host_key.files }}"
         loop_control:
             label: "{{ item.path }}"
   when:
@@ -130,8 +130,8 @@
       line: 'LogLevel {{ amzn2023cis_ssh_loglevel }}'
       validate: sshd -t -f %s
   with_items:
-      - "{{ sshd_d_conf_files.files }}"
-      - "{{ main_sshd_cfg.stat }}"
+      - "{{ prelim_sshd_conf_files.files }}"
+      - "{{ prelim_main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_5
   tags:
@@ -150,8 +150,8 @@
       line: 'UsePAM yes'
       validate: sshd -t -f %s
   with_items:
-      - "{{ sshd_d_conf_files.files }}"
-      - "{{ main_sshd_cfg.stat }}"
+      - "{{ prelim_sshd_conf_files.files }}"
+      - "{{ prelim_main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_6
   tags:
@@ -172,8 +172,8 @@
       line: 'PermitRootLogin no'
       validate: sshd -t -f %s
   with_items:
-      - "{{ sshd_d_conf_files.files }}"
-      - "{{ main_sshd_cfg.stat }}"
+      - "{{ prelim_sshd_conf_files.files }}"
+      - "{{ prelim_main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_7
   tags:
@@ -190,8 +190,8 @@
       line: 'HostbasedAuthentication no'
       validate: sshd -t -f %s
   with_items:
-      - "{{ sshd_d_conf_files.files }}"
-      - "{{ main_sshd_cfg.stat }}"
+      - "{{ prelim_sshd_conf_files.files }}"
+      - "{{ prelim_main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_8
   tags:
@@ -212,8 +212,8 @@
       line: 'PermitEmptyPasswords no'
       validate: sshd -t -f %s
   with_items:
-      - "{{ sshd_d_conf_files.files }}"
-      - "{{ main_sshd_cfg.stat }}"
+      - "{{ prelim_sshd_conf_files.files }}"
+      - "{{ prelim_main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_9
   tags:
@@ -234,8 +234,8 @@
       line: 'PermitUserEnvironment no'
       validate: sshd -t -f %s
   with_items:
-      - "{{ sshd_d_conf_files.files }}"
-      - "{{ main_sshd_cfg.stat }}"
+      - "{{ prelim_sshd_conf_files.files }}"
+      - "{{ prelim_main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_10
   tags:
@@ -275,8 +275,8 @@
       line: 'X11Forwarding no'
       validate: sshd -t -f %s
   with_items:
-      - "{{ sshd_d_conf_files.files }}"
-      - "{{ main_sshd_cfg.stat }}"
+      - "{{ prelim_sshd_conf_files.files }}"
+      - "{{ prelim_main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_12
   tags:
@@ -293,8 +293,8 @@
       line: 'AllowTcpForwarding no'
       validate: sshd -t -f %s
   with_items:
-      - "{{ sshd_d_conf_files.files }}"
-      - "{{ main_sshd_cfg.stat }}"
+      - "{{ prelim_sshd_conf_files.files }}"
+      - "{{ prelim_main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_13
   tags:
@@ -356,8 +356,8 @@
       line: 'MaxAuthTries {{ amzn2023cis_ssh_maxauthtries }}'
       validate: sshd -t -f %s
   with_items:
-      - "{{ sshd_d_conf_files.files }}"
-      - "{{ main_sshd_cfg.stat }}"
+      - "{{ prelim_sshd_conf_files.files }}"
+      - "{{ prelim_main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_16
   tags:
@@ -374,8 +374,8 @@
       line: 'MaxStartups 10:30:60'
       validate: sshd -t -f %s
   with_items:
-      - "{{ sshd_d_conf_files.files }}"
-      - "{{ main_sshd_cfg.stat }}"
+      - "{{ prelim_sshd_conf_files.files }}"
+      - "{{ prelim_main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_17
   tags:
@@ -396,8 +396,8 @@
       line: 'MaxSessions {{ amzn2023cis_ssh_maxsessions }}'
       validate: sshd -t -f %s
   with_items:
-      - "{{ sshd_d_conf_files.files }}"
-      - "{{ main_sshd_cfg.stat }}"
+      - "{{ prelim_sshd_conf_files.files }}"
+      - "{{ prelim_main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_18
   tags:
@@ -418,8 +418,8 @@
       line: "LoginGraceTime {{ amzn2023cis_sshd['logingracetime'] }}"
       validate: sshd -t -f %s
   with_items:
-      - "{{ sshd_d_conf_files.files }}"
-      - "{{ main_sshd_cfg.stat }}"
+      - "{{ prelim_sshd_conf_files.files }}"
+      - "{{ prelim_main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_19
   tags:
@@ -438,8 +438,8 @@
             line: "ClientAliveInterval {{ amzn2023cis_sshd['clientaliveinterval'] }}"
             validate: sshd -t -f %s
         with_items:
-            - "{{ sshd_d_conf_files.files }}"
-            - "{{ main_sshd_cfg.stat }}"
+            - "{{ prelim_sshd_conf_files.files }}"
+            - "{{ prelim_main_sshd_cfg.stat }}"
 
       - name: "4.2.20 | PATCH | Ensure SSH Idle Timeout Interval is configured | Ensure SSH ClientAliveCountMax set to <= 3"
         ansible.builtin.lineinfile:
@@ -448,8 +448,8 @@
             line: "ClientAliveCountMax {{ amzn2023cis_sshd['clientalivecountmax'] }}"
             validate: sshd -t -f %s
         with_items:
-            - "{{ sshd_d_conf_files.files }}"
-            - "{{ main_sshd_cfg.stat }}"
+            - "{{ prelim_sshd_conf_files.files }}"
+            - "{{ prelim_main_sshd_cfg.stat }}"
   when:
       - amzn2023cis_rule_4_2_20
   tags:

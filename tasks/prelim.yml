@@ -24,21 +24,14 @@
   ansible.builtin.shell: >
       grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '(!index($7, "sbin/nologin") && $7 != "/bin/nologin" && $7 != "/bin/false") { print $1 }'
   changed_when: false
-  register: discovered_interactive_usernames
+  register: prelim_interactive_usernames
 
 - name: "PRELIM | AUDIT | Interactive User accounts home directories"
   tags: always
   ansible.builtin.shell: >
       grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '(!index($7, "sbin/nologin") && $7 != "/bin/nologin" && $7 != "/bin/false") { print $6 }'
   changed_when: false
-  register: discovered_interactive_users_home
-
-- name: "PRELIM | AUDIT | Interactive UIDs"
-  tags: always
-  ansible.builtin.shell: >
-      grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '(!index($7, "sbin/nologin") && $7 != "/bin/nologin" && $7 != "/bin/false") { print $3 }'
-  changed_when: false
-  register: discovered_interactive_uids
+  register: prelim_interactive_users_home
 
 - name: "PRELIM | capture /etc/password variables"
   tags: always
@@ -49,7 +42,7 @@
   ansible.builtin.shell: "cat /etc/shadow | awk -F: '($2 == \"\" ) {j++;print $1; } END {exit j}'"
   changed_when: false
   check_mode: false
-  register: empty_password_accounts
+  register: prelim_empty_password_accounts
   tags:
       - level1-server
       - passwords
@@ -62,7 +55,7 @@
   ansible.builtin.shell: "cat /etc/passwd | awk -F: '($3 == 0 && $1 != \"root\") {i++;print $1 } END {exit i}'"
   changed_when: false
   check_mode: false
-  register: amzn2023cis_uid_zero_accounts_except_root
+  register: prelim_uid_zero_accounts_except_root
 
 - name: "PRELIM | Setup crypto-policy"
   when: amzn2023cis_rule_1_9
@@ -82,16 +75,16 @@
         ansible.builtin.shell: 'update-crypto-policies --show'
         changed_when: false
         check_mode: false
-        register: amzn2023cis_system_wide_crypto_policy
+        register: prelim_system_wide_crypto_policy
 
       - name: "PRELIM | Gather system-wide crypto-policy | set fact system policy"
         ansible.builtin.set_fact:
-            current_crypto_policy: "{{ amzn2023cis_system_wide_crypto_policy.stdout.split(':')[0] }}"
+            current_crypto_policy: "{{ prelim_system_wide_crypto_policy.stdout.split(':')[0] }}"
 
       - name: "PRELIM | Gather system-wide crypto-policy module | set fact system policy submodule"
         ansible.builtin.set_fact:
-            current_crypto_module: "{{ amzn2023cis_system_wide_crypto_policy.stdout.split(':')[1] }}"
-        when: "':' in amzn2023cis_system_wide_crypto_policy.stdout"
+            current_crypto_module: "{{ prelim_system_wide_crypto_policy.stdout.split(':')[1] }}"
+        when: "':' in prelim_system_wide_crypto_policy.stdout"
 
 - name: "PRELIM | if systemd coredump"
   when: amzn2023cis_rule_1_5_3
@@ -101,7 +94,7 @@
       - systemd
   ansible.builtin.stat:
       path: /etc/systemd/coredump.conf
-  register: systemd_coredump
+  register: prelim_systemd_coredump
 
 - name: "PRELIM | Section 1.1 | Create list of mount points"
   tags: level1-server
@@ -121,18 +114,18 @@
       - name: "PRELIM | Check whether machine is UEFI-based"
         ansible.builtin.stat:
             path: /sys/firmware/efi
-        register: amzn2023cis_efi_boot
+        register: prelim_efi_boot
 
       - name: "PRELIM | Set legacy boot and grub path | Bios"
         ansible.builtin.set_fact:
             amzn2023cis_legacy_boot: true
             grub2_path: /etc/grub2.cfg
-        when: not amzn2023cis_efi_boot.stat.exists
+        when: not prelim_efi_boot.stat.exists
 
       - name: "PRELIM | Set grub fact | UEFI"
         ansible.builtin.set_fact:
             grub2_path: /etc/grub2-efi.cfg
-        when: amzn2023cis_efi_boot.stat.exists
+        when: prelim_efi_boot.stat.exists
 
 - name: "PRELIM | Update to latest gpg keys"
   when: amzn2023cis_rule_1_2_4
@@ -175,14 +168,14 @@
   ansible.builtin.find:
       patterns: '*.conf'
       path: /etc/ssh/sshd_config.d
-  register: sshd_d_conf_files
+  register: prelim_sshd_d_conf_files
 
 - name: "PRELIM | Section 4.2 | SSH - Search for main cfg file"
   when: "'openssh-server' in ansible_facts.packages"
   tags: always
   ansible.builtin.stat:
       path: "{{ amzn2023cis_sshd_config_file }}"
-  register: main_sshd_cfg
+  register: prelim_main_sshd_cfg
 
 - name: "PRELIM | 4.3.4 | Find all sudoers files."
   when: amzn2023cis_rule_4_3_4
@@ -194,7 +187,7 @@
   changed_when: false
   failed_when: false
   check_mode: false
-  register: amzn2023cis_sudoers_files
+  register: prelim_sudoers_files
 
 - name: "PRELIM | 4.4.x | Install authselect"
   when:
@@ -259,7 +252,7 @@
       file_type: file
       recurse: true
       patterns: '*.conf,*.rules'
-  register: auditd_conf_files
+  register: prelim_auditd_conf_files
 
 - name: "PRELIM | Discover Interactive UID MIN and MIN from logins.def"
   block:

@@ -21,7 +21,7 @@
         loop: "{{ discovered_max_days.stdout_lines }}"
         when:
             - discovered_max_days.stdout_lines | length > 0
-            - item in discovered_interactive_usernames.stdout
+            - item in prelim_interactive_usernames.stdout
             - amzn2023cis_force_user_maxdays
 
   when:
@@ -58,7 +58,7 @@
         loop: "{{ discovered_min_days.stdout_lines }}"
         when:
             - discovered_min_days.stdout_lines | length > 0
-            - item in discovered_interactive_usernames.stdout
+            - item in prelim_interactive_usernames.stdout
             - amzn2023cis_force_user_mindays
 
   when:
@@ -93,7 +93,7 @@
         loop: "{{ discovered_warn_days.stdout_lines }}"
         when:
             - discovered_warn_days.stdout_lines | length > 0
-            - item in discovered_interactive_usernames.stdout
+            - item in prelim_interactive_usernames.stdout
             - amzn2023cis_force_user_warnage
   when:
       - amzn2023cis_rule_4_6_1_3
