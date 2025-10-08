@@ -1,9 +1,6 @@
 ---
 
 - name: "2.1.1 | PATCH | Ensure time synchronization is in use"
-  ansible.builtin.package:
-      name: chrony
-      state: present
   when:
       - amzn2023cis_rule_2_1_1
       - not system_is_container
@@ -13,8 +10,20 @@
       - rule_2.1.1
       - NIST800-53R5_AU-3
       - NIST800-53R5_AU-12
+  ansible.builtin.package:
+      name: chrony
+      state: present
 
 - name: "2.1.2 | PATCH | Ensure chrony is configured"
+  when:
+      - amzn2023cis_rule_2_1_2
+      - not system_is_container
+  tags:
+      - level1-server
+      - patch
+      - rule_2.1.2
+      - NIST800-53R5_AU-3
+      - NIST800-53R5_AU-12
   block:
       - name: "2.1.2 | PATCH | Ensure chrony is configured | Set configuration"
         ansible.builtin.template:
@@ -31,12 +40,3 @@
             line: "OPTIONS=\"-u chrony\""
             create: true
             mode: 'u-x,go-wx'
-  when:
-      - amzn2023cis_rule_2_1_2
-      - not system_is_container
-  tags:
-      - level1-server
-      - patch
-      - rule_2.1.2
-      - NIST800-53R5_AU-3
-      - NIST800-53R5_AU-12

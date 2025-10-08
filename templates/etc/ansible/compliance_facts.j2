@@ -4,7 +4,8 @@
 
 [lockdown_details]
 # Benchmark release
-Benchmark_release = CIS-{{ benchmark_version }}
+Benchmark_release = {{ benchmark }}
+Benchmark_version = {{ benchmark_version }}
 Benchmark_run_date = {{ '%Y-%m-%d - %H:%M:%S' | ansible.builtin.strftime }}
 # If options set (doesn't mean it ran all controls)
 level_1_hardening_enabled = {{ amzn2023cis_level_1 }}

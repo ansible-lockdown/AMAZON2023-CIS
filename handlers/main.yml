@@ -2,7 +2,8 @@
 # handlers file for AMAZON2023-CIS
 
 - name: Reload sysctl
-  ansible.builtin.shell: sysctl --system
+  ansible.builtin.command: sysctl --system
+  changed_when: true
 
 - name: Sysctl flush ipv4 route table
   ansible.posix.sysctl:
@@ -79,7 +80,7 @@
 ## Auditd tasks note order for handlers to run
 
 - name: Auditd immutable check
-  ansible.builtin.shell: grep -c "^-e 2" /etc/audit/rules.d/99_auditd.rules
+  ansible.builtin.command: grep -c "^-e 2" /etc/audit/rules.d/99_auditd.rules
   changed_when: false
   register: auditd_immutable_check
 
@@ -90,8 +91,9 @@
   when:
       - auditd_immutable_check.stdout == '1'
 
-- name: Restart auditd
-  ansible.builtin.shell: service auditd restart
+- name: Restart auditd  # noqa: command-instead-of-module
+  ansible.builtin.command: service auditd restart
+  changed_when: true
 
 - name: Change_requires_reboot
   ansible.builtin.set_fact:

@@ -1,18 +1,6 @@
 ---
 
 - name: "1.1.5.1 | AUDIT | Ensure separate partition exists for /var/log"
-  block:
-      - name: "1.1.5.1 | AUDIT | Ensure separate partition exists for /var/log | Absent"
-        ansible.builtin.debug:
-            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
-
-      - name: "1.1.5.1 | AUDIT | Ensure separate partition exists for /var/log | Present"
-        ansible.builtin.import_tasks:
-            file: warning_facts.yml
-
-  vars:
-      warn_control_id: '1.1.5.1'
-      required_mount: '/var/log'
   when:
       - required_mount not in mount_names
       - amzn2023cis_rule_1_1_5_1
@@ -22,21 +10,22 @@
       - mounts
       - rule_1.1.5.1
       - NIST800-53R5_CM-6
+  vars:
+      warn_control_id: '1.1.5.1'
+      required_mount: '/var/log'
+  block:
+      - name: "1.1.5.1 | AUDIT | Ensure separate partition exists for /var/log | Absent"
+        ansible.builtin.debug:
+            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
+
+      - name: "1.1.5.1 | AUDIT | Ensure separate partition exists for /var/log | Present"
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
 
 - name: |
-          "1.1.5.2 | PATCH | Ensure nodev option set on /var/log partition"
-          "1.1.5.3 | PATCH | Ensure noexec option set on /var/log partition"
-          "1.1.5.4 | PATCH | Ensure nosuid option set on /var/log partition"
-  ansible.posix.mount:
-      name: /var/log
-      src: "{{ item.device }}"
-      fstype: "{{ item.fstype }}"
-      state: present
-      opts: defaults,{% if amzn2023cis_rule_1_1_5_2 %}nodev,{% endif %}{% if amzn2023cis_rule_1_1_5_3 %}noexec,{% endif %}{% if amzn2023cis_rule_1_1_5_4 %}nosuid{% endif %}
-  loop: "{{ ansible_facts.mounts }}"
-  loop_control:
-      label: "{{ item.device }}"
-  notify: Change_requires_reboot
+    "1.1.5.2 | PATCH | Ensure nodev option set on /var/log partition"
+    "1.1.5.3 | PATCH | Ensure noexec option set on /var/log partition"
+    "1.1.5.4 | PATCH | Ensure nosuid option set on /var/log partition"
   when:
       - item.mount == "/var/log"
       - amzn2023cis_rule_1_1_5_2 or
@@ -52,3 +41,13 @@
       - rule_1.1.5.4
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
+  ansible.posix.mount:
+      name: /var/log
+      src: "{{ item.device }}"
+      fstype: "{{ item.fstype }}"
+      state: present
+      opts: defaults,{% if amzn2023cis_rule_1_1_5_2 %}nodev,{% endif %}{% if amzn2023cis_rule_1_1_5_3 %}noexec,{% endif %}{% if amzn2023cis_rule_1_1_5_4 %}nosuid{% endif %}
+  loop: "{{ ansible_facts.mounts }}"
+  loop_control:
+      label: "{{ item.device }}"
+  notify: Change_requires_reboot

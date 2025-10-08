@@ -2,26 +2,38 @@
 # tasks file for AMAZON2023
 
 - name: Check OS version and family
+  when: os_check
+  tags: always
   ansible.builtin.assert:
       that: (ansible_facts.distribution == 'Amazon' and ansible_facts.distribution_major_version is version_compare('2023', '=='))
       fail_msg: "This role can only be run against Supported OSs. {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }} is not supported."
       success_msg: "This role is running against a supported OS {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }}"
-  when:
-      - os_check
-  tags:
-      - always
 
 - name: Check ansible version
+  tags: always
   ansible.builtin.assert:
       that: ansible_version.full is version_compare(min_ansible_version, '>=')
       fail_msg: "You must use Ansible {{ min_ansible_version }} or greater"
       success_msg: "This role is running a supported version of ansible {{ ansible_version.full }} >= {{ min_ansible_version }}"
-  tags:
-      - always
+
+- name: Check crypto-policy module input
+  when:
+      - amzn2023cis_rule_1_9
+      - amzn2023cis_crypto_policy_module | length > 0
+  tags: rule_1.9
+  ansible.builtin.assert:
+      that: amzn2023cis_crypto_policy_module in amzn2023cis_allowed_crypto_policies_modules
+      fail_msg: "Crypto policy module is not a permitted version"
+      success_msg: "Crypto policy module is a permitted version"
 
 - name: Ensure root password is set
-  when:
-      - amzn2023cis_rule_4_6_6
+  when: amzn2023cis_rule_4_6_6
+  tags:
+      - level1-server
+      - patch
+      - accounts
+      - root
+      - rule_4.6.6
   block:
       - name: Ensure root password is set
         ansible.builtin.shell: passwd -S root | grep "Password set, SHA512 crypt"
@@ -33,17 +45,12 @@
             that: root_passwd_set.rc == 0
             fail_msg: "You have rule 4.6.6 enabled this requires that you have a root password set"
             success_msg: "You have a root password set"
-  tags:
-      - level1-server
-      - patch
-      - accounts
-      - root
-      - rule_4.6.6
 
 - name: Setup rules if container
   when:
       - ansible_connection == 'docker' or ( ansible_virtualization_type is defined and
         ansible_virtualization_type in ["docker", "lxc", "openvz", "podman", "container"])
+  tags: always
   block:
       - name: Discover and set container variable if required
         ansible.builtin.set_fact:
@@ -54,118 +61,88 @@
             file: "{{ container_vars_file }}"
 
       - name: Output if discovered is a container
-        when:
-            - system_is_container
+        when: system_is_container
         ansible.builtin.debug:
             msg: system has been discovered as a container
-  tags:
-      - container_discovery
-      - always
 
 - name: Check crypto-policy input
+  tags: always
   ansible.builtin.assert:
       that: amzn2023cis_crypto_policy in amzn2023cis_allowed_crypto_policies
       fail_msg: "Crypto policy is not a permitted version"
       success_msg: "Crypto policy is a permitted version"
 
-- name: Check crypto-policy module input
-  when:
-      - amzn2023cis_rule_1_9
-      - amzn2023cis_crypto_policy_module | length > 0
-  ansible.builtin.assert:
-      that: amzn2023cis_crypto_policy_module in amzn2023cis_allowed_crypto_policies_modules
-      fail_msg: "Crypto policy module is not a permitted version"
-      success_msg: "Crypto policy module is a permitted version"
-  tags:
-      - rule_1.9
-
 - name: Gather the package facts
+  tags: always
   ansible.builtin.package_facts:
       manager: auto
-  tags:
-      - always
 
 - name: Include preliminary steps
+  tags: always
   ansible.builtin.import_tasks:
       file: prelim.yml
-  tags:
-      - prelim_tasks
-      - always
 
 - name: Run Section 1 tasks
-  when:
-      - amzn2023cis_section1
+  when: amzn2023cis_section1
+  tags: amzn2023cis_section1
   ansible.builtin.import_tasks:
       file: section_1/main.yml
-  tags:
-      - amzn2023cis_section1
 
 - name: Run Section 2 tasks
-  when:
-      - amzn2023cis_section2
+  when: amzn2023cis_section2
+  tags: amzn2023cis_section2
   ansible.builtin.import_tasks:
       file: section_2/main.yml
-  tags:
-      - amzn2023cis_section2
 
 - name: Run Section 3 tasks
-  when:
-      - amzn2023cis_section3
+  when: amzn2023cis_section3
+  tags: amzn2023cis_section3
   ansible.builtin.import_tasks:
       file: section_3/main.yml
-  tags:
-      - amzn2023cis_section3
 
 - name: Run Section 4 tasks
-  when:
-      - amzn2023cis_section4
+  when: amzn2023cis_section4
+  tags: amzn2023cis_section4
   ansible.builtin.import_tasks:
       file: section_4/main.yml
-  tags:
-      - amzn2023cis_section4
 
 - name: Run Section 5 tasks
-  when:
-      - amzn2023cis_section5
+  when: amzn2023cis_section5
+  tags: amzn2023cis_section5
   ansible.builtin.import_tasks:
       file: section_5/main.yml
-  tags:
-      - amzn2023cis_section5
 
 - name: Run Section 6 tasks
-  when:
-      - amzn2023cis_section6
+  when: amzn2023cis_section6
+  tags: amzn2023cis_section6
   ansible.builtin.import_tasks:
       file: section_6/main.yml
-  tags:
-      - amzn2023cis_section6
 
-- name: run auditd logic
-  when:
-      - update_audit_template
+- name: Run auditd logic
+  when: update_audit_template
+  tags: always
   ansible.builtin.import_tasks:
       file: auditd.yml
-  tags:
-      - always
 
-- name: run post remediation tasks
+- name: Run post remediation tasks
+  tags: always
   ansible.builtin.import_tasks:
       file: post.yml
-  tags:
-      - post_tasks
-      - always
 
-- name: run post_remediation audit
-  when:
-      - run_audit
+- name: Run post_remediation audit
+  when: run_audit
+  tags: run_audit
   ansible.builtin.import_tasks:
       file: post_remediation_audit.yml
-  tags:
-      - run_audit
 
-- name: Add ansible file showing Benchmark and levels applied
+- name: Add ansible file showing Benchmark and levels applied if audit details not present
+  when:
+      - create_benchmark_facts
+      - (post_audit_summary is defined) or
+        (ansible_local['compliance_facts']['lockdown_audit_details']['audit_summary'] is undefined and post_audit_summary is undefined)
+  tags: always
   block:
-      - name: Create ansible facts directory
+      - name: Create ansible facts directory if audit facts not present
         ansible.builtin.file:
             path: "{{ ansible_facts_path }}"
             state: directory
@@ -173,41 +150,30 @@
             group: root
             mode: 'u=rwx,go=rx'
 
-      - name: Create ansible facts file
+      - name: Create ansible facts file and levels applied if audit facts not present
         ansible.builtin.template:
             src: etc/ansible/compliance_facts.j2
             dest: "{{ ansible_facts_path }}/compliance_facts.fact"
             owner: root
             group: root
-            mode: "u-x,go-wx"
-  when:
-      - create_benchmark_facts
-      - (post_audit_summary is defined) or
-        (ansible_local['compliance_facts']['lockdown_audit_details']['audit_summary'] is undefined and post_audit_summary is undefined)
-  tags:
-      - always
-      - benchmark
+            mode: 'u-x,go=r'
 
 - name: Fetch audit files
-  ansible.builtin.import_tasks:
-      file: fetch_audit_output.yml
   when:
       - fetch_audit_output
       - run_audit
   tags: always
+  ansible.builtin.import_tasks:
+      file: fetch_audit_output.yml
 
 - name: Show Audit Summary
-  when:
-      - run_audit
+  when: run_audit
+  tags: run_audit
   ansible.builtin.debug:
       msg: "{{ audit_results.split('\n') }}"
-  tags:
-      - run_audit
 
 - name: If Warnings found Output count and control IDs affected
-  when:
-      - warn_count != 0
+  when: warn_count != 0
+  tags: always
   ansible.builtin.debug:
       msg: "You have {{ warn_count }} Warning(s) that require investigating that are related to the following benchmark ID(s) {{ warn_control_list }}"
-  tags:
-      - always
