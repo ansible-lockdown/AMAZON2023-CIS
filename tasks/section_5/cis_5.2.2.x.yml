@@ -39,7 +39,6 @@
       - NIST800-53R5_AU-8
       - NIST800-53R5_AU-12
       - NIST800-53R5_SI-5
-
   ansible.builtin.lineinfile:
       path: /etc/audit/auditd.conf
       regexp: "{{ item.regexp }}"

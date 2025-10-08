@@ -194,7 +194,7 @@
       - result.rc != 257
   notify: Restart rsyslog
 
-- name: "5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote client"
+- name: "5.1.1.7 | PATCH | Ensure rsyslog is not configured to receive logs from a remote client"
   when: amzn2023cis_rule_5_1_1_7
   tags:
       - level1-server
@@ -206,7 +206,7 @@
       - NIST800-53R5_AU-12
       - NIST800-53R5_CM-6
   block:
-      - name: "5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote client. | When not log host"
+      - name: "5.1.1.7 | PATCH | Ensure rsyslog is not configured to receive logs from a remote client. | When not log host"
         when: not amzn2023cis_system_is_log_server
         ansible.builtin.replace:
             path: /etc/rsyslog.conf
@@ -219,7 +219,7 @@
             - '^(module\(load="imtcp"\))'
             - '^(input\(type="imtcp")'
 
-      - name: "5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote clients. | When log host"
+      - name: "5.1.1.7 | PATCH | Ensure rsyslog is not configured to receive logs from a remote clients. | When log host"
         when: amzn2023cis_system_is_log_server
         ansible.builtin.replace:
             path: /etc/rsyslog.conf

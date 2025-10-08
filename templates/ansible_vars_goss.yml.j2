@@ -381,7 +381,7 @@ amzn2023cis_telnet_server: {{ amzn2023cis_telnet_server }}
 amzn2023cis_is_mail_server: {{ amzn2023cis_is_mail_server }}
 
 # Note the options
-# Packages are used for client services and Server - only remove if you dont use the client service
+# Packages are used for client services and Server - only remove if you don't use the client service
 #
 # Set either mask or remove
 amzn2023cis_nfs_server: {{ amzn2023cis_nfs_server }}
@@ -438,7 +438,7 @@ amzn2023cis_authselect:
   custom_profile_name: {{ amzn2023cis_authselect['custom_profile_name'] }}
   default_file_to_copy: {{ amzn2023cis_authselect['default_profile_to_copy'] }}
 
-## Enable automation to create custom profile settings, using the setings above
+## Enable automation to create custom profile settings, using the settings above
 amzn2023cis_authselect_custom_profile_create: {{ amzn2023cis_authselect_custom_profile_create }}
 
 ## PAM

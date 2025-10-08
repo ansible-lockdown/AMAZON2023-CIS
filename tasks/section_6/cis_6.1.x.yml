@@ -50,7 +50,7 @@
   tags:
       - level1-server
       - patch
-      - permissionss
+      - permissions
       - rule_6.1.4
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
@@ -152,10 +152,10 @@
                   group: root
                   mode: 'u-x,g-wx,o-rwx'
 
-            - name: "6.1.9 | AUDIT | Audit system file permissions | Message out alert for package descrepancies"
+            - name: "6.1.9 | AUDIT | Audit system file permissions | Message out alert for package discrepancies"
               ansible.builtin.debug:
                   msg: |
-                     "Warning!! You have some package descrepancies issues.
+                     "Warning!! You have some package discrepancy issues.
                       The file list can be found in {{ amzn2023cis_rpm_audit_file }}"
 
             - name: "6.1.9 | AUDIT | Audit system file permissions | warning count"

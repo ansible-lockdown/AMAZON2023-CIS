@@ -134,7 +134,7 @@ audit_content: git
 # If using either archive, copy, get_url:
 ## Note will work with .tar files - zip will require extra configuration
 ### If using get_url this is expecting github url in tar.gz format e.g.
-### https://github.com/ansible-lockdown/UBUNTU24-CIS-Audit/archive/refs/heads/benchmark-v1.0.0.tar.gz
+### https://github.com/ansible-lockdown/AMAZON2023-CIS-Audit/archive/refs/heads/benchmark-v1.0.0.tar.gz
 audit_conf_source: "some path or url to copy from"
 
 # Destination for the audit content to be placed on managed node
@@ -144,7 +144,7 @@ audit_conf_dest: "/opt"
 # Where the audit logs are stored
 audit_log_dir: '/opt'
 
-## Ability to collect and take audit files moving to a centralised location
+## Ability to collect and take audit files moving to a centralized location
 # This enables the collection of the files from the host
 fetch_audit_output: false
 
@@ -904,15 +904,15 @@ amzn2023cis_allow_authselect_updates: true
 amzn2023cis_authselect:
     # This setting is just a placeholder taken from the CIS
     # examples, which might lead to failure. This setting needs
-    # to be adjusted in order to minimise risk.
+    # to be adjusted in order to minimize risk.
     custom_profile_name: custom-profile
     # This setting is just a placeholder taken from the CIS
     # examples, which might lead to failure. This setting needs
-    # to be adjusted in order to minimise risk.
+    # to be adjusted in order to minimize risk.
     default_profile_to_copy: "sssd --symlink-meta"
     # This setting is just a placeholder taken from the CIS
     # examples, which might lead to failure. This setting needs
-    # to be adjusted in order to minimise risk.
+    # to be adjusted in order to minimize risk.
     options: with-sudo with-faillock without-nullok
 
 ## Control 4.4.1 - Ensure custom authselect profile is used
@@ -990,8 +990,8 @@ amzn2023cis_inactivelock:
 ## Control 4.6.1.5 - Ensure all users last password change date is in the past
 # This variable tells the role if the fixing for control 4.6.1.5 shall
 # be implemented automatically or not. Setting it to 'true' will ensure
-# that the role executes all the necesary changes, in order for this rule
-# to become compliant. Otherwise, the role will allert the user with a
+# that the role executes all the necessary changes, in order for this rule
+# to become compliant. Otherwise, the role will alert the user with a
 # warning, that lists all accounts that have the last PW change date in
 # the future.
 amzn2023cis_futurepwchgdate_autofix: true

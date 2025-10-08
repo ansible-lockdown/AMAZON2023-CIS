@@ -66,6 +66,7 @@
             msg: system has been discovered as a container
 
 - name: Check crypto-policy input
+  tags: always
   ansible.builtin.assert:
       that: amzn2023cis_crypto_policy in amzn2023cis_allowed_crypto_policies
       fail_msg: "Crypto policy is not a permitted version"
@@ -129,8 +130,8 @@
       file: post.yml
 
 - name: Run post_remediation audit
-  tags: run_audit
   when: run_audit
+  tags: run_audit
   ansible.builtin.import_tasks:
       file: post_remediation_audit.yml
 

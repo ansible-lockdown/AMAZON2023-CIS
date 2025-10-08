@@ -56,7 +56,7 @@
       state: started
       enabled: true
 
-- name: "5.1.2.1.4 | PATCH | Ensure journald is not configured to recieve logs from a remote client"
+- name: "5.1.2.1.4 | PATCH | Ensure journald is not configured to receive logs from a remote client"
   when:
       - not amzn2023cis_system_is_log_server
       - amzn2023cis_rule_5_1_2_1_4

@@ -15,7 +15,7 @@
             paths: "/var/log"
             file_type: file
             recurse: true
-        register: logfiles
+        register: discovered_logfiles
 
       - name: "5.1.3 | PATCH | Ensure all logfiles have appropriate permissions and ownership | change permissions"
         when:
@@ -25,6 +25,6 @@
         ansible.builtin.file:
             path: "{{ item.path }}"
             mode: 'u-x,g-wx,o-rwx'
-        loop: "{{ logfiles.files }}"
+        loop: "{{ discovered_logfiles.files }}"
         loop_control:
             label: "{{ item.path }}"
