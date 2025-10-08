@@ -12,7 +12,7 @@
       - authselect
       - rule_4.4.1
       - NIST800-53R5_CA-5
-  ansible.builtin.command: "/usr/bin/authselect create-profile {{amzn2023cis_authselect['custom_profile_name'] }} -b {{ amzn2023cis_authselect['default_profile_to_copy'] }}"
+  ansible.builtin.command: "/usr/bin/authselect create-profile {{ amzn2023cis_authselect['custom_profile_name'] }} -b {{ amzn2023cis_authselect['default_profile_to_copy'] }}"
   changed_when: true
   args:
       creates: "/etc/authselect/custom/{{ amzn2023cis_authselect['custom_profile_name'] }}"
