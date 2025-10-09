@@ -107,6 +107,19 @@
       name: python3-libselinux
       state: present
 
+- name: "PRELIM | 6.2.10 | Ensure acl is installed"
+  when:
+      - amzn2023cis_rule_6_2_10
+      - '"acl" not in ansible_facts.packages'
+  tags:
+      - level1-server
+      - rule_6.2.10
+      - acl
+  ansible.builtin.package:
+      name: acl
+      state: present
+  become: true
+
 - name: "PRELIM | Set facts based on boot type"
   when: amzn2023cis_rule_1_4_1
   tags: always

@@ -12,6 +12,7 @@
   - linting and alignment
   - variable standards updated
   - new readme added
+  - addresses #140, Thank you @joffotron
 
 ## 1.0.2 based on v1.0
 
