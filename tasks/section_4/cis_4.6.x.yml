@@ -96,13 +96,13 @@
   block:
       - name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set umask for /etc/login.defs pam_umask settings"
         ansible.builtin.replace:
-            path: "{{ item }}"
-            regexp: ^(?i)(\s*umask)\s+(?!\d*[2,7]7)\d{3,4}
-            replace: '\1 {{ amzn2023cis_umask }}'
+            path: "{{ item.path }}"
+            regexp: (?i)(umask\s+\d*)
+            replace: "{{ item.line }} 027"
         loop:
-            - /etc/bashrc
-            - /etc/profile
-            - /etc/login.defs
+            - { path: "/etc/bashrc", line: "umask {{ amzn2023cis_umask }}" }
+            - { path: "/etc/profile", line: "umask {{ amzn2023cis_umask }}" }
+            - { path: "/etc/login.defs", line: "UMASK {{ amzn2023cis_umask }}" }
 
       - name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set umask for /etc/bashrc"
         ansible.builtin.lineinfile:
