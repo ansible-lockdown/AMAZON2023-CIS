@@ -100,9 +100,9 @@
             regexp: (?i)(umask\s+\d*)
             replace: "{{ item.line }} 027"
         loop:
-            - { path: "/etc/bashrc", line: "umask" }
-            - { path: "/etc/profile", line: "umask" }
-            - { path: "/etc/login.defs", line: "UMASK" }
+            - { path: "/etc/bashrc", line: "umask {{ amzn2023cis_umask }}" }
+            - { path: "/etc/profile", line: "umask {{ amzn2023cis_umask }}" }
+            - { path: "/etc/login.defs", line: "UMASK {{ amzn2023cis_umask }}" }
 
       - name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set umask for /etc/bashrc"
         ansible.builtin.lineinfile:
