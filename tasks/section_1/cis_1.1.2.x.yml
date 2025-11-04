@@ -1,17 +1,6 @@
 ---
 
 - name: "1.1.2.1 | PATCH | Ensure /tmp is a separate partition"
-  block:
-      - name: "1.1.2.1 | PATCH | Ensure /tmp is a separate partition | Absent"
-        ansible.builtin.debug:
-            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
-
-      - name: "1.1.2.1 | PATCH | Ensure /tmp is a separate partition | Present"
-        ansible.builtin.import_tasks:
-            file: warning_facts.yml
-  vars:
-      warn_control_id: '1.1.2.1'
-      required_mount: '/tmp'
   when:
       - required_mount not in mount_names
       - amzn2023cis_rule_1_1_2_1
@@ -21,22 +10,22 @@
       - mounts
       - rule_1.1.2.1
       - NIST800-53R5_CM-7
+  vars:
+      warn_control_id: '1.1.2.1'
+      required_mount: '/tmp'
+  block:
+      - name: "1.1.2.1 | PATCH | Ensure /tmp is a separate partition | Absent"
+        ansible.builtin.debug:
+            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
 
+      - name: "1.1.2.1 | PATCH | Ensure /tmp is a separate partition | Present"
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
 # via fstab
 - name: |
         "1.1.2.2 | PATCH | Ensure nodev option set on /tmp partition"
         "1.1.2.3 | PATCH | Ensure noexec option set on /tmp partition"
         "1.1.2.4 | PATCH | Ensure nosuid option set on /tmp partition"
-  ansible.posix.mount:
-      name: /tmp
-      src: "{{ item.device }}"
-      fstype: "{{ item.fstype }}"
-      state: present
-      opts: defaults,{% if amzn2023cis_rule_1_1_2_2 %}nodev,{% endif %}{% if amzn2023cis_rule_1_1_2_3 %}noexec,{% endif %}{% if amzn2023cis_rule_1_1_2_4 %}nosuid{% endif %}
-  notify: Remount tmp
-  loop: "{{ ansible_facts.mounts }}"
-  loop_control:
-      label: "{{ item.device }}"
   when:
       - item.mount == "/tmp"
       - not amzn2023cis_tmp_svc
@@ -51,19 +40,22 @@
       - rule_1.1.2.3
       - rule_1.1.2.4
       - NIST800-53R5_CM-7
+  ansible.posix.mount:
+      name: /tmp
+      src: "{{ item.device }}"
+      fstype: "{{ item.fstype }}"
+      state: present
+      opts: defaults,{% if amzn2023cis_rule_1_1_2_2 %}nodev,{% endif %}{% if amzn2023cis_rule_1_1_2_3 %}noexec,{% endif %}{% if amzn2023cis_rule_1_1_2_4 %}nosuid{% endif %}
+  notify: Remount tmp
+  loop: "{{ ansible_facts.mounts }}"
+  loop_control:
+      label: "{{ item.device }}"
 
 # via systemd
 - name: |
-        "1.1.2.2 | PATCH | Ensure nodev option set on /tmp partition"
-        "1.1.2.3 | PATCH | Ensure noexec option set on /tmp partition"
-        "1.1.2.4 | PATCH | Ensure nosuid option set on /tmp partition"
-  ansible.builtin.template:
-      src: etc/systemd/system/tmp.mount.j2
-      dest: /etc/systemd/system/tmp.mount
-      owner: root
-      group: root
-      mode: 'u-x,go-wx'
-  notify: Systemd restart tmp.mount
+    "1.1.2.2 | PATCH | Ensure nodev option set on /tmp partition"
+    "1.1.2.3 | PATCH | Ensure noexec option set on /tmp partition"
+    "1.1.2.4 | PATCH | Ensure nosuid option set on /tmp partition"
   when:
       - amzn2023cis_tmp_svc
       - amzn2023cis_rule_1_1_2_2 or
@@ -79,3 +71,10 @@
       - NIST800-53R5_CM-7
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
+  ansible.builtin.template:
+      src: etc/systemd/system/tmp.mount.j2
+      dest: /etc/systemd/system/tmp.mount
+      owner: root
+      group: root
+      mode: 'u-x,go-wx'
+  notify: Systemd restart tmp.mount

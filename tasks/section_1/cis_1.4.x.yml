@@ -1,6 +1,12 @@
 ---
 
 - name: "1.4.1 | PATCH | Ensure permissions on bootloader config are configured"
+  when: amzn2023cis_rule_1_4_1
+  tags:
+      - level1-server
+      - grub
+      - patch
+      - rule_1.4.1
   block:
       - name: "1.4.1 | PATCH | Ensure permissions on bootloader config are configured | bios boot"
         ansible.builtin.file:
@@ -24,10 +30,3 @@
             backrefs: true
             line: '\1umask=0027,fmask=0077,\3'
         when: not amzn2023cis_legacy_boot
-  when:
-      - amzn2023cis_rule_1_4_1
-  tags:
-      - level1-server
-      - grub
-      - patch
-      - rule_1.4.1

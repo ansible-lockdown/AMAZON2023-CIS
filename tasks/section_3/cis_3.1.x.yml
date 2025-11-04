@@ -3,15 +3,6 @@
 # The CIS Control wants IPv6 disabled if not in use.
 # We are using the amzn2023cis_ipv6_required to specify if you have IPv6 in use
 - name: "3.1.1 | PATCH | Ensure IPv6 status is identified"
-  block:
-      - name: "3.1.1 | PATCH | Ensure IPv6 status is identified | refresh"
-        ansible.builtin.set_fact:
-            amzn2023cis_sysctl_update: true
-            amzn2023cis_flush_ipv6_route: true
-
-      - name: "3.1.1 | PATCH | Ensure IPv6 status is identified | disable"
-        ansible.builtin.debug:
-            msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-disable_ipv6.conf"
   when:
       - not amzn2023cis_ipv6_required
       - amzn2023cis_rule_3_1_1
@@ -23,8 +14,26 @@
       - networking
       - rule_3.1.1
       - NIST800-53R5_CM-7
+  block:
+      - name: "3.1.1 | PATCH | Ensure IPv6 status is identified | refresh"
+        ansible.builtin.set_fact:
+            amzn2023cis_sysctl_update: true
+            amzn2023cis_flush_ipv6_route: true
+
+      - name: "3.1.1 | PATCH | Ensure IPv6 status is identified | disable"
+        ansible.builtin.debug:
+            msg: "Control being set via Handler 'update sysctl' which writes to /etc/sysctl.d/60-disable_ipv6.conf"
 
 - name: "3.1.2 | PATCH | Ensure DCCP is disabled"
+  when: amzn2023cis_rule_3_1_2
+  tags:
+      - level2-server
+      - patch
+      - tipc
+      - rule_3.1.2
+      - NIST800-53R5_CM-7
+  vars:
+      protocol: dccp
   block:
       - name: "3.1.2 | PATCH | Ensure DCCP is disabled"
         ansible.builtin.template:
@@ -43,18 +52,18 @@
             line: "blacklist {{ protocol }}"
             create: true
             mode: 'u-x,go-rwx'
-  vars:
-      protocol: dccp
-  when:
-      - amzn2023cis_rule_3_1_2
+
+- name: "3.1.3 | PATCH | Ensure SCTP is disabled"
+  when: amzn2023cis_rule_3_1_3
   tags:
       - level2-server
       - patch
       - tipc
-      - rule_3.1.2
+      - rule_3.1.3
+      - NIST800-53R5_SI-4
       - NIST800-53R5_CM-7
-
-- name: "3.1.3 | PATCH | Ensure SCTP is disabled"
+  vars:
+      protocol: sctp
   block:
       - name: "3.1.3 | PATCH | Ensure SCTP is disabled"
         ansible.builtin.template:
@@ -73,19 +82,17 @@
             line: "blacklist {{ protocol }}"
             create: true
             mode: 'u-x,go-rwx'
-  vars:
-      protocol: sctp
-  when:
-      - amzn2023cis_rule_3_1_3
+
+- name: "3.1.4 | PATCH | Ensure RDS is disabled"
+  when: amzn2023cis_rule_3_1_4
   tags:
       - level2-server
       - patch
       - tipc
-      - rule_3.1.3
-      - NIST800-53R5_SI-4
+      - rule_3.1.4
       - NIST800-53R5_CM-7
-
-- name: "3.1.4 | PATCH | Ensure RDS is disabled"
+  vars:
+      protocol: rds
   block:
       - name: "3.1.4 | PATCH | Ensure RDS is disabled"
         ansible.builtin.template:
@@ -104,18 +111,18 @@
             line: "blacklist {{ protocol }}"
             create: true
             mode: 'u-x,go-rwx'
-  vars:
-      protocol: rds
-  when:
-      - amzn2023cis_rule_3_1_4
+
+- name: "3.1.5 | PATCH | Ensure TIPC is disabled"
+  when: amzn2023cis_rule_3_1_5
   tags:
       - level2-server
       - patch
       - tipc
-      - rule_3.1.4
+      - rule_3.1.5
       - NIST800-53R5_CM-7
-
-- name: "3.1.5 | PATCH | Ensure TIPC is disabled"
+      - NIST800-53R5_SI-4
+  vars:
+      protocol: tipc
   block:
       - name: "3.1.5 | PATCH | Ensure TIPC is disabled"
         ansible.builtin.template:
@@ -134,14 +141,3 @@
             line: "blacklist {{ protocol }}"
             create: true
             mode: 'u-x,go-rwx'
-  vars:
-      protocol: tipc
-  when:
-      - amzn2023cis_rule_3_1_5
-  tags:
-      - level2-server
-      - patch
-      - tipc
-      - rule_3.1.5
-      - NIST800-53R5_CM-7
-      - NIST800-53R5_SI-4

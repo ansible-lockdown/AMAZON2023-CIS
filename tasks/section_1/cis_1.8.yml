@@ -1,14 +1,13 @@
 ---
 
 - name: "1.8 | PATCH | Ensure updates, patches, and additional security software are installed"
-  ansible.builtin.package:
-      name: "*"
-      state: latest
-  notify: Change_requires_reboot
-  when:
-      - amzn2023cis_rule_1_8
+  when: amzn2023cis_rule_1_8
   tags:
       - level1-server
       - patch
       - rule_1.8
       - NIST800-53R5_SI-2
+  ansible.builtin.package:
+      name: "*"
+      state: latest
+  notify: Change_requires_reboot

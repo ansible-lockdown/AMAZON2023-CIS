@@ -2,18 +2,6 @@
 
 # Skips if mount is absent
 - name: "1.1.8.1 | AUDIT | Ensure /dev/shm is a separate partition"
-  block:
-      - name: "1.1.8.1 | AUDIT | Ensure /dev/shm is a separate partition | Absent"
-        ansible.builtin.debug:
-            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
-
-      - name: "1.1.8.1 | AUDIT | Ensure separate partition exists for /home | Present"
-        ansible.builtin.import_tasks:
-            file: warning_facts.yml
-
-  vars:
-      warn_control_id: '1.1.8.1'
-      required_mount: '/dev/shm'
   when:
       - required_mount not in mount_names
       - amzn2023cis_rule_1_1_8_1
@@ -23,18 +11,22 @@
       - mounts
       - rule_1.1.8.1
       - NIST800-53R5_CM-7
+  vars:
+      warn_control_id: '1.1.8.1'
+      required_mount: '/dev/shm'
+  block:
+      - name: "1.1.8.1 | AUDIT | Ensure /dev/shm is a separate partition | Absent"
+        ansible.builtin.debug:
+            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
+
+      - name: "1.1.8.1 | AUDIT | Ensure separate partition exists for /home | Present"
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
 
 - name: |
-       "1.1.8.2 | PATCH | Ensure nodev option set on /dev/shm partition | Set nodev option
-        1.1.8.3 | PATCH | Ensure noexec option set on /dev/shm partition | Set nosuid option
-        1.1.8.4 | PATCH | Ensure nosuid option set on /dev/shm partition | Set noexec option"
-  ansible.posix.mount:
-      name: /dev/shm
-      src: tmpfs
-      fstype: tmpfs
-      state: mounted
-      opts: defaults,{% if amzn2023cis_rule_1_1_8_2 %}nodev,{% endif %}{% if amzn2023cis_rule_1_1_8_3 %}noexec,{% endif %}{% if amzn2023cis_rule_1_1_8_4 %}nosuid{% endif %}
-  notify: Change_requires_reboot
+    "1.1.8.2 | PATCH | Ensure nodev option set on /dev/shm partition | Set nodev option
+     1.1.8.3 | PATCH | Ensure noexec option set on /dev/shm partition | Set nosuid option
+     1.1.8.4 | PATCH | Ensure nosuid option set on /dev/shm partition | Set noexec option"
   when:
       - amzn2023cis_rule_1_1_8_2 or
         amzn2023cis_rule_1_1_8_3 or
@@ -48,3 +40,10 @@
       - rule_1.1.8.4
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
+  ansible.posix.mount:
+      name: /dev/shm
+      src: tmpfs
+      fstype: tmpfs
+      state: mounted
+      opts: defaults,{% if amzn2023cis_rule_1_1_8_2 %}nodev,{% endif %}{% if amzn2023cis_rule_1_1_8_3 %}noexec,{% endif %}{% if amzn2023cis_rule_1_1_8_4 %}nosuid{% endif %}
+  notify: Change_requires_reboot

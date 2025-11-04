@@ -1,9 +1,6 @@
 ---
 
 - name: "2.3.1 | PATCH | Ensure telnet client is not installed"
-  ansible.builtin.package:
-      name: telnet
-      state: absent
   when:
       - not amzn2023cis_telnet_required
       - "'telnet' in ansible_facts.packages"
@@ -14,11 +11,11 @@
       - telnet
       - rule_2.3.1
       - NIST800-53R5_CM-7
+  ansible.builtin.package:
+      name: telnet
+      state: absent
 
 - name: "2.3.2 | PATCH | Ensure LDAP client is not installed"
-  ansible.builtin.package:
-      name: openldap-clients
-      state: absent
   when:
       - not amzn2023cis_openldap_clients_required
       - "'openldap-clients' in ansible_facts.packages"
@@ -29,11 +26,11 @@
       - ldap
       - rule_2.3.2
       - NIST800-53R5_CM-7
+  ansible.builtin.package:
+      name: openldap-clients
+      state: absent
 
 - name: "2.3.3 | PATCH | Ensure FTP client is not installed"
-  ansible.builtin.package:
-      name: ftp
-      state: absent
   when:
       - not amzn2023cis_ftp_client
       - "'ftp' in ansible_facts.packages"
@@ -44,3 +41,6 @@
       - ftp
       - rule_2.3.3
       - NIST800-53R5_CM-7
+  ansible.builtin.package:
+      name: ftp
+      state: absent

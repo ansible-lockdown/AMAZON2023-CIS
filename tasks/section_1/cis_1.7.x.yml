@@ -1,22 +1,29 @@
 ---
 
 - name: "1.7.1 | PATCH | Ensure message of the day is configured properly"
-  ansible.builtin.template:
-      src: etc/motd.j2
-      dest: /etc/motd
-      owner: root
-      group: root
-      mode: 'u-x,go-wx'
-  when:
-      - amzn2023cis_rule_1_7_1
+  when: amzn2023cis_rule_1_7_1
   tags:
       - level1-server
       - banner
       - patch
       - rule_1.7.1
       - NIST800-53R5_CM-3
+  ansible.builtin.template:
+      src: etc/motd.j2
+      dest: /etc/motd
+      owner: root
+      group: root
+      mode: 'u-x,go-wx'
 
 - name: "1.7.2 | PATCH | Ensure local login warning banner is configured properly"
+  when: amzn2023cis_rule_1_7_2
+  tags:
+      - level1-server
+      - patch
+      - rule_1.7.2
+      - NIST800-53R5_CM-1
+      - NIST800-53R5_CM-3
+      - NIST800-53R5_CM-6
   block:
       - name: "1.7.2 | PATCH | Ensure local login warning banner is configured properly | Create file"
         ansible.builtin.template:
@@ -31,17 +38,17 @@
             src: /usr/lib/issue
             dest: /etc/issue
             state: link
-  when:
-      - amzn2023cis_rule_1_7_2
+
+- name: "1.7.3 | PATCH | Ensure remote login warning banner is configured properly"
+  when: amzn2023cis_rule_1_7_3
   tags:
       - level1-server
+      - banner
       - patch
-      - rule_1.7.2
+      - rule_1.7.3
       - NIST800-53R5_CM-1
       - NIST800-53R5_CM-3
       - NIST800-53R5_CM-6
-
-- name: "1.7.3 | PATCH | Ensure remote login warning banner is configured properly"
   block:
       - name: "1.7.3 | PATCH | Ensure remote login warning banner is configured properly | Create file"
         ansible.builtin.template:
@@ -56,25 +63,9 @@
             src: /usr/lib/issue.net
             dest: /etc/issue.net
             state: link
-  when:
-      - amzn2023cis_rule_1_7_3
-  tags:
-      - level1-server
-      - banner
-      - patch
-      - rule_1.7.3
-      - NIST800-53R5_CM-1
-      - NIST800-53R5_CM-3
-      - NIST800-53R5_CM-6
 
 - name: "1.7.4 | PATCH | Ensure permissions on /etc/motd are configured"
-  ansible.builtin.file:
-      path: /etc/motd
-      owner: root
-      group: root
-      mode: 'u-x,go-wx'
-  when:
-      - amzn2023cis_rule_1_7_4
+  when: amzn2023cis_rule_1_7_4
   tags:
       - level1-server
       - perms
@@ -82,15 +73,14 @@
       - rule_1.7.4
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
-
-- name: "1.7.5 | PATCH | Ensure permissions on /etc/issue are configured"
   ansible.builtin.file:
-      path: /usr/lib/issue
+      path: /etc/motd
       owner: root
       group: root
       mode: 'u-x,go-wx'
-  when:
-      - amzn2023cis_rule_1_7_5
+
+- name: "1.7.5 | PATCH | Ensure permissions on /etc/issue are configured"
+  when: amzn2023cis_rule_1_7_5
   tags:
       - level1-server
       - perms
@@ -98,15 +88,14 @@
       - rule_1.7.5
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
-
-- name: "1.7.6 | PATCH | Ensure permissions on /etc/issue.net are configured"
   ansible.builtin.file:
-      path: /usr/lib/issue.net
+      path: /usr/lib/issue
       owner: root
       group: root
       mode: 'u-x,go-wx'
-  when:
-      - amzn2023cis_rule_1_7_6
+
+- name: "1.7.6 | PATCH | Ensure permissions on /etc/issue.net are configured"
+  when: amzn2023cis_rule_1_7_6
   tags:
       - level1-server
       - perms
@@ -114,3 +103,8 @@
       - rule_1.7.6
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
+  ansible.builtin.file:
+      path: /usr/lib/issue.net
+      owner: root
+      group: root
+      mode: 'u-x,go-wx'

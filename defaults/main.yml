@@ -3,7 +3,7 @@
 
 # This variable is used to state if the system where
 # the role is executed is a container image or not.
-# The role discovers this dinamically and sets this
+# The role discovers this dynamically and sets this
 # variable's value to 'true' or it leaves it unchanged
 # ('false') based on its findings.
 system_is_container: false
@@ -56,7 +56,7 @@ amzn2023cis_selinux_disable: false
 # the traditional BIOS. The variable is used in a task
 # that ensures the necessary permissions on the bootloader
 # config are in place. Setting the value to 'true', will mean
-# that those permisions will be set for the configuration of
+# that those permissions will be set for the configuration of
 # BIOS boot. Setting it to 'false', will mean that the Legacy
 # Boot (BIOS boot) is not in use, which means that the
 # permissions will have to be set for the configuration of
@@ -72,7 +72,7 @@ python2_bin: /bin/python2.7
 create_benchmark_facts: true
 ansible_facts_path: /etc/ansible/facts.d
 
-## Benchmark name and profile used by audting control role
+## Benchmark name and profile used by auditing control role
 # The audit variable can be found at the base
 benchmark: AMAZON2023-CIS
 benchmark_version: 'v1.0.0'
@@ -93,9 +93,13 @@ skip_reboot: true
 # changes!
 change_requires_reboot: false
 
+###
+### Settings for associated Audit role using Goss
+###
+
 ###########################################
 ### Goss is required on the remote host ###
-### vars/audit.yml for other settings  ###
+### vars/auditd.yml for other settings  ###
 
 # Allow audit to setup the requirements including installing git (if option chosen and downloading and adding goss binary to system)
 setup_audit: false
@@ -107,22 +111,21 @@ audit_run_heavy_tests: true
 
 ## Only run Audit do not remediate
 audit_only: false
-### As part of audit_only ###
-# This will enable files to be copied back to control node in audit_only mode
-fetch_audit_files: false
-# Path to copy the files to will create dir structure in audit_only mode
-audit_capture_files_dir: /some/location to copy to on control node
+
 #############################
 
 # How to retrieve audit binary
 # Options are copy or download - detailed settings at the bottom of this file
-# you will need to access to either github or the file already dowmloaded
+# you will need to access to either github or the file already downloaded
 get_audit_binary_method: download
 
 ## if get_audit_binary_method - copy the following needs to be updated for your environment
 ## it is expected that it will be copied from somewhere accessible to the control node
 ## e.g copy from ansible control node to remote host
 audit_bin_copy_location: /some/accessible/path
+
+# Ability to limit the number of concurrent processes used by goss (default 50)
+audit_max_concurrent: 50
 
 # how to get audit files onto host options
 # options are git/copy/archive/get_url other e.g. if you wish to run from already downloaded conf
@@ -131,7 +134,7 @@ audit_content: git
 # If using either archive, copy, get_url:
 ## Note will work with .tar files - zip will require extra configuration
 ### If using get_url this is expecting github url in tar.gz format e.g.
-### https://github.com/ansible-lockdown/UBUNTU22-CIS-Audit/archive/refs/heads/benchmark-v1.0.0.tar.gz
+### https://github.com/ansible-lockdown/AMAZON2023-CIS-Audit/archive/refs/heads/benchmark-v1.0.0.tar.gz
 audit_conf_source: "some path or url to copy from"
 
 # Destination for the audit content to be placed on managed node
@@ -141,12 +144,12 @@ audit_conf_dest: "/opt"
 # Where the audit logs are stored
 audit_log_dir: '/opt'
 
-## Ability to collect and take audit files moving to a centralised location
+## Ability to collect and take audit files moving to a centralized location
 # This enables the collection of the files from the host
 fetch_audit_output: false
 
 # Method of getting,uploading the summary files
-## Ensure access and permissions are avaiable for these to occur.
+## Ensure access and permissions are available for these to occur.
 ## options are
 # fetch - fetches from server and moves to location on the ansible controller (could be a mount point available to controller)
 # copy - copies file to a location available to the managed node
@@ -650,7 +653,7 @@ amzn2023cis_snmp_server: false
 ## Control 2.2.12 - Ensure net-snmp is not installed or the snmpd service is not enabled
 # The following variable is used to determine if snmp should be removed
 # If snmp is installed, it is masked by default therefore it complies
-# from the very begining with CIS's requirements! Given the fact that
+# from the very beginning with CIS's requirements! Given the fact that
 # many packages or applications include snmp as a dependency, it would
 # be best to leave this variable's value set to 'false'.
 amzn2023cis_remove_snmp: false
@@ -892,18 +895,24 @@ amzn2023cis_sugroup: nosugroup
 # Authselect is another authentication configuration tool
 # that aims to provide a more modern and modular approach
 # for authentication settings configuration.
+# Your host is part of Linux Identity Management.
+# Joining your host to an IdM domain with the ipa-client-install command automatically configures SSSD authentication on your host.
+# Your host is part of Active Directory via SSSD.
+# Calling the realm join command to join your host to an Active Directory domain automatically configures SSSD authentication on your host.
+amzn2023cis_allow_authselect_updates: true
+
 amzn2023cis_authselect:
     # This setting is just a placeholder taken from the CIS
     # examples, which might lead to failure. This setting needs
-    # to be adjusted in order to minimise risk.
+    # to be adjusted in order to minimize risk.
     custom_profile_name: custom-profile
     # This setting is just a placeholder taken from the CIS
     # examples, which might lead to failure. This setting needs
-    # to be adjusted in order to minimise risk.
-    default_file_to_copy: "sssd --symlink-meta"
+    # to be adjusted in order to minimize risk.
+    default_profile_to_copy: "sssd --symlink-meta"
     # This setting is just a placeholder taken from the CIS
     # examples, which might lead to failure. This setting needs
-    # to be adjusted in order to minimise risk.
+    # to be adjusted in order to minimize risk.
     options: with-sudo with-faillock without-nullok
 
 ## Control 4.4.1 - Ensure custom authselect profile is used
@@ -981,8 +990,8 @@ amzn2023cis_inactivelock:
 ## Control 4.6.1.5 - Ensure all users last password change date is in the past
 # This variable tells the role if the fixing for control 4.6.1.5 shall
 # be implemented automatically or not. Setting it to 'true' will ensure
-# that the role executes all the necesary changes, in order for this rule
-# to become compliant. Otherwise, the role will allert the user with a
+# that the role executes all the necessary changes, in order for this rule
+# to become compliant. Otherwise, the role will alert the user with a
 # warning, that lists all accounts that have the last PW change date in
 # the future.
 amzn2023cis_futurepwchgdate_autofix: true
@@ -1219,11 +1228,11 @@ amzn2023cis_no_world_write_adjust: true
 # set this variable to 'true', otherwise to 'false'.
 discover_int_uid: false
 # This variable sets the minimum number from which to search for UID
-# Note that the value will be dynamically overwritten if variable "dicover_int_uid" has
+# Note that the value will be dynamically overwritten if variable "discover_int_uid" has
 # been set to 'true'.
 min_int_uid: 1000
 # This variable sets the maximum number at which the search stops for UID
-# Note that the value will be dynamically overwritten if variable "dicover_int_uid" has
+# Note that the value will be dynamically overwritten if variable "discover_int_uid" has
 # been set to 'true'.
 max_int_uid: 65533
 
@@ -1232,10 +1241,3 @@ max_int_uid: 65533
 amzn2023cis_remove_other_dot_files: false
 # This variable states if filesystem links should be followed or not.
 amzn2023cis_6_2_11_home_follow_symlinks: false
-
-#### Goss Configuration Settings ####
-# Set correct env for the run_audit.sh script from https://github.com/ansible-lockdown/{{ benchmark }}-Audit.git"
-audit_run_script_environment:
-    AUDIT_BIN: "{{ audit_bin }}"
-    AUDIT_FILE: 'goss.yml'
-    AUDIT_CONTENT_LOCATION: "{{ audit_out_dir }}"
