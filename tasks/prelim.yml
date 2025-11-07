@@ -38,6 +38,13 @@
   ansible.builtin.include_tasks:
       file: parse_etc_password.yml
 
+- name: "PRELIM | Discover supported syscalls for audit rules"
+  tags: always
+  ansible.builtin.shell: ausyscall --dump | awk '{print $2}' | sort -u
+  changed_when: false
+  failed_when: discovered_supported_syscalls.rc not in [ 0, 1 ]
+  register: discovered_supported_syscalls
+
 - name: "PRELIM | Gather accounts with empty password fields"
   ansible.builtin.shell: "cat /etc/shadow | awk -F: '($2 == \"\" ) {j++;print $1; } END {exit j}'"
   changed_when: false
