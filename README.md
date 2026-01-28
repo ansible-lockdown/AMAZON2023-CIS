@@ -1,8 +1,8 @@
 # AMAZON 2023 CIS
 
-## Configure a AMAZON 2023 machine to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant
+## Configure an AMAZON 2023 machine to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant
 
-### Based on [CIS AMAZON 2023 Benchmark v1.0.0](https://www.cisecurity.org/cis-benchmarks/)
+### Based on [CIS AMAZON 2023 Benchmark v1.0.0 - 26-06-2023](https://www.cisecurity.org/cis-benchmarks/)
 
 ---
 
