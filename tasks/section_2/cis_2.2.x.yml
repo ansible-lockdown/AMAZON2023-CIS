@@ -90,7 +90,7 @@
       name: vsftpd
       state: absent
 
-- name: "2.2.7 | PACH | Ensure TFTP Server is not installed"
+- name: "2.2.7 | PATCH | Ensure TFTP Server is not installed"
   when:
       - not amzn2023cis_tftp_server
       - "'tftp-server' in ansible_facts.packages"
