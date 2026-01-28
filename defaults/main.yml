@@ -1,5 +1,5 @@
 ---
-# defaults file for amazon2023-cis
+# defaults file for AMAZON2023-CIS
 
 # This variable is used to state if the system where
 # the role is executed is a container image or not.
@@ -593,7 +593,7 @@ amzn2023cis_selinux_enforce: enforcing
 # "issue.net.j2" and "motd.j2" which are responsible for configuring
 # warning banners. The value of this variable represents the
 # content of the warning banner message.
-amzn2023cis_warning_banner: Authorized uses only. All activity may be monitored and reported.
+amzn2023cis_warning_banner: Authorized users only. All activity may be monitored and reported.
 
 ##
 ## Section 2 Control Variables
