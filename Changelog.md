@@ -1,8 +1,18 @@
 # Amazon 2023 CIS - 26th June 2023
 
+## 1.2.7 based on v1.0.0
+
+- 2026 Jan Updates
+  - QA and linting fixes
+  - Fixed spelling errors in README.md, CONTRIBUTING.rst, and task files
+  - Updated .ansible-lint config to remove deprecated options
+  - Updated .yamllint config to use consistent spacing (matches repo style)
+  - YAML lint passing
+  - Update ReadMe
+
 ## 1.2.4 based on v1.0
 
-- Oct25
+- 2025 Oct
   - Improvements and QA Fixes
   - #135 thanks to @gee-mo
   - workflow updates

@@ -3,7 +3,5 @@
 - name: Apply Amazon Linux 2023 CIS hardening
   hosts: all
   become: true
-
   roles:
-
       - role: "{{ playbook_dir }}"
