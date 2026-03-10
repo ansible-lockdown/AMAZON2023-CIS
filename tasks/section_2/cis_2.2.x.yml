@@ -314,9 +314,7 @@
       - NIST800-53R5_CM-7
   block:
       - name: "2.2.18 | PATCH | Ensure rsync-daemon is not installed or the rsync service is masked | remove package"
-        when:
-            - amzn2023cis_rsync_server == "remove"
-            - not amzn2023cis_use_rsync_service
+        when: amzn2023cis_rsync_server == "remove"
         ansible.builtin.package:
             name: rsync-daemon
             state: absent
