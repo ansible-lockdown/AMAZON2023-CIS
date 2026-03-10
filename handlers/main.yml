@@ -91,7 +91,7 @@
   when:
       - auditd_immutable_check.stdout == '1'
 
-- name: Restart auditd  # noqa: command-instead-of-module
+- name: Restart auditd # noqa: command-instead-of-module
   ansible.builtin.command: service auditd restart
   changed_when: true
 

@@ -9,13 +9,13 @@
       - rule_1.2.1
       - NIST800-53R5_SI-2
   block:
-      - name: "1.2.1 | AUDIT | Ensure GPG keys are configured | list installed pubkey keys"  # noqa: command-instead-of-module
+      - name: "1.2.1 | AUDIT | Ensure GPG keys are configured | list installed pubkey keys" # noqa: command-instead-of-module
         ansible.builtin.shell: "rpm -qa | grep {{ os_gpg_key_pubkey_name }}"
         changed_when: false
         failed_when: false
         register: os_installed_pub_keys
 
-      - name: "1.2.1 | AUDIT | Ensure GPG keys are configured | Query found keys"  # noqa: command-instead-of-module
+      - name: "1.2.1 | AUDIT | Ensure GPG keys are configured | Query found keys" # noqa: command-instead-of-module
         ansible.builtin.shell: 'rpm -q --queryformat "%{PACKAGER} %{VERSION}\\n" {{ os_gpg_key_pubkey_name }} | grep "{{ os_gpg_key_pubkey_content }}"'
         changed_when: false
         failed_when: false

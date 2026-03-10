@@ -224,7 +224,6 @@ amzn2023cis_rule_1_3_2: true
 amzn2023cis_rule_1_3_3: true
 # Secure Boot Settings
 amzn2023cis_rule_1_4_1: true
-amzn2023cis_rule_1_4_2: true
 # Additional Process Hardening
 amzn2023cis_rule_1_5_1: true
 amzn2023cis_rule_1_5_2: true
@@ -277,7 +276,6 @@ amzn2023cis_rule_2_2_18: true
 amzn2023cis_rule_2_3_1: true
 amzn2023cis_rule_2_3_2: true
 amzn2023cis_rule_2_3_3: true
-amzn2023cis_rule_2_3_4: true
 amzn2023cis_rule_2_4: true
 
 ## Section 3 rules

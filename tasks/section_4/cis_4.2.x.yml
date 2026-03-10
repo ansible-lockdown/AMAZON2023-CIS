@@ -312,7 +312,7 @@
         failed_when: ( discovered_crypto_discovery.rc not in [ 0, 1 ] )
         register: discovered_crypto_discovery
 
-      - name: "4.2.14 | PATCH | Ensure system-wide crypto policy is not over-ridden"  # noqa: command-instead-of-module
+      - name: "4.2.14 | PATCH | Ensure system-wide crypto policy is not over-ridden" # noqa: command-instead-of-module
         when: discovered_crypto_discovery.stdout | length > 0
         ansible.builtin.command: sed -ri "s/^\s*(CRYPTO_POLICY\s*=.*)$/# \1/" /etc/sysconfig/sshd
         changed_when: true

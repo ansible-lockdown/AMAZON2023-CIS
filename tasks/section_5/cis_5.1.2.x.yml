@@ -94,7 +94,7 @@
             state: started
             enabled: true
 
-      - name: "5.1.2.2 | AUDIT | Ensure journald service is enabled | Capture status"  # noqa: command-instead-of-module
+      - name: "5.1.2.2 | AUDIT | Ensure journald service is enabled | Capture status" # noqa: command-instead-of-module
         ansible.builtin.command: systemctl is-enabled systemd-journald.service
         changed_when: false
         failed_when: false
