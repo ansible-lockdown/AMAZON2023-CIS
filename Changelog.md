@@ -1,5 +1,18 @@
 # Amazon 2023 CIS - 26th June 2023
 
+## 1.2.8 based on v1.0.0
+
+- March26_align branch
+  - Version alignment updated
+  - Naming and company name updates
+  - Titles updated for alignment
+  - Default settings added
+  - 2.2.18: tidy up legacy var
+  - Linting applied
+  - Audit: version update, latest versions aligned
+  - Audit: separated fails, YAML headers
+  - Audit: removed legacy setting and content
+
 ## 1.2.7 based on v1.0.0
 
 - 2026 Jan Updates
