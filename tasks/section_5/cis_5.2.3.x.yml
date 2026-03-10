@@ -63,7 +63,7 @@
       update_audit_template: true
 
 # All changes selected are managed by the POST audit and handlers to update
-- name: "5.2.3.6 | PATCH | Ensure use of privileged commands is collected"
+- name: "5.2.3.6 | PATCH | Ensure use of privileged commands are collected"
   when: amzn2023cis_rule_5_2_3_6
   tags:
       - level2-server
@@ -72,20 +72,20 @@
       - rule_5.2.3.6
       - NIST800-53R5_AU-3
   block:
-      - name: "5.2.3.6 | PATCH | Ensure use of privileged commands is collected"
+      - name: "5.2.3.6 | PATCH | Ensure use of privileged commands are collected"
         ansible.builtin.shell: for i in  $(df | grep '^/dev' | awk '{ print $NF }'); do find $i -xdev -type f -perm /6000 2>/dev/null; done
         changed_when: false
         failed_when: false
         check_mode: false
         register: discovered_priv_procs
 
-      - name: "5.2.3.6 | PATCH | Ensure use of privileged commands is collected"
+      - name: "5.2.3.6 | PATCH | Ensure use of privileged commands are collected"
         ansible.builtin.set_fact:
             update_audit_template: true
         notify: update auditd
 
 # All changes selected are managed by the POST audit and handlers to update
-- name: "5.2.3.7 | PATCH | Ensure unsuccessful unauthorized file access attempts are collected"
+- name: "5.2.3.7 | PATCH | Ensure unsuccessful file access attempts are collected"
   when: amzn2023cis_rule_5_2_3_7
   tags:
       - level2-server
@@ -135,12 +135,12 @@
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: "5.2.3.11 | PATCH | Ensure session initiation information is collected"
-  when: amzn2023cis_rule_5_2_3_10
+  when: amzn2023cis_rule_5_2_3_11
   tags:
       - level2-server
       - patch
       - auditd
-      - rule_5.2.3.10
+      - rule_5.2.3.11
       - NIST800-53R5_CM-6
   ansible.builtin.set_fact:
       update_audit_template: true
@@ -240,7 +240,7 @@
       update_audit_template: true
 
 # All changes selected are managed by the POST audit and handlers to update
-- name: "5.2.3.19 | PATCH | Ensure kernel module loading and unloading is collected"
+- name: "5.2.3.19 | PATCH | Ensure kernel module loading unloading and modification is collected"
   when: amzn2023cis_rule_5_2_3_19
   tags:
       - level2-server

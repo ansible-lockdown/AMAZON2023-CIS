@@ -48,7 +48,7 @@
       policy: "{{ amzn2023cis_selinux_pol }}"
       state: "{{ amzn2023cis_selinux_enforce }}"
 
-- name: "1.6.1.4 | PATCH | Ensure the SELinux state is not disabled"
+- name: "1.6.1.4 | PATCH | Ensure the SELinux mode is not disabled"
   when:
       - not amzn2023cis_selinux_disable
       - amzn2023cis_rule_1_6_1_4
@@ -64,7 +64,7 @@
       policy: "{{ amzn2023cis_selinux_pol }}"
       state: "{{ amzn2023cis_selinux_enforce }}"
 
-- name: "1.6.1.5 | PATCH | Ensure the SELinux state is enforcing"
+- name: "1.6.1.5 | PATCH | Ensure the SELinux mode is enforcing"
   when:
       - not amzn2023cis_selinux_disable
       - amzn2023cis_selinux_enforce == 'enforcing'

@@ -1,6 +1,6 @@
 ---
 
-- name: "4.1.1 | PATCH | Ensure cron daemon is enabled"
+- name: "4.1.1 | PATCH | Ensure cron daemon is installed and enabled"
   when: amzn2023cis_rule_4_1_1
   tags:
       - level1-server

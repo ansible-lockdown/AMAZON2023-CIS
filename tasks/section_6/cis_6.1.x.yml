@@ -40,7 +40,7 @@
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
   ansible.builtin.file:
-      path: /etc/group-
+      path: /etc/group
       owner: root
       group: root
       mode: 'u-x,go-wx'
