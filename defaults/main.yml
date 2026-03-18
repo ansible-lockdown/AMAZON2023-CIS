@@ -63,11 +63,6 @@ amzn2023cis_selinux_disable: false
 # efi boot.
 amzn2023cis_legacy_boot: false
 
-## Python Binary
-## This is used for python3 Installations where python2 OS modules
-## are used in ansible
-python2_bin: /bin/python2.7
-
 # Create managed not custom local_facts files
 create_benchmark_facts: true
 ansible_facts_path: /etc/ansible/facts.d
@@ -1118,50 +1113,50 @@ amzn2023cis_max_log_file_size: '10'
 ## Control 5.2.2.x - Configure Data Retention
 # This variable controls how the audit system behaves when
 # log files are getting too full and space is getting too low.
-amzn2023cis_auditd:
-    # This variable tells the system what action to take when the system has detected
-    # that it is starting to get low on disk space.
-    # The options for setting this variable are as follows:
-    # "ignore"  - the system does nothing when presented with the aforementioned issue;
-    # "syslog" - a message is sent to the system log about disk space running low;
-    # "email"  - the system sends an email notification to the email address
-    #            specified in the "action_mail_acct" variable;
-    # "exec"   - the system executes a custom command when disk space is running
-    #            low;
-    # "suspend" - the system suspends recording audit events until more space is available;
-    # "single"  - the audit daemon will put the computer system in single user mode;
-    # "halt"    - the system is halted when disk space is critically low;
-  space_left_action: email
-    # This variable specifies an e-mail address or alias to which any alert messages
-    # should be sent. The default setting is root, but you can enter any local or
-    # remote account as long as e-mail and the network are properly configured on
-    # your system and /usr/lib/sendmail exists.
-  action_mail_acct: root
-    # This variable tells the system what action to take when the system has detected
-    # that it is low on disk space.
-    # The options for setting this variable are as follows:
-    # "ignore"  - the system does nothing when presented with the aforementioned issue;
-    # "syslog"  - a message is sent to the system log about disk space running low;
-    # "email"  - the system sends an email notification to the email address
-    #            specified in the "action_mail_acct" variable;
-    # "exec"   - the system executes a custom command when disk space is running
-    #            low;
-    # "suspend" - the system suspends recording audit events until more space is available;
-    # "single"  - the audit daemon will put the computer system in single user mode;
-    # "halt"    - the system is halted when disk space is critically low;
-    # CIS prescribes either `halt` or `single`.
-  admin_space_left_action: halt
-    # This variable determines what action the audit system should take when the maximum
-    # size of a log file is reached.
-    # The options for setting this variable are as follows:
-    # "ignore"    - the system does nothing when the size of a log file is full;
-    # "syslog"    - a message is sent to the system log indicating the problem;
-    # "suspend"   - the system suspends recording audit events until the log file is cleared or rotated;
-    # "rotate"    - the log file is rotated (archived) and a new empty log file is created;
-    # "keep_logs" - the system attempts to keep as many logs as possible without violating disk
-    #               space constraints;
-    # CIS prescribes the value `keep_logs`.
-  max_log_file_action: keep_logs
+
+# This variable tells the system what action to take when the system has detected
+# that it is starting to get low on disk space.
+# For this variable the optional settings are as follows:
+# "ignore"  - the system does nothing when presented with the aforementioned issue;
+# "syslog" - a message is sent to the system log about disk space running low;
+# "email"  - the system sends an email notification to the email address
+#            specified in the "action_mail_acct" variable;
+# "exec"   - the system executes a custom command when disk space is running
+#            low;
+# "suspend" - the system suspends recording audit events until more space is available;
+# "single"  - the audit daemon will put the computer system in single user mode;
+# "halt"    - the system is halted when disk space is critically low;
+amzn2023cis_auditd_space_left_action: email
+# This variable specifies an e-mail address or alias to which any alert messages
+# should be sent. The default setting is root, but you can enter any local or
+# remote account as long as e-mail and the network are properly configured on
+# your system and /usr/lib/sendmail exists.
+amzn2023cis_auditd_action_mail_acct: root
+# This variable tells the system what action to take when the system has detected
+# that it is low on disk space.
+# For this variable the optional settings are as follows:
+# "ignore"  - the system does nothing when presented with the aforementioned issue;
+# "syslog"  - a message is sent to the system log about disk space running low;
+# "email"  - the system sends an email notification to the email address
+#            specified in the "action_mail_acct" variable;
+# "exec"   - the system executes a custom command when disk space is running
+#            low;
+# "suspend" - the system suspends recording audit events until more space is available;
+# "single"  - the audit daemon will put the computer system in single user mode;
+# "halt"    - the system is halted when disk space is critically low;
+# CIS prescribes either `halt` or `single`.
+amzn2023cis_auditd_admin_space_left_action: halt
+# This variable determines what action the audit system should take when the maximum
+# size of a log file is reached.
+# For this variable the optional settings are as follows:
+# "ignore"    - the system does nothing when the size of a log file is full;
+# "syslog"    - a message is sent to the system log indicating the problem;
+# "suspend"   - the system suspends recording audit events until the log file is cleared or rotated;
+# "rotate"    - the log file is rotated (archived) and a new empty log file is created;
+# "keep_logs" - the system attempts to keep as many logs as possible without violating disk
+#               space constraints;
+# CIS prescribes the value `keep_logs`.
+amzn2023cis_auditd_max_log_file_action: keep_logs
 ## Control 5.2.3.x - Audit template
 # This variable's value controls the execution of a main task
 # responsible for importing the yml file needed for configuring
@@ -1193,6 +1188,12 @@ amzn2023cis_auditd_extra_conf:
 # This variable is used to specify the regularity of
 # log file rotation.
 amzn2023cis_logrotate: daily
+
+# This variable contains a list of uids to be excluded(users whose actions are not logged by auditd)
+# Example:
+# amzn2023cis_auditd_uid_exclude:
+#   - 1999
+amzn2023cis_auditd_uid_exclude: []
 
 ##
 ## Section 6 Control Variables

@@ -98,7 +98,6 @@
       ansible.builtin.group:
         name: '{{ amzn2023cis_sugroup }}'
         state: present
-      register: amzn2023cis_4_3_6_sugroup
 
     - name: 4.3.6 | PATCH | Ensure access to the su command is restricted | remove users from group
       ansible.builtin.lineinfile:

@@ -36,11 +36,13 @@ repos:
 # Scan for passwords
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.5.0
+    name: Detect Secrets test
     hooks:
       - id: detect-secrets
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.30.0
+    name: Run Gitleaks test
     hooks:
       - id: gitleaks
 
@@ -65,6 +67,7 @@ repos:
 
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.38.0  # or higher tag
+    name: Check YAML Lint
     hooks:
       - id: yamllint
         name: Check YAML Lint

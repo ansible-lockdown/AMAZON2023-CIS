@@ -38,11 +38,11 @@
     - name: Ensure root password is set
       ansible.builtin.shell: passwd -S root | grep "Password set, SHA512 crypt"
       changed_when: false
-      register: root_passwd_set
+      register: discovered_root_passwd_set
 
     - name: Ensure root password is set
       ansible.builtin.assert:
-        that: root_passwd_set.rc == 0
+        that: discovered_root_passwd_set.rc == 0
         fail_msg: You have rule 4.6.6 enabled this requires that you have a root password set
         success_msg: You have a root password set
 

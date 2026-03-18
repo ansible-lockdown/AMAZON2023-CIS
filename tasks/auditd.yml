@@ -4,57 +4,48 @@
 # we need to update the auditd rules depending on the architecture of the system.
 # This task passed the syscalls table to the auditd template and updates the auditd rules
 
-- name: POST | AUDITD | Set supported_syscalls variable
-  ansible.builtin.shell: ausyscall --dump |  awk  '{print $2}'
+- name: "POST | AUDITD | Ensure use of privileged commands is collected"
+  ansible.builtin.shell: |
+    {%- set egrep_exclude = "(asdfmnop|{{ amazon2cis_priv_command_excluded_mounts | join('|') }})" -%}
+    for i in $(df | grep '^/dev' | grep -Ev '{{ egrep_exclude }}' | awk '{ print $NF }'); do
+      find $i -xdev -type f -perm /6000 2>/dev/null;
+    done
   changed_when: false
+  failed_when: false
   check_mode: false
-  failed_when: discovered_auditd_syscalls.rc not in [ 0, 1 ]
-  register: discovered_auditd_syscalls
+  register: discovered_privileged_commands
 
-- name: POST | AUDITD | Apply auditd template will for section 5.2.3 - only required rules will be added | stat file
-  ansible.builtin.stat:
-    path: /etc/audit/rules.d/99_auditd.rules
-  register: amzn2023cis_auditd_file
+- name: "POST | AUDITD | Check if auditd is immutable before changes"
+  ansible.builtin.shell: auditctl -s | grep "enabled 2"
+  changed_when: false
+  failed_when: discovered_auditd_immutable_check.rc not in [ 0, 1 ]
+  register: discovered_auditd_immutable_check
 
-- name: POST | AUDITD | Apply auditd template will for section 5.2.3 - only required rules will be added | setup file
-  vars:
-    supported_syscalls: '{{ discovered_auditd_syscalls.stdout_lines }}'
+- name: POST | AUDITD | Apply auditd template - only required rules will be added
   ansible.builtin.template:
     src: audit/99_auditd.rules.j2
     dest: /etc/audit/rules.d/99_auditd.rules
     owner: root
     group: root
-    mode: u-x,g-wx,o-rwx
-  diff: '{{ amzn2023cis_auditd_file.stat.exists }}' # Only run diff if not a new file
-  register: amzn2023cis_auditd_template_updated
+    mode: 'go-rwx'
   notify:
-    - Auditd immutable check
-    - Audit immutable fact
-    - Restart auditd
-
-- name: POST | AUDITD | Add Warning count for changes to template file | Warn Count  # noqa no-handler
-  ansible.builtin.import_tasks:
-    file: warning_facts.yml
-  vars:
-    warn_control_id: Auditd template updated, see diff output for details
-  when:
-    - amzn2023cis_auditd_template_updated.changed
-    - amzn2023cis_auditd_file.stat.exists
+    - Audit_immutable_fact
+    - Restart_auditd
 
 - name: POST | AUDITD | Apply auditd template will for section 5.2.3 - only required rules will be added | stat file
   ansible.builtin.stat:
     path: /etc/audit/rules.d/98_auditd_exceptions.rules
-  register: amzn2023cis_auditd_exception_file
+  register: discovered_auditd_exception_file
 
 - name: POST | Set up auditd user logging exceptions | setup file
+  when:
+    - amzn2023cis_allow_auditd_uid_user_exclusions
+    - amzn2023cis_auditd_uid_exclude | length > 0
   ansible.builtin.template:
     src: audit/98_auditd_exception.rules.j2
     dest: /etc/audit/rules.d/98_auditd_exceptions.rules
     owner: root
     group: root
     mode: u-x,g-wx,o-rwx
-  diff: '{{ amzn2023cis_auditd_exception_file.stat.exists }}'
+  diff: '{{ discovered_auditd_exception_file.stat.exists }}'
   notify: Restart auditd
-  when:
-    - amzn2023cis_allow_auditd_uid_user_exclusions
-    - amzn2023cis_auditd_uid_exclude | length > 0

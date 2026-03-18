@@ -25,7 +25,7 @@
   ansible.builtin.lineinfile:
     path: /etc/audit/auditd.conf
     regexp: ^max_log_file_action
-    line: max_log_file_action = {{ amzn2023cis_auditd['max_log_file_action'] }}
+    line: max_log_file_action = {{ amzn2023cis_auditd_max_log_file_action }}
   notify: Restart auditd
 
 - name: 5.2.2.3 | PATCH | Ensure system is disabled when audit logs are full
@@ -45,9 +45,9 @@
     line: '{{ item.line }}'
   notify: Restart auditd
   loop:
-    - {regexp: ^admin_space_left_action, line: 'admin_space_left_action = {{ amzn2023cis_auditd.admin_space_left_action }}'}
-    - {regexp: ^action_mail_acct, line: 'action_mail_acct = {{ amzn2023cis_auditd.action_mail_acct }}'}
-    - {regexp: ^space_left_action, line: 'space_left_action = {{ amzn2023cis_auditd.space_left_action }}'}
+    - {regexp: ^admin_space_left_action, line: 'admin_space_left_action = {{ amzn2023cis_auditd_admin_space_left_action }}'}
+    - {regexp: ^action_mail_acct, line: 'action_mail_acct = {{ amzn2023cis_auditd_action_mail_acct }}'}
+    - {regexp: ^space_left_action, line: 'space_left_action = {{ amzn2023cis_auditd_space_left_action }}'}
 
 - name: PATCH | Configure other keys for auditd.conf
   when: amzn2023cis_auditd_extra_conf.keys() | length > 0

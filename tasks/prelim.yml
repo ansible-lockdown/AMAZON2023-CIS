@@ -39,13 +39,13 @@
     file: parse_etc_password.yml
 
 - name: PRELIM | Gather accounts with empty password fields
+  tags:
+    - level1-server
+    - passwords
   ansible.builtin.shell: "cat /etc/shadow | awk -F: '($2 == \"\" ) {j++;print $1; } END {exit j}'"
   changed_when: false
   check_mode: false
   register: prelim_empty_password_accounts
-  tags:
-    - level1-server
-    - passwords
 
 - name: PRELIM | Gather UID 0 accounts other than root
   tags:
@@ -108,9 +108,7 @@
     state: present
 
 - name: PRELIM | 6.2.10 | Ensure acl is installed
-  when:
-    - amzn2023cis_rule_6_2_10
-    - '"acl" not in ansible_facts.packages'
+  when: amzn2023cis_rule_6_2_10
   tags:
     - level1-server
     - rule_6.2.10
@@ -148,9 +146,7 @@
     state: latest
 
 - name: PRELIM | Section 4.1 | Configure cron
-  when:
-    - amzn2023cis_rule_4_1_1
-    - '"cronie" not in ansible_facts.packages'
+  when: amzn2023cis_rule_4_1_1
   tags:
     - level1-server
     - rule_4.1.1
@@ -162,9 +158,7 @@
 
 # Added to ensure ssh drop in file exists if not default /etc/ssh/sshd_config
 - name: PRELIM | Section 4.2 | SSH
-  when:
-    - amzn2023cis_sshd_config_file != '/etc/ssh/sshd_config'
-    - "'openssh-server' in ansible_facts.packages"
+  when: amzn2023cis_sshd_config_file != '/etc/ssh/sshd_config'
   tags:
     - ssh
     - level1_server
@@ -203,10 +197,7 @@
   register: prelim_sudoers_files
 
 - name: PRELIM | 4.4.x | Install authselect
-  when:
-    - '"authselect" not in ansible_facts.packages'
-    - amzn2023cis_rule_4_4_1
-    - amzn2023cis_rule_4_4_2
+  when: amzn2023cis_rule_4_4_1 or amzn2023cis_rule_4_4_2
   tags: always
   ansible.builtin.package:
     name: authselect
@@ -235,9 +226,7 @@
         fail_msg: Authselect updates have been selected there are issues with profile selection"
 
 - name: PRELIM | Section 5.2 | Configure System Accounting (auditd)
-  when:
-    - '"auditd" not in ansible_facts.packages'
-    - amzn2023cis_rule_5_2_1_1
+  when: amzn2023cis_rule_5_2_1_1
   tags:
     - level2-server
     - patch
@@ -249,8 +238,7 @@
   become: true
 
 - name: PRELIM | 5.2.4.5|6|7 | Audit conf and rules files | list files
-  when:
-    - amzn2023cis_rule_5_2_4_5 or amzn2023cis_rule_5_2_4_6 or amzn2023cis_rule_5_2_4_7
+  when: amzn2023cis_rule_5_2_4_5 or amzn2023cis_rule_5_2_4_6 or amzn2023cis_rule_5_2_4_7
   tags:
     - level2-server
     - patch
@@ -270,28 +258,23 @@
     - name: PRELIM | Capture UID_MIN information from logins.def
       ansible.builtin.shell: grep -w "^UID_MIN" /etc/login.defs | awk '{print $NF}'
       changed_when: false
-      register: uid_min_id
+      register: prelim_uid_min_id
 
     - name: PRELIM | Capture UID_MAX information from logins.def
       ansible.builtin.shell: grep -w "^UID_MAX" /etc/login.defs | awk '{print $NF}'
       changed_when: false
-      register: uid_max_id
+      register: prelim_uid_max_id
 
     - name: PRELIM | Capture GID_MIN information from logins.def
       ansible.builtin.shell: grep -w "^GID_MIN" /etc/login.defs | awk '{print $NF}'
       changed_when: false
-      register: gid_min_id
+      register: prelim_gid_min_id
 
     - name: PRELIM | Set_facts for interactive uid/gid
       ansible.builtin.set_fact:
-        min_int_uid: '{{ uid_min_id.stdout }}'
-        max_int_uid: '{{ uid_max_id.stdout }}'
-        min_int_gid: '{{ gid_min_id.stdout }}'
-
-- name: PRELIM | Output of uid findings
-  when: not discover_int_uid
-  ansible.builtin.debug:
-    msg: '{{ min_int_uid }} {{ max_int_uid }}'
+        min_int_uid: '{{ prelim_uid_min_id.stdout }}'
+        max_int_uid: '{{ prelim_uid_max_id.stdout }}'
+        min_int_gid: '{{ prelim_gid_min_id.stdout }}'
 
 - name: PRELIM | Gather the package facts after prelim
   tags: always

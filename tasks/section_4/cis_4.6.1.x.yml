@@ -166,26 +166,26 @@
       changed_when: false
       failed_when: false
       check_mode: false
-      register: discovered_user_list
+      register: discovered_user_passwd_past_list
 
     - name: 4.6.1.5 | AUDIT | Ensure all users last password change date is in the past | Alert on accounts with pw change in the future
       when:
-        - discovered_user_list.stdout | length > 0
+        - discovered_user_passwd_past_list.stdout | length > 0
         - not amzn2023cis_futurepwchgdate_autofix
       ansible.builtin.debug:
         msg: 'Warning!! The following accounts have the last PW change date in the future: {{ discovered_user_list.stdout_lines }}'
 
     - name: 4.6.1.5 | AUDIT | Ensure all users last password change date is in the past | warning count
       when:
-        - discovered_user_list.stdout | length > 0
+        - discovered_user_passwd_past_list.stdout | length > 0
         - not amzn2023cis_futurepwchgdate_autofix
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 
     - name: 4.6.1.5 | PATCH | Ensure all users last password change date is in the past | Fix accounts with pw change in the future
       when:
-        - discovered_user_list.stdout | length > 0
+        - discovered_user_passwd_past_list.stdout | length > 0
         - amzn2023cis_futurepwchgdate_autofix
       ansible.builtin.command: passwd --expire {{ item }}
       changed_when: true
-      loop: '{{ discovered_user_list.stdout_lines }}'
+      loop: '{{ discovered_user_passwd_past_list.stdout_lines }}'

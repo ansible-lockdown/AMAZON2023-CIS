@@ -250,7 +250,7 @@
         - name: 6.2.8 | AUDIT | Ensure root PATH Integrity | Check for owner and permissions
           ansible.builtin.stat:
             path: '{{ item }}'
-          register: root_path_perms
+          register: discovered_root_path_perms
           loop: '{{ discovered_root_paths_split.stdout_lines }}'
 
         - name: 6.2.8 | AUDIT | Ensure root PATH Integrity | Set permissions
@@ -265,7 +265,7 @@
             group: root
             mode: u+x,go-w
             follow: false
-          loop: '{{ root_path_perms.results }}'
+          loop: '{{ discovered_root_path_perms.results }}'
           loop_control:
             label: '{{ item }}'
 
@@ -310,7 +310,7 @@
         group: '{{ item.gid }}'
         mode: u=rwx,g-w,o-rwx
       register: discovered_home_dirs
-      loop: "{{ amzn2023cis_passwd | selectattr('uid', '>=', min_int_uid | int) | selectattr('uid', '<=', max_int_uid | int) | list }}"
+      loop: "{{ prelim_captured_passwd_data | selectattr('uid', '>=', min_int_uid | int) | selectattr('uid', '<=', max_int_uid | int) | list }}"
       loop_control:
         label: '{{ item.id }}'
 

@@ -247,7 +247,7 @@
       check_mode: false
       failed_when: false
       changed_when: false
-      register: discovered_audit_unowned_grouped
+      register: discovered_audit_ungrouped_files_or_directories
       loop: '{{ ansible_facts.mounts }}'
       loop_control:
         label: '{{ item.mount }}'
@@ -259,7 +259,7 @@
         - item.stdout | length > 0
       ansible.builtin.set_fact:
         discovered_ungrouped_files_found: true
-      loop: '{{ discovered_audit_unowned_grouped.results }}'
+      loop: '{{ discovered_audit_ungrouped_files_or_directories.results }}'
 
     - name: 6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Displaying all ungrouped files or directories
       when: discovered_ungrouped_files_found
