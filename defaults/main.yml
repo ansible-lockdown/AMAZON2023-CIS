@@ -75,7 +75,7 @@ ansible_facts_path: /etc/ansible/facts.d
 ## Benchmark name and profile used by auditing control role
 # The audit variable can be found at the base
 benchmark: AMAZON2023-CIS
-benchmark_version: 'v1.0.0'
+benchmark_version: v1.0.0
 
 # This variable states to the role whether to skip
 # the reboot or not. If it is set to 'false', the role
@@ -98,7 +98,7 @@ change_requires_reboot: false
 ###
 
 ###########################################
-### Goss is required on the remote host ###
+### Goss is required on the remote host  ###
 ### vars/auditd.yml for other settings  ###
 
 # Allow audit to setup the requirements including installing git (if option chosen and downloading and adding goss binary to system)
@@ -135,14 +135,14 @@ audit_content: git
 ## Note will work with .tar files - zip will require extra configuration
 ### If using get_url this is expecting github url in tar.gz format e.g.
 ### https://github.com/ansible-lockdown/AMAZON2023-CIS-Audit/archive/refs/heads/benchmark-v1.0.0.tar.gz
-audit_conf_source: "some path or url to copy from"
+audit_conf_source: some path or url to copy from
 
 # Destination for the audit content to be placed on managed node
 # note may not need full path e.g. /opt with the directory being the {{ benchmark }}-Audit directory
-audit_conf_dest: "/opt"
+audit_conf_dest: /opt
 
 # Where the audit logs are stored
-audit_log_dir: '/opt'
+audit_log_dir: /opt
 
 ## Ability to collect and take audit files moving to a centralized location
 # This enables the collection of the files from the host
@@ -158,12 +158,12 @@ audit_output_collection_method: fetch
 # Location to put the audit files
 audit_output_destination: /opt/audit_summaries/
 
-### Goss Settings ##
-####### END ########
+### Goss Settings  ##
+####### END  ########
 
 ## The following variables correspond with the CIS rule IDs or paragraph numbers
 ## defined in the CIS benchmark documents.
-## PLEASE NOTE: These work in coordination with the section # group variables
+## PLEASE NOTE: These work in coordination with the section  # group variables
 ## and tags. You must enable an entire section in order for the variables below
 ## to take effect. If you want a specific rule to not get executed simply change
 ## that rule's variable's value to 'false'!
@@ -491,7 +491,7 @@ amzn2023cis_tmp_svc: true
 # "FIPS"    - designed to comply with specific cryptographic standards
 #             defined by NIST. They are often required in certain
 #             government or regulated environments;
-amzn2023cis_crypto_policy: 'DEFAULT'
+amzn2023cis_crypto_policy: DEFAULT
 # If you want to have a crypto policy module, you can specify it
 # here, as the value of the following variable. Allowed options
 # for this can be found in the  "vars/main.yml" file at the
@@ -524,35 +524,34 @@ amzn2023cis_config_aide: true
 # be scheduled and executed automatically at a certain point in time.
 amzn2023cis_aide_cron:
     # This variable represents the user account under which the cron job for AIDE will run.
-    cron_user: root
+  cron_user: root
     # This variable represents the path to the AIDE crontab file.
-    cron_file: /etc/cron.d/aide_cron
+  cron_file: /etc/cron.d/aide_cron
     # This variable represents the actual command or script that the cron job
     # will execute for running AIDE.
-    aide_job: '/usr/sbin/aide --check'
+  aide_job: /usr/sbin/aide --check
     # These variables define the schedule for the cron job
     # This variable governs the minute of the time of day when the AIDE cronjob is run.
     # It must be in the range `0-59`.
-    aide_minute: 0
+  aide_minute: 0
     # This variable governs the hour of the time of day when the AIDE cronjob is run.
     # It must be in the range `0-23`.
-    aide_hour: 5
+  aide_hour: 5
     # This variable governs the day of the month when the AIDE cronjob is run.
     # `*` signifies that the job is run on all days; furthermore, specific days
     # can be given in the range `1-31`; several days can be concatenated with a comma.
     # The specified day(s) must be in the range  `1-31`.
-    aide_day: '*'
+  aide_day: '*'
     # This variable governs months when the AIDE cronjob is run.
     # `*` signifies that the job is run in every month; furthermore, specific months
     # can be given in the range `1-12`; several months can be concatenated with commas.
     # The specified month(s) must be in the range  `1-12`.
-    aide_month: '*'
+  aide_month: '*'
     # This variable governs the weekdays, when the AIDE cronjob is run.
     # `*` signifies that the job is run on all weekdays; furthermore, specific weekdays
     # can be given in the range `0-7` (both `0` and `7` represent Sunday); several weekdays
     # can be concatenated with commas.
-    aide_weekday: '*'
-
+  aide_weekday: '*'
 ## Control 1.6.1.3 - Ensure SELinux policy is configured
 # SELinux implements Mandatory Access Control (MAC). The SELinux policy uses
 # a series of rules which define how processes can interact with each other
@@ -602,17 +601,17 @@ amzn2023cis_warning_banner: Authorized users only. All activity may be monitored
 # chrony.conf.j2 used for setting the configuration for chrony.
 # These servers are Time Synchronization servers.
 amzn2023cis_time_synchronization_servers:
-    - 0.pool.ntp.org
-    - 1.pool.ntp.org
-    - 2.pool.ntp.org
-    - 3.pool.ntp.org
+  - 0.pool.ntp.org
+  - 1.pool.ntp.org
+  - 2.pool.ntp.org
+  - 3.pool.ntp.org
 # This variable is also present in the aforementioned template file
 # used for setting the chrony configuration. The variable is added next
 # to each server from the above list and is used to specify the minimum
 # poll interval between updates from a particular time source. Other options
 # alongside their accurate and complete descriptions can be consulted at this
 # link: 'https://chrony-project.org/doc/3.4/chrony.conf.html'.
-amzn2023cis_chrony_server_options: "minpoll 8"
+amzn2023cis_chrony_server_options: minpoll 8
 
 ## Control 2.2 - Special Purpose Services
 # The set of rules that make up section 2.2, are used for ensuring that
@@ -805,14 +804,14 @@ amzn2023cis_sshd:
     # This variable sets the maximum number of unresponsive "keep-alive" messages
     # that can be sent from the server to the client before the connection is considered
     # inactive and thus, closed.
-    clientalivecountmax: 3
+  clientalivecountmax: 3
     # This variable sets the time interval in seconds between sending "keep-alive"
     # messages from the server to the client. These types of messages are intended to
     # keep the connection alive and prevent it from being terminated due to inactivity.
-    clientaliveinterval: 900
+  clientaliveinterval: 900
     # This variable specifies the amount of seconds allowed for successful authentication to
     # the SSH server.
-    logingracetime: 60
+  logingracetime: 60
     # WARNING: make sure you understand the precedence when working with the values
     # of the following variables
     # This variable, if specified, configures a list of USER name patterns, separated by spaces, to allow SSH
@@ -821,27 +820,26 @@ amzn2023cis_sshd:
     # If an USER@HOST format will be used, the specified user will be allowed only on that particular host.
     # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
     # For more info, see https://linux.die.net/man/5/sshd_config
-    allowusers: ""
+  allowusers: ''
     # This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to allow SSH access
     # for users whose primary group or supplementary group list matches one of the patterns. This is done
     # by setting the value of `AllowGroups` option in `/etc/ssh/sshd_config` file.
     # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
     # For more info, https://linux.die.net/man/5/sshd_config
-    allowgroups: ""
+  allowgroups: ''
     # This variable, if specified, configures a list of USER name patterns, separated by spaces, to prevent SSH access
     # for users whose user name matches one of the patterns. This is done
     # by setting the value of `DenyUsers` option in `/etc/ssh/sshd_config` file.
     # If an USER@HOST format will be used, the specified user will be restricted only on that particular host.
     # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
     # For more info, see https://linux.die.net/man/5/sshd_config
-    denyusers: ""
+  denyusers: ''
     # This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to prevent SSH access
     # for users whose primary group or supplementary group list matches one of the patterns. This is done
     # by setting the value of `DenyGroups` option in `/etc/ssh/sshd_config` file.
     # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
     # For more info, see https://linux.die.net/man/5/sshd_config
-    denygroups: ""
-
+  denygroups: ''
 ## Control 4.2.5 - Ensure SSH LogLevel is appropriate
 # This variable refers to the loglevel used for ssh.
 # The loglevel allows you to control the amount of detail
@@ -872,7 +870,7 @@ amzn2023cis_ssh_maxsessions: 4
 ## Control 4.3.3 - Ensure sudo log file exists
 # This variable contains the path to the sudo
 # log file.
-amzn2023cis_sudolog_location: "/var/log/sudo.log"
+amzn2023cis_sudolog_location: /var/log/sudo.log
 
 ## Control 4.3.5 - Ensure sudo authentication timeout is configured correctly
 # This variable contains the timeout value for sudo authentication.
@@ -903,16 +901,15 @@ amzn2023cis_authselect:
     # This setting is just a placeholder taken from the CIS
     # examples, which might lead to failure. This setting needs
     # to be adjusted in order to minimize risk.
-    custom_profile_name: custom-profile
+  custom_profile_name: custom-profile
     # This setting is just a placeholder taken from the CIS
     # examples, which might lead to failure. This setting needs
     # to be adjusted in order to minimize risk.
-    default_profile_to_copy: "sssd --symlink-meta"
+  default_profile_to_copy: sssd --symlink-meta
     # This setting is just a placeholder taken from the CIS
     # examples, which might lead to failure. This setting needs
     # to be adjusted in order to minimize risk.
-    options: with-sudo with-faillock without-nullok
-
+  options: with-sudo with-faillock without-nullok
 ## Control 4.4.1 - Ensure custom authselect profile is used
 # This variable enables automation to create custom profile settings, using the variables above
 amzn2023cis_authselect_custom_profile_create: false
@@ -933,41 +930,40 @@ amzn2023cis_4_4_2_risks: NEVER
 amzn2023cis_pam_faillock:
     # This variable holds the time in seconds before the account is unlocked.
     # CIS states that this value should be at least 900 and should never be 0.
-    unlock_time: 900
+  unlock_time: 900
     # This variable holds the number of attempts before the account is locked.
     # CIS states that this value should be greater than 0 and no greater than 5.
-    deny: 5
+  deny: 5
     # This variable controls for how long failed login attempts are remembered
     # for an account.
-    remember: 5
+  remember: 5
 
 ## Control 4.5.1 - Ensure password creation requirements are configured
 amzn2023cis_pam_password:
     # This variable specifies the minimum length that a password must
     # have to be considered valid. CIS states that this value should be
     # at least 14.
-    minlen: 14
+  minlen: 14
     # This variable specifies the minimum number of character classes
     # that must be represented in a password. Requiring a minimum
     # number of classes ensures diversity in password composition.
     # CIS states that this value should be at least 4.
-    minclass: 4
+  minclass: 4
 
 ## Controls 4.6.1.x - password configuration
 amzn2023cis_pass:
     ## Control 4.6.1.1
     # This variable governs after how many days a  password expires.
     # CIS requires a value of 365 or less.
-    max_days: 365
+  max_days: 365
     ## Control 4.6.1.2
     # This variable specifies the minimum number of days allowed between changing passwords.
     # CIS requires a value of at least 1.
-    min_days: 1
+  min_days: 1
     ## Control 4.6.1.3
     # This variable governs, how many days before a password expires, the user will be warned!
     # CIS requires a value of at least 7.
-    warn_age: 7
-
+  warn_age: 7
 # 4.6.1.1 Allow the interactive users not in compliance to force the maxdays change
 amzn2023cis_force_user_maxdays: false
 
@@ -983,8 +979,7 @@ amzn2023cis_inactivelock:
     # users can be inactive. Once that period of time is over,
     # users will be automatically disabled. The value should be
     # 30 or less.
-    lock_days: 30
-
+  lock_days: 30
 ## Control 4.6.1.5 - Ensure all users last password change date is in the past
 # This variable tells the role if the fixing for control 4.6.1.5 shall
 # be implemented automatically or not. Setting it to 'true' will ensure
@@ -998,13 +993,12 @@ amzn2023cis_futurepwchgdate_autofix: true
 amzn2023cis_shell_session_timeout:
     # This variable contains the name of the file in which TMOUT will
     # be configured
-    file: /etc/profile.d/tmout.sh
+  file: /etc/profile.d/tmout.sh
     # This variable holds the value of TMOUT which determines
     # the number of seconds after which a shell is automatically
     # terminated. TMOUT value is in seconds (e.g. 60 seconds * 10 = 600)
     # CIS states that this value shall never exceed 900 or be equal to 0.
-    timeout: 600
-
+  timeout: 600
 ## Control 4.6.5 Ensure default user umask is 027 or more restrictive
 # The following variable specifies the "umask" to set in the `/etc/bashrc` and `/etc/profile` and `/etc/login.defs`.
 # The value needs to be `027` or more restrictive to comply with CIS standards
@@ -1067,15 +1061,15 @@ amzn2023cis_journal_upload_url: 192.168.50.42
 # This variable represents the path to the private key used by
 # systemd-journal-remote. The key is part of the server's
 # configuration for secure communication.
-amzn2023cis_journal_upload_serverkeyfile: "/etc/ssl/private/journal-upload.pem"
+amzn2023cis_journal_upload_serverkeyfile: /etc/ssl/private/journal-upload.pem
 # This variable represents the path to the server certificate file
 # used by systemd-journal-remote. This certificate is used to verify
 # the server's identity.
-amzn2023cis_journal_servercertificatefile: "/etc/ssl/certs/journal-upload.pem"
+amzn2023cis_journal_servercertificatefile: /etc/ssl/certs/journal-upload.pem
 # This variable represents the path to a file containing trusted
 # certificate authorities that the client trusts. It is used by
 # the client to verify the authenticity of the server's certificate.
-amzn2023cis_journal_trustedcertificatefile: "/etc/ssl/ca/trusted.pem"
+amzn2023cis_journal_trustedcertificatefile: /etc/ssl/ca/trusted.pem
 
 ## Control 5.1.2.6 - Ensure journald log rotation is configured per site policy
 ## The variables below are related to journald log rotation,
@@ -1137,12 +1131,12 @@ amzn2023cis_auditd:
     # "suspend" - the system suspends recording audit events until more space is available;
     # "single"  - the audit daemon will put the computer system in single user mode;
     # "halt"    - the system is halted when disk space is critically low;
-    space_left_action: email
+  space_left_action: email
     # This variable specifies an e-mail address or alias to which any alert messages
     # should be sent. The default setting is root, but you can enter any local or
     # remote account as long as e-mail and the network are properly configured on
     # your system and /usr/lib/sendmail exists.
-    action_mail_acct: root
+  action_mail_acct: root
     # This variable tells the system what action to take when the system has detected
     # that it is low on disk space.
     # The options for setting this variable are as follows:
@@ -1156,7 +1150,7 @@ amzn2023cis_auditd:
     # "single"  - the audit daemon will put the computer system in single user mode;
     # "halt"    - the system is halted when disk space is critically low;
     # CIS prescribes either `halt` or `single`.
-    admin_space_left_action: halt
+  admin_space_left_action: halt
     # This variable determines what action the audit system should take when the maximum
     # size of a log file is reached.
     # The options for setting this variable are as follows:
@@ -1167,8 +1161,7 @@ amzn2023cis_auditd:
     # "keep_logs" - the system attempts to keep as many logs as possible without violating disk
     #               space constraints;
     # CIS prescribes the value `keep_logs`.
-    max_log_file_action: keep_logs
-
+  max_log_file_action: keep_logs
 ## Control 5.2.3.x - Audit template
 # This variable's value controls the execution of a main task
 # responsible for importing the yml file needed for configuring
@@ -1191,16 +1184,15 @@ amzn2023cis_auditd_extra_conf:
     # This variable governs the threshold(MegaBytes) under which the audit daemon should perform a
     # specific action to alert that the system is running low on disk space. Must be lower than
     # the 'space_left' variable.
-    admin_space_left: 50
+  admin_space_left: 50
     # This variable governs the threshold(MegaBytes) under which the audit daemon should perform a
     # specific action to alert that the system is running low on disk space(last chance to do something
     # before running out of disk space). Must be lower than the 'space_left' variable.
-    space_left: 75
-
+  space_left: 75
 ## Control 5.3 - Ensure logrotate is configured
 # This variable is used to specify the regularity of
 # log file rotation.
-amzn2023cis_logrotate: "daily"
+amzn2023cis_logrotate: daily
 
 ##
 ## Section 6 Control Variables

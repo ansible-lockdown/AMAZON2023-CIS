@@ -1,50 +1,49 @@
 ---
 
-- name: "1.1.3.1 | AUDIT | Ensure separate partition exists for /var"
+- name: 1.1.3.1 | AUDIT | Ensure separate partition exists for /var
   when:
-      - required_mount not in mount_names
-      - amzn2023cis_rule_1_1_3_1
+    - required_mount not in mount_names
+    - amzn2023cis_rule_1_1_3_1
   tags:
-      - level2-server
-      - patch
-      - mounts
-      - rule_1.1.3.1
+    - level2-server
+    - patch
+    - mounts
+    - rule_1.1.3.1
   vars:
-      warn_control_id: '1.1.3.1'
-      required_mount: '/var'
+    warn_control_id: 1.1.3.1
+    required_mount: /var
   block:
-      - name: "1.1.3.1 | AUDIT | Ensure separate partition exists for /var | Absent"
-        ansible.builtin.debug:
-            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
+    - name: 1.1.3.1 | AUDIT | Ensure separate partition exists for /var | Absent
+      ansible.builtin.debug:
+        msg: Warning!! {{ required_mount }} doesn't exist. This is a manual task
 
-      - name: "1.1.3.1 | AUDIT | Ensure separate partition exists for /var | Present"
-        ansible.builtin.import_tasks:
-            file: warning_facts.yml
+    - name: 1.1.3.1 | AUDIT | Ensure separate partition exists for /var | Present
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
 
 # skips if mount is absent
 - name: |
     "1.1.3.2 | PATCH | Ensure nodev option set on /var partition"
     "1.1.3.3 | PATCH | Ensure nosuid option set on /var partition"
   when:
-      - item.mount == "/var"
-      - amzn2023cis_rule_1_1_3_2 or
-        amzn2023cis_rule_1_1_3_3
+    - item.mount == "/var"
+    - amzn2023cis_rule_1_1_3_2 or amzn2023cis_rule_1_1_3_3
   tags:
-      - level1-server
-      - patch
-      - mounts
-      - skip_ansible_lint
-      - rule_1.1.3.2
-      - rule_1.1.3.3
-      - NIST800-53R5_AC-3
-      - NIST800-53R5_MP-2
+    - level1-server
+    - patch
+    - mounts
+    - skip_ansible_lint
+    - rule_1.1.3.2
+    - rule_1.1.3.3
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_MP-2
   ansible.posix.mount:
-      name: /var
-      src: "{{ item.device }}"
-      fstype: "{{ item.fstype }}"
-      state: present
-      opts: defaults,{% if amzn2023cis_rule_1_1_3_2 %}nodev,{% endif %}{% if amzn2023cis_rule_1_1_3_3 %}nosuid,{% endif %}
-  loop: "{{ ansible_facts.mounts }}"
+    name: /var
+    src: '{{ item.device }}'
+    fstype: '{{ item.fstype }}'
+    state: present
+    opts: defaults,{% if amzn2023cis_rule_1_1_3_2 %}nodev,{% endif %}{% if amzn2023cis_rule_1_1_3_3 %}nosuid,{% endif %}
+  loop: '{{ ansible_facts.mounts }}'
   loop_control:
-      label: "{{ item.device }}"
+    label: '{{ item.device }}'
   notify: Change_requires_reboot
