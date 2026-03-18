@@ -10,7 +10,7 @@ host_os_distribution: {{ ansible_facts.distribution | lower }}
 
 #  timeout for each command to run where set - default = 10seconds/10000ms
 timeout_ms: {{ audit_cmd_timeout }}
-amzn2023cis_run_heavy_tests: {{ audit_run_heavy_tests }}
+audit_run_heavy_tests: {{ audit_run_heavy_tests }}
 
 amzn2023cis_section1: {{ amzn2023cis_section1 }}
 amzn2023cis_section2: {{ amzn2023cis_section2 }}
