@@ -146,7 +146,7 @@
       block:
         - name: 6.1.9 | AUDIT | Audit system file permissions | Add file discrepancy list to system
           ansible.builtin.copy:
-            dest: '{{ amzn2023cis_rpm_audit_file }}'    # noqa template-instead-of-copy
+            dest: '{{ amzn2023cis_rpm_audit_file }}' # noqa template-instead-of-copy
             content: '{{ discovered_packages_rpm.stdout }}'
             owner: root
             group: root
@@ -236,7 +236,7 @@
 
     - name: 6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Displaying any unowned files or directories
       ansible.builtin.debug:
-        msg: Warning!! Missing owner on items in {{ discovered_audit_unowned_grouped.results | map(attribute='stdout_lines', default=[]) | flatten }}    # noqa jinja[invalid]
+        msg: Warning!! Missing owner on items in {{ discovered_audit_unowned_grouped.results | map(attribute='stdout_lines', default=[]) | flatten }} # noqa jinja[invalid]
       when: discovered_unowned_files_found
 
     - name: 6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Finding all ungrouped files or directories
@@ -264,7 +264,7 @@
     - name: 6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Displaying all ungrouped files or directories
       when: discovered_ungrouped_files_found
       ansible.builtin.debug:
-        msg: Warning!! Missing group on items in {{ discovered_audit_unowned_grouped.results | map(attribute='stdout_lines', default=[]) | flatten }}    # noqa jinja[invalid]
+        msg: Warning!! Missing group on items in {{ discovered_audit_unowned_grouped.results | map(attribute='stdout_lines', default=[]) | flatten }} # noqa jinja[invalid]
 
     - name: 6.1.11 | AUDIT | Ensure no unowned or ungrouped files or directories exist | warning
       when: discovered_unowned_files_found or discovered_ungrouped_files_found
@@ -313,7 +313,7 @@
     - name: 6.1.12 | AUDIT | Ensure SUID and SGID files are reviewed | Alert SUID exist
       when: discovered_suid_found
       ansible.builtin.debug:
-        msg: Warning!! SUID set on items in {{ discovered_suid_perms.results | map(attribute='stdout_lines') | flatten }}    # noqa jinja[invalid]
+        msg: Warning!! SUID set on items in {{ discovered_suid_perms.results | map(attribute='stdout_lines') | flatten }} # noqa jinja[invalid]
 
     - name: 6.1.12 | AUDIT | Ensure SUID and SGID files are reviewed | Find all SGID executables
       ansible.builtin.shell: df {{ item.mount }} -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -2000
@@ -335,7 +335,7 @@
 
     - name: 6.1.12 | AUDIT | Ensure SUID and SGID files are reviewed | Alert SGID exist
       ansible.builtin.debug:
-        msg: Warning!! SGID set on items in {{ discovered_sgid_perms.results | map(attribute='stdout_lines') | flatten }}    # noqa jinja[invalid]
+        msg: Warning!! SGID set on items in {{ discovered_sgid_perms.results | map(attribute='stdout_lines') | flatten }} # noqa jinja[invalid]
       when: discovered_sgid_found
 
     - name: 6.1.12 | AUDIT | Ensure SUID and SGID files are reviewed | Alert SUID/SGID exist | warning
