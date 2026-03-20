@@ -1,110 +1,110 @@
 ---
 
-- name: "5.2.1.1 | PATCH | Ensure auditd is installed"
+- name: 5.2.1.1 | PATCH | Ensure auditd is installed
   when: amzn2023cis_rule_5_2_1_1
   tags:
-      - level2-server
-      - patch
-      - auditd
-      - rule_5.2.1.1
-      - NIST800-53R5_AU-2
-      - NIST800-53R5_AU-3
-      - NIST800-53R5_AU-12
-      - NIST800-53R5_SI-5
+    - level2-server
+    - patch
+    - auditd
+    - rule_5.2.1.1
+    - NIST800-53R5_AU-2
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-12
+    - NIST800-53R5_SI-5
   block:
-      - name: "5.2.1.1 | PATCH | Ensure auditd is installed | Install auditd packages"
-        when: '"auditd" not in ansible_facts.packages'
-        ansible.builtin.package:
-            name: audit
-            state: present
+    - name: 5.2.1.1 | PATCH | Ensure auditd is installed | Install auditd packages
+      when: '"auditd" not in ansible_facts.packages'
+      ansible.builtin.package:
+        name: audit
+        state: present
 
-      - name: "5.2.1.1 | PATCH | Ensure auditd is installed | Install auditd-lib packages"
-        when: '"auditd-lib" not in ansible_facts.packages'
-        ansible.builtin.package:
-            name: audit-libs
-            state: present
+    - name: 5.2.1.1 | PATCH | Ensure auditd is installed | Install auditd-lib packages
+      when: '"auditd-lib" not in ansible_facts.packages'
+      ansible.builtin.package:
+        name: audit-libs
+        state: present
 
-- name: "5.2.1.2 | PATCH | Ensure auditing for processes that start prior to auditd is enabled"
+- name: 5.2.1.2 | PATCH | Ensure auditing for processes that start prior to auditd is enabled
   when: amzn2023cis_rule_5_2_1_2
   tags:
-      - level2-server
-      - patch
-      - auditd
-      - grub
-      - rule_5.2.1.2
-      - NIST800-53R5_AU-2
-      - NIST800-53R5_AU-3
-      - NIST800-53R5_AU-12
+    - level2-server
+    - patch
+    - auditd
+    - grub
+    - rule_5.2.1.2
+    - NIST800-53R5_AU-2
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-12
   block:
-      - name: "5.2.1.2 | AUDIT | Ensure auditing for processes that start prior to auditd is enabled | Get GRUB_CMDLINE_LINUX"
-        ansible.builtin.shell: grep 'GRUB_CMDLINE_LINUX_DEFAULT=' /etc/default/grub | sed 's/.$//'
-        changed_when: false
-        failed_when: false
-        check_mode: false
-        register: discovered_grub_cmdline_linux
+    - name: 5.2.1.2 | AUDIT | Ensure auditing for processes that start prior to auditd is enabled | Get GRUB_CMDLINE_LINUX
+      ansible.builtin.shell: grep 'GRUB_CMDLINE_LINUX_DEFAULT=' /etc/default/grub | sed 's/.$//'
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_grub_cmdline_linux
 
-      - name: "5.2.1.2 | PATCH | Ensure auditing for processes that start prior to auditd is enabled | Replace existing setting"
-        when: "'audit=' in discovered_grub_cmdline_linux.stdout"
-        ansible.builtin.replace:
-            path: /etc/default/grub
-            regexp: 'audit=.'
-            replace: 'audit=1'
-        notify: Grub2cfg
+    - name: 5.2.1.2 | PATCH | Ensure auditing for processes that start prior to auditd is enabled | Replace existing setting
+      when: "'audit=' in discovered_grub_cmdline_linux.stdout"
+      ansible.builtin.replace:
+        path: /etc/default/grub
+        regexp: audit=.
+        replace: audit=1
+      notify: Grub2cfg
 
-      - name: "5.2.1.2 | PATCH | Ensure auditing for processes that start prior to auditd is enabled | Add audit setting if missing"
-        when: "'audit=' not in discovered_grub_cmdline_linux.stdout"
-        ansible.builtin.lineinfile:
-            path: /etc/default/grub
-            regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
-            line: '{{ discovered_grub_cmdline_linux.stdout }} audit=1"'
-        notify: Grub2cfg
+    - name: 5.2.1.2 | PATCH | Ensure auditing for processes that start prior to auditd is enabled | Add audit setting if missing
+      when: "'audit=' not in discovered_grub_cmdline_linux.stdout"
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        regexp: ^GRUB_CMDLINE_LINUX_DEFAULT=
+        line: '{{ discovered_grub_cmdline_linux.stdout }} audit=1"'
+      notify: Grub2cfg
 
-- name: "5.2.1.3 | PATCH | Ensure audit_backlog_limit is sufficient"
+- name: 5.2.1.3 | PATCH | Ensure audit_backlog_limit is sufficient
   when: amzn2023cis_rule_5_2_1_3
   tags:
-      - level2-server
-      - patch
-      - auditd
-      - grub
-      - rule_5.2.1.3
-      - NIST800-53R5_AU-2
-      - NIST800-53R5_AU-3
-      - NIST800-53R5_AU-12
+    - level2-server
+    - patch
+    - auditd
+    - grub
+    - rule_5.2.1.3
+    - NIST800-53R5_AU-2
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-12
   block:
-      - name: "5.2.1.3 | AUDIT | Ensure audit_backlog_limit is sufficient | Get GRUB_CMDLINE_LINUX"
-        ansible.builtin.shell: grep 'GRUB_CMDLINE_LINUX_DEFAULT=' /etc/default/grub | sed 's/.$//'
-        changed_when: false
-        failed_when: false
-        check_mode: false
-        register: discovered_grub_cmdline_linux
+    - name: 5.2.1.3 | AUDIT | Ensure audit_backlog_limit is sufficient | Get GRUB_CMDLINE_LINUX
+      ansible.builtin.shell: grep 'GRUB_CMDLINE_LINUX_DEFAULT=' /etc/default/grub | sed 's/.$//'
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_grub_cmdline_linux_auditd_backlog
 
-      - name: "5.2.1.3 | PATCH | Ensure audit_backlog_limit is sufficient | Replace existing setting"
-        when: "'audit_backlog_limit=' in discovered_grub_cmdline_linux.stdout"
-        ansible.builtin.replace:
-            path: /etc/default/grub
-            regexp: 'audit_backlog_limit=\d+'
-            replace: 'audit_backlog_limit={{ amzn2023cis_audit_back_log_limit }}'
-        notify: Grub2cfg
+    - name: 5.2.1.3 | PATCH | Ensure audit_backlog_limit is sufficient | Replace existing setting
+      when: "'audit_backlog_limit=' in discovered_grub_cmdline_linux_auditd_backlog.stdout"
+      ansible.builtin.replace:
+        path: /etc/default/grub
+        regexp: audit_backlog_limit=\d+
+        replace: audit_backlog_limit={{ amzn2023cis_auditd_back_log_limit }}
+      notify: Grub2cfg
 
-      - name: "5.2.1.3 | PATCH | Ensure audit_backlog_limit is sufficient | Add audit_backlog_limit setting if missing"
-        when: "'audit_backlog_limit=' not in discovered_grub_cmdline_linux.stdout"
-        ansible.builtin.lineinfile:
-            path: /etc/default/grub
-            regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
-            line: '{{ discovered_grub_cmdline_linux.stdout }} audit_backlog_limit={{ amzn2023cis_audit_back_log_limit }}"'
-        notify: Grub2cfg
+    - name: 5.2.1.3 | PATCH | Ensure audit_backlog_limit is sufficient | Add audit_backlog_limit setting if missing
+      when: "'audit_backlog_limit=' not in discovered_grub_cmdline_linux_auditd_backlog.stdout"
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        regexp: ^GRUB_CMDLINE_LINUX_DEFAULT=
+        line: '{{ discovered_grub_cmdline_linux.stdout }} audit_backlog_limit={{ amzn2023cis_auditd_back_log_limit }}"'
+      notify: Grub2cfg
 
-- name: "5.2.1.4 | PATCH | Ensure auditd service is enabled"
+- name: 5.2.1.4 | PATCH | Ensure auditd service is enabled
   when: amzn2023cis_rule_5_2_1_4
   tags:
-      - level2-server
-      - patch
-      - auditd
-      - rule_5.2.1.4
-      - NIST800-53R5_AU-2
-      - NIST800-53R5_AU-3
-      - NIST800-53R5_AU-12
+    - level2-server
+    - patch
+    - auditd
+    - rule_5.2.1.4
+    - NIST800-53R5_AU-2
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-12
   ansible.builtin.systemd:
-      name: auditd
-      state: started
-      enabled: true
+    name: auditd
+    state: started
+    enabled: true

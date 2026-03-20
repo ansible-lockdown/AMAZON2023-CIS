@@ -1,359 +1,324 @@
 ---
 
-- name: "2.2.1 | PATCH | Ensure xorg-x11-server-common is not installed"
+- name: 2.2.1 | PATCH | Ensure xorg-x11-server-common is not installed
   when:
-      - amzn2023cis_rule_2_2_1
-      - "'xorg-x11-server-common' in ansible_facts.packages"
+    - amzn2023cis_rule_2_2_1
+    - "'xorg-x11-server-common' in ansible_facts.packages"
   tags:
-      - level2-server
-      - patch
-      - x11
-      - rule_2.2.1
-      - NIST800-53R5_CM-7
+    - level2-server
+    - patch
+    - x11
+    - rule_2.2.1
+    - NIST800-53R5_CM-7
   ansible.builtin.package:
-      name: xorg-x11-server-common
-      state: absent
+    name: xorg-x11-server-common
+    state: absent
 
-- name: "2.2.2 | PATCH | Ensure Avahi Server is not installed"
+- name: 2.2.2 | PATCH | Ensure avahi is not installed
   when:
-      - amzn2023cis_rule_2_2_2
-      - not amzn2023cis_avahi_server
-      - "'avahi' in ansible_facts.packages or 'avahi-autopd' in ansible_facts.packages"
+    - amzn2023cis_rule_2_2_2
+    - not amzn2023cis_avahi_server
   tags:
-      - level1-server
-      - patch
+    - level1-server
+    - patch
+    - avahi
+    - rule_2.2.2
+  ansible.builtin.package:
+    name:
+      - avahi-autoipd
       - avahi
-      - rule_2.2.2
-  ansible.builtin.package:
-      name:
-          - avahi-autoipd
-          - avahi
-      state: absent
+    state: absent
 
-- name: "2.2.3 | PATCH | Ensure Print server is not installed"
+- name: 2.2.3 | PATCH | Ensure a print server is not installed
   when:
-      - not amzn2023cis_cups_server
-      - "'cups' in ansible_facts.packages"
-      - amzn2023cis_rule_2_2_3
+    - not amzn2023cis_cups_server
+    - amzn2023cis_rule_2_2_3
   tags:
-      - level1-server
-      - patch
-      - cups
-      - rule_2.2.3
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - cups
+    - rule_2.2.3
+    - NIST800-53R5_CM-7
   ansible.builtin.package:
-      name: cups
-      state: absent
+    name: cups
+    state: absent
 
-- name: "2.2.4 | PATCH | Ensure DHCP Server is not installed"
+- name: 2.2.4 | PATCH | Ensure a dhcp server is not installed
   when:
-      - not amzn2023cis_dhcp_server
-      - "'dhcp-server' in ansible_facts.packages"
-      - amzn2023cis_rule_2_2_4
+    - not amzn2023cis_dhcp_server
+    - amzn2023cis_rule_2_2_4
   tags:
-      - level1-server
-      - patch
-      - dhcp
-      - rule_2.2.4
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - dhcp
+    - rule_2.2.4
+    - NIST800-53R5_CM-7
   ansible.builtin.package:
-      name: dhcp-server
-      state: absent
+    name: dhcp-server
+    state: absent
 
-- name: "2.2.5 | PATCH | Ensure DNS Server is not installed"
+- name: 2.2.5 | PATCH | Ensure a dns server is not installed
   when:
-      - not amzn2023cis_dns_server
-      - "'bind' in ansible_facts.packages"
-      - amzn2023cis_rule_2_2_5
+    - not amzn2023cis_dns_server
+    - amzn2023cis_rule_2_2_5
   tags:
-      - level1-server
-      - patch
-      - dns
-      - rule_2.2.5
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - dns
+    - rule_2.2.5
+    - NIST800-53R5_CM-7
   ansible.builtin.package:
-      name: bind
-      state: absent
+    name: bind
+    state: absent
 
-- name: "2.2.6 | PATCH | Ensure an FTP Server is not installed"
+- name: 2.2.6 | PATCH | Ensure an ftp server is not installed
   when:
-      - not amzn2023cis_vsftpd_server
-      - "'vsftpd' in ansible_facts.packages"
-      - amzn2023cis_rule_2_2_6
+    - not amzn2023cis_vsftpd_server
+    - amzn2023cis_rule_2_2_6
   tags:
-      - level1-server
-      - patch
-      - vsftpd
-      - rule_2.2.6
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - vsftpd
+    - rule_2.2.6
+    - NIST800-53R5_CM-7
   ansible.builtin.package:
-      name: vsftpd
-      state: absent
+    name: vsftpd
+    state: absent
 
-- name: "2.2.7 | PATCH | Ensure TFTP Server is not installed"
+- name: 2.2.7 | PATCH | Ensure a tftp server is not installed
   when:
-      - not amzn2023cis_tftp_server
-      - "'tftp-server' in ansible_facts.packages"
-      - amzn2023cis_rule_2_2_7
+    - not amzn2023cis_tftp_server
+    - amzn2023cis_rule_2_2_7
   tags:
-      - level1-server
-      - patch
-      - tftp
-      - rule_2.2.7
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - tftp
+    - rule_2.2.7
+    - NIST800-53R5_CM-7
   ansible.builtin.package:
-      name: tftp-server
-      state: absent
+    name: tftp-server
+    state: absent
 
-- name: "2.2.8 | PATCH | Ensure a web server is not installed"
+- name: 2.2.8 | PATCH | Ensure a web server is not installed
   when: amzn2023cis_rule_2_2_8
   tags:
-      - level1-server
-      - patch
-      - httpd
-      - nginx
-      - webserver
-      - rule_2.2.8
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - httpd
+    - nginx
+    - webserver
+    - rule_2.2.8
+    - NIST800-53R5_CM-7
   block:
-      - name: "2.2.8 | PATCH | Ensure a web server is not installed | Remove httpd server"
-        when:
-            - not amzn2023cis_httpd_server
-            - "'httpd' in ansible_facts.packages"
-        ansible.builtin.package:
-            name: httpd
-            state: absent
+    - name: 2.2.8 | PATCH | Ensure a web server is not installed | Remove httpd server
+      when: not amzn2023cis_httpd_server
+      ansible.builtin.package:
+        name: httpd
+        state: absent
 
-      - name: "2.2.8 | PATCH | Ensure a web server is not installed | Remove nginx server"
-        when:
-            - not amzn2023cis_nginx_server
-            - "'nginx' in ansible_facts.packages"
-        ansible.builtin.package:
-            name: nginx
-            state: absent
+    - name: 2.2.8 | PATCH | Ensure a web server is not installed | Remove nginx server
+      when: not amzn2023cis_nginx_server
+      ansible.builtin.package:
+        name: nginx
+        state: absent
 
-- name: "2.2.9 | PATCH | Ensure IMAP and POP3 server is not installed"
-  when:
-      - amzn2023cis_rule_2_2_9
+- name: 2.2.9 | PATCH | Ensure IMAP and POP3 server is not installed
+  when: amzn2023cis_rule_2_2_9
   tags:
-      - level1-server
-      - patch
-      - dovecot
-      - imap
-      - pop3
-      - rule_2.2.9
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - dovecot
+    - imap
+    - pop3
+    - rule_2.2.9
+    - NIST800-53R5_CM-7
   block:
-      - name: "2.2.9 | PATCH | Ensure IMAP and POP3 server is not installed"
-        when:
-            - not amzn2023cis_dovecot_server
-            - "'dovecot' in ansible_facts.packages"
-        ansible.builtin.package:
-            name:
-                - dovecot
-            state: absent
+    - name: 2.2.9 | PATCH | Ensure IMAP and POP3 server is not installed
+      when: not amzn2023cis_dovecot_server
+      ansible.builtin.package:
+        name: dovecot
+        state: absent
 
-      - name: "2.2.9 | PATCH | Ensure IMAP and POP3 server is not installed"
-        when:
-            - not amzn2023cis_imap_server
-            - "'cyrus-imapd' in ansible_facts.packages"
-        ansible.builtin.package:
-            name:
-                - cyrus-imapd
-            state: absent
+    - name: 2.2.9 | PATCH | Ensure IMAP and POP3 server is not installed
+      when: not amzn2023cis_imap_server
+      ansible.builtin.package:
+        name: cyrus-imapd
+        state: absent
 
-- name: "2.2.10 | PATCH | Ensure Samba is not installed"
+- name: 2.2.10 | PATCH | Ensure Samba is not installed
   when:
-      - not amzn2023cis_samba_server
-      - "'samba' in ansible_facts.packages"
-      - amzn2023cis_rule_2_2_10
+    - not amzn2023cis_samba_server
+    - amzn2023cis_rule_2_2_10
   tags:
-      - level1-server
-      - patch
-      - samba
-      - rule_2.2.10
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - samba
+    - rule_2.2.10
+    - NIST800-53R5_CM-7
   ansible.builtin.package:
-      name: samba
-      state: absent
+    name: samba
+    state: absent
 
-- name: "2.2.11 | PATCH | Ensure HTTP Proxy Server is not installed"
+- name: 2.2.11 | PATCH | Ensure HTTP Proxy Server is not installed
   when:
-      - not amzn2023cis_squid_server
-      - "'squid' in ansible_facts.packages"
-      - amzn2023cis_rule_2_2_11
+    - not amzn2023cis_squid_server
+    - amzn2023cis_rule_2_2_11
   tags:
-      - level1-server
-      - patch
-      - squid
-      - rule_2.2.11
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - squid
+    - rule_2.2.11
+    - NIST800-53R5_CM-7
   ansible.builtin.package:
-      name: squid
-      state: absent
+    name: squid
+    state: absent
 
-- name: "2.2.12 | PATCH | Ensure net-snmp is not installed or smpd service is not enabled"
+- name: 2.2.12 | PATCH | Ensure net-snmp is not installed or the snmpd service is not enabled
   when:
-      - not amzn2023cis_snmp_server
-      - "'net-snmp' in ansible_facts.packages"
-      - amzn2023cis_rule_2_2_12
+    - not amzn2023cis_snmp_server
+    - amzn2023cis_rule_2_2_12
   tags:
-      - level1-server
-      - patch
-      - snmp
-      - rule_2.2.12
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - snmp
+    - rule_2.2.12
+    - NIST800-53R5_CM-7
   block:
-      - name: "2.2.12 | PATCH | Ensure net-snmp is not installed or smpd service is not enabled | remove package"
-        when: amzn2023cis_remove_snmp
-        ansible.builtin.package:
-            name: net-snmp
-            state: absent
+    - name: 2.2.12 | PATCH | Ensure net-snmp is not installed or smpd service is not enabled | remove package
+      when: amzn2023cis_remove_snmp
+      ansible.builtin.package:
+        name: net-snmp
+        state: absent
 
-      - name: "2.2.12 | PATCH | Ensure net-snmp is not installed or smpd service is not enabled | mask service"
-        ansible.builtin.systemd:
-            name: net-snmp
-            state: stopped
-            masked: true
+    - name: 2.2.12 | PATCH | Ensure net-snmp is not installed or smpd service is not enabled | mask service
+      ansible.builtin.systemd:
+        name: net-snmp
+        masked: true
 
-- name: "2.2.13 | PATCH | Ensure telnet-server is not installed"
+- name: 2.2.13 | PATCH | Ensure telnet-server is not installed
   when:
-      - not amzn2023cis_telnet_server
-      - "'telnet-server' in ansible_facts.packages"
-      - amzn2023cis_rule_2_2_13
+    - not amzn2023cis_telnet_server
+    - amzn2023cis_rule_2_2_13
   tags:
-      - level1-server
-      - patch
-      - telnet
-      - rule_2.2.13
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - telnet
+    - rule_2.2.13
+    - NIST800-53R5_CM-7
   ansible.builtin.package:
-      name: telnet-server
-      state: absent
+    name: telnet-server
+    state: absent
 
-- name: "2.2.14 | PATCH | Ensure dnsmasq is not installed"
+- name: 2.2.14 | PATCH | Ensure dnsmasq is not installed
   when:
-      - not amzn2023cis_dnsmasq_server
-      - "'dnsmasq' in ansible_facts.packages"
-      - amzn2023cis_rule_2_2_14
+    - not amzn2023cis_dnsmasq_server
+    - amzn2023cis_rule_2_2_14
   tags:
-      - level1-server
-      - patch
-      - dnsmasq
-      - rule_2.2.14
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - dnsmasq
+    - rule_2.2.14
+    - NIST800-53R5_CM-7
   ansible.builtin.package:
-      name: dnsmasq
-      state: absent
+    name: dnsmasq
+    state: absent
 
-- name: "2.2.15 | PATCH | Ensure mail transfer agent is configured for local-only mode"
+- name: 2.2.15 | PATCH | Ensure mail transfer agent is configured for local-only mode
   when:
-      - not amzn2023cis_is_mail_server
-      - "'postfix' in ansible_facts.packages"
-      - amzn2023cis_rule_2_2_15
+    - not amzn2023cis_is_mail_server
+    - "'postfix' in ansible_facts.packages"
+    - amzn2023cis_rule_2_2_15
   tags:
-      - level1-server
-      - patch
-      - postfix
-      - rule_2.2.15
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - postfix
+    - rule_2.2.15
+    - NIST800-53R5_CM-7
   ansible.builtin.lineinfile:
-      path: /etc/postfix/main.cf
-      regexp: "^(#)?inet_interfaces"
-      line: "inet_interfaces = loopback-only"
+    path: /etc/postfix/main.cf
+    regexp: ^(#)?inet_interfaces
+    line: inet_interfaces = loopback-only
   notify: Restart postfix
 
 # The name title of the service says mask the service, but the fix allows for both options
 # Options available in default/main if to remove the package default is false just mask the server service
-- name: "2.2.16 | PATCH | Ensure nfs-utils is not installed or the nfs-server service is masked"
-  when:
-      - "'nfs-utils' in ansible_facts.packages"
-      - amzn2023cis_rule_2_2_16
+- name: 2.2.16 | PATCH | Ensure nfs-utils is not installed or the nfs-server service is masked
+  when: amzn2023cis_rule_2_2_16
   tags:
-      - level1-server
-      - patch
-      - nfs
-      - services
-      - rule_2.2.16
-      - NIST800-53R5_CM-6
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - nfs
+    - services
+    - rule_2.2.16
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
   block:
-      - name: "2.2.16 | PATCH | Ensure nfs-utils is not installed or the nfs-server service is masked | remove package"
-        when: amzn2023cis_nfs_server == "remove"
-        ansible.builtin.package:
-            name: nfs-utils
-            state: absent
+    - name: 2.2.16 | PATCH | Ensure nfs-utils is not installed or the nfs-server service is masked | remove package
+      when: amzn2023cis_nfs_server == "remove"
+      ansible.builtin.package:
+        name: nfs-utils
+        state: absent
 
-      - name: "2.2.16 | PATCH | Ensure nfs-utils is not installed or the nfs-server service is masked | mask service"
-        when: amzn2023cis_nfs_server == "mask"
-        ansible.builtin.systemd:
-            name: nfs-server
-            masked: true
-            state: stopped
-            daemon_reload: true
+    - name: 2.2.16 | PATCH | Ensure nfs-utils is not installed or the nfs-server service is masked | mask service
+      when: amzn2023cis_nfs_server == "mask"
+      ansible.builtin.systemd:
+        name: nfs-server
+        masked: true
+        daemon_reload: true
 
 # The name title of the service says mask the service, but the fix allows for both options
 # Options available in default/main if to remove the package default is false just mask the server service
-- name: "2.2.17 | PATCH | Ensure rpcbind is not installed or the rpcbind services are masked"
-  when:
-      - "'rpcbind' in ansible_facts.packages"
-      - amzn2023cis_rule_2_2_17
+- name: 2.2.17 | PATCH | Ensure rpcbind is not installed or the rpcbind services are masked
+  when: amzn2023cis_rule_2_2_17
   tags:
-      - level1-server
-      - patch
-      - rpc
-      - rule_2.2.17
-      - NIST800-53R5_CM-6
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - rpc
+    - rule_2.2.17
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
   block:
-      - name: "2.2.17 | PATCH | Ensure rpcbind is not installed or the rpcbind services are masked | remove package"
-        when: amzn2023cis_rpc_server == "remove"
-        ansible.builtin.package:
-            name: rpcbind
-            state: absent
+    - name: 2.2.17 | PATCH | Ensure rpcbind is not installed or the rpcbind services are masked | remove package
+      when: amzn2023cis_rpc_server == "remove"
+      ansible.builtin.package:
+        name: rpcbind
+        state: absent
 
-      - name: "2.2.17 | PATCH | Ensure rpcbind is not installed or the rpcbind services are masked | mask socket"
-        when: amzn2023cis_rpc_server == "mask"
-        ansible.builtin.systemd:
-            name: rpcbind.socket
-            masked: true
-            state: stopped
-            daemon_reload: true
+    - name: 2.2.17 | PATCH | Ensure rpcbind is not installed or the rpcbind services are masked | mask socket
+      when: amzn2023cis_rpc_server == "mask"
+      ansible.builtin.systemd:
+        name: rpcbind.socket
+        masked: true
+        daemon_reload: true
 
-      - name: "2.2.17 | PATCH | Ensure rpcbind is not installed or the rpcbind services are masked | mask service"
-        when: amzn2023cis_rpc_server == "mask"
-        ansible.builtin.systemd:
-            name: rpcbind.service
-            masked: true
-            state: stopped
-            daemon_reload: true
+    - name: 2.2.17 | PATCH | Ensure rpcbind is not installed or the rpcbind services are masked | mask service
+      when: amzn2023cis_rpc_server == "mask"
+      ansible.builtin.systemd:
+        name: rpcbind.service
+        masked: true
+        daemon_reload: true
 
 # The name title of the service says mask the service, but the fix allows for both options
 # Options available in default/main if to remove the package default is false just mask the server service
-- name: "2.2.18 | PATCH | Ensure rsync-daemon is not installed or the rsyncd service is masked"
-  when:
-      - "'rsync-daemon' in ansible_facts.packages"
-      - amzn2023cis_rule_2_2_18
+- name: 2.2.18 | PATCH | Ensure rsync-daemon is not installed or the rsyncd service is masked
+  when: amzn2023cis_rule_2_2_18
   tags:
-      - level1-server
-      - patch
-      - rsync
-      - rule_2.2.18
-      - NIST800-53R5_CM-6
-      - NIST800-53R5_CM-7
+    - level1-server
+    - patch
+    - rsync
+    - rule_2.2.18
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
   block:
-      - name: "2.2.18 | PATCH | Ensure rsync-daemon is not installed or the rsync service is masked | remove package"
-        when:
-            - amzn2023cis_rsync_server == "remove"
-            - not amzn2023cis_use_rsync_service
-        ansible.builtin.package:
-            name: rsync-daemon
-            state: absent
+    - name: 2.2.18 | PATCH | Ensure rsync-daemon is not installed or the rsync service is masked | remove package
+      when: amzn2023cis_rsync_server == "remove"
+      ansible.builtin.package:
+        name: rsync-daemon
+        state: absent
 
-      - name: "2.2.18 | PATCH | Ensure rsync-daemon is not installed or the rsyncd service is masked | mask service"
-        when: amzn2023cis_rsync_server == "mask"
-        ansible.builtin.systemd:
-            name: rsyncd
-            masked: true
-            state: stopped
-            daemon_reload: true
+    - name: 2.2.18 | PATCH | Ensure rsync-daemon is not installed or the rsyncd service is masked | mask service
+      when: amzn2023cis_rsync_server == "mask"
+      ansible.builtin.systemd:
+        name: rsyncd
+        masked: true
+        daemon_reload: true
