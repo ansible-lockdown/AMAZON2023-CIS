@@ -193,7 +193,6 @@
     - name: 2.2.12 | PATCH | Ensure net-snmp is not installed or smpd service is not enabled | mask service
       ansible.builtin.systemd:
         name: net-snmp
-        state: stopped
         masked: true
 
 - name: 2.2.13 | PATCH | Ensure telnet-server is not installed
@@ -227,6 +226,7 @@
 - name: 2.2.15 | PATCH | Ensure mail transfer agent is configured for local-only mode
   when:
     - not amzn2023cis_is_mail_server
+    - "'postfix' in ansible_facts.packages"
     - amzn2023cis_rule_2_2_15
   tags:
     - level1-server
@@ -264,7 +264,6 @@
       ansible.builtin.systemd:
         name: nfs-server
         masked: true
-        state: stopped
         daemon_reload: true
 
 # The name title of the service says mask the service, but the fix allows for both options
@@ -290,7 +289,6 @@
       ansible.builtin.systemd:
         name: rpcbind.socket
         masked: true
-        state: stopped
         daemon_reload: true
 
     - name: 2.2.17 | PATCH | Ensure rpcbind is not installed or the rpcbind services are masked | mask service
@@ -298,7 +296,6 @@
       ansible.builtin.systemd:
         name: rpcbind.service
         masked: true
-        state: stopped
         daemon_reload: true
 
 # The name title of the service says mask the service, but the fix allows for both options
@@ -324,5 +321,4 @@
       ansible.builtin.systemd:
         name: rsyncd
         masked: true
-        state: stopped
         daemon_reload: true
