@@ -795,46 +795,41 @@ amzn2023cis_nft_tables_autochaincreate: true
 amzn2023cis_sshd_config_file: /etc/ssh/sshd_config
 
 ## Controls 4.2.4, 4.2.19, 4.2.20 --various sshd settings
-amzn2023cis_sshd:
-    # This variable sets the maximum number of unresponsive "keep-alive" messages
-    # that can be sent from the server to the client before the connection is considered
-    # inactive and thus, closed.
-  clientalivecountmax: 3
-    # This variable sets the time interval in seconds between sending "keep-alive"
-    # messages from the server to the client. These types of messages are intended to
-    # keep the connection alive and prevent it from being terminated due to inactivity.
-  clientaliveinterval: 900
-    # This variable specifies the amount of seconds allowed for successful authentication to
-    # the SSH server.
-  logingracetime: 60
-    # WARNING: make sure you understand the precedence when working with the values
-    # of the following variables
-    # This variable, if specified, configures a list of USER name patterns, separated by spaces, to allow SSH
-    # access for users whose user name matches one of the patterns. This is done
-    # by setting the value of `AllowUsers` option in `/etc/ssh/sshd_config` file.
-    # If an USER@HOST format will be used, the specified user will be allowed only on that particular host.
-    # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
-    # For more info, see https://linux.die.net/man/5/sshd_config
-  allowusers: ''
-    # This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to allow SSH access
-    # for users whose primary group or supplementary group list matches one of the patterns. This is done
-    # by setting the value of `AllowGroups` option in `/etc/ssh/sshd_config` file.
-    # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
-    # For more info, https://linux.die.net/man/5/sshd_config
-  allowgroups: ''
-    # This variable, if specified, configures a list of USER name patterns, separated by spaces, to prevent SSH access
-    # for users whose user name matches one of the patterns. This is done
-    # by setting the value of `DenyUsers` option in `/etc/ssh/sshd_config` file.
-    # If an USER@HOST format will be used, the specified user will be restricted only on that particular host.
-    # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
-    # For more info, see https://linux.die.net/man/5/sshd_config
-  denyusers: ''
-    # This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to prevent SSH access
-    # for users whose primary group or supplementary group list matches one of the patterns. This is done
-    # by setting the value of `DenyGroups` option in `/etc/ssh/sshd_config` file.
-    # The allow/deny directives process order: DenyUsers, AllowUsers, DenyGroups, AllowGroups.
-    # For more info, see https://linux.die.net/man/5/sshd_config
-  denygroups: ''
+  # This variable sets the maximum number of unresponsive "keep-alive" messages
+  # that can be sent from the server to the client before the connection is considered
+  # inactive and thus, closed.
+amzn2023cis_sshd_clientalivecountmax: 3
+  # This variable sets the time interval in seconds between sending "keep-alive"
+  # messages from the server to the client. These types of messages are intended to
+  # keep the connection alive and prevent it from being terminated due to inactivity.
+amzn2023cis_sshd_clientaliveinterval: 15
+  # This variable specifies the amount of seconds allowed for successful authentication to
+  # the SSH server.
+amzn2023cis_sshd_logingracetime: 60
+  # WARNING: make sure you understand the precedence when working with the values
+  # of the following variables
+# This variable, if specified, configures a list of USER name patterns, separated by spaces, to allow SSH
+# access for users whose user name matches one of the patterns. This is done
+# by setting the value of `AllowUsers` option in `/etc/ssh/sshd_config` file.
+# If an USER@HOST format will be used, the specified user will be allowed only on that particular host.
+amzn2023cis_sshd_allowusers: "{% if ansible_facts.user_id != 'root' %}{{ ansible_facts.user_id }}{% elif ansible_env.SUDO_USER is defined %}{{ ansible_env.SUDO_USER }}{% endif %}"
+## Control 4.2.4 - Ensure sshd access is configured
+# (String) This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to allow SSH access
+# for users whose primary group or supplementary group list matches one of the patterns. This is done
+# by setting the value of `AllowGroups` option in `/etc/ssh/sshd_config` file.
+amzn2023cis_sshd_allowgroups: ""
+## Control 4.2.4 - Ensure sshd access is configured
+# This variable, if specified, configures a list of USER name patterns, separated by spaces, to prevent SSH access
+# for users whose user name matches one of the patterns. This is done
+# by setting the value of `DenyUsers` option in `/etc/ssh/sshd_config` file.
+# If an USER@HOST format will be used, the specified user will be restricted only on that particular host.
+amzn2023cis_sshd_denyusers: "nobody"
+## Control 4.2.4 - Ensure sshd access is configured
+# This variable, if specified, configures a list of GROUP name patterns, separated by spaces,
+# to prevent SSH access for users whose primary group or supplementary group list matches one of the patterns. This is done
+# by setting the value of `DenyGroups` option in `/etc/ssh/sshd_config` file.
+amzn2023cis_sshd_denygroups: ""
+
 ## Control 4.2.5 - Ensure SSH LogLevel is appropriate
 # This variable refers to the loglevel used for ssh.
 # The loglevel allows you to control the amount of detail
@@ -922,43 +917,40 @@ amzn2023cis_add_faillock_without_authselect: false
 amzn2023cis_4_4_2_risks: NEVER
 
 ## Controls 4.4.2, 4.5.2 - faillock configurations
-amzn2023cis_pam_faillock:
     # This variable holds the time in seconds before the account is unlocked.
     # CIS states that this value should be at least 900 and should never be 0.
-  unlock_time: 900
+amzn2023cis_pam_faillock_unlock_time: 900
     # This variable holds the number of attempts before the account is locked.
     # CIS states that this value should be greater than 0 and no greater than 5.
-  deny: 5
+amzn2023cis_pam_faillock_deny: 5
     # This variable controls for how long failed login attempts are remembered
     # for an account.
-  remember: 5
+amzn2023cis_pam_faillock_remember: 5
 
 ## Control 4.5.1 - Ensure password creation requirements are configured
-amzn2023cis_pam_password:
     # This variable specifies the minimum length that a password must
     # have to be considered valid. CIS states that this value should be
     # at least 14.
-  minlen: 14
+amzn2023cis_pam_password_minlen: 14
     # This variable specifies the minimum number of character classes
     # that must be represented in a password. Requiring a minimum
     # number of classes ensures diversity in password composition.
     # CIS states that this value should be at least 4.
-  minclass: 4
+amzn2023cis_pam_password_minclass: 4
 
 ## Controls 4.6.1.x - password configuration
-amzn2023cis_pass:
     ## Control 4.6.1.1
     # This variable governs after how many days a  password expires.
     # CIS requires a value of 365 or less.
-  max_days: 365
+amzn2023cis_pass_max_days: 365
     ## Control 4.6.1.2
     # This variable specifies the minimum number of days allowed between changing passwords.
     # CIS requires a value of at least 1.
-  min_days: 1
+amzn2023cis_pass_min_days: 1
     ## Control 4.6.1.3
     # This variable governs, how many days before a password expires, the user will be warned!
     # CIS requires a value of at least 7.
-  warn_age: 7
+amzn2023cis_pass_warn_age: 7
 # 4.6.1.1 Allow the interactive users not in compliance to force the maxdays change
 amzn2023cis_force_user_maxdays: false
 
@@ -969,12 +961,11 @@ amzn2023cis_force_user_mindays: false
 amzn2023cis_force_user_warnage: false
 
 ## Control 4.6.1.4 - Ensure inactive password lock is 30 days or less
-amzn2023cis_inactivelock:
     # The following variable refers to the period of time when
     # users can be inactive. Once that period of time is over,
     # users will be automatically disabled. The value should be
     # 30 or less.
-  lock_days: 30
+amzn2023cis_inactivelock_lock_days: 30
 ## Control 4.6.1.5 - Ensure all users last password change date is in the past
 # This variable tells the role if the fixing for control 4.6.1.5 shall
 # be implemented automatically or not. Setting it to 'true' will ensure
@@ -1102,13 +1093,13 @@ amzn2023cis_journald_maxfilesec: 1month
 # Buffering in memory is useful in situations, where the audit system is overwhelmed
 # with incoming audit events, and needs to temporarily store them until they can be processed.
 # This variable should be set to a sufficient value. The CIS baseline recommends at least `8192`.
-amzn2023cis_audit_back_log_limit: '8192'
+amzn2023cis_auditd_back_log_limit: '8192'
 
 ## Control 5.2.2.1 - Ensure audit log storage size is configured
 # This variable specifies the maximum size in MB that an audit log file can reach,
 # before it is archived or deleted to make space for the new audit data.
 # This should be set based on your sites policy. CIS does not provide a specific value.
-amzn2023cis_max_log_file_size: '10'
+amzn2023cis_auditd_max_log_file_size: '10'
 
 ## Control 5.2.2.x - Configure Data Retention
 # This variable controls how the audit system behaves when

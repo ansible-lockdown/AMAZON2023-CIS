@@ -11,7 +11,7 @@
   ansible.builtin.lineinfile:
     path: /etc/audit/auditd.conf
     regexp: ^max_log_file( |=)
-    line: max_log_file = {{ amzn2023cis_max_log_file_size }}
+    line: max_log_file = {{ amzn2023cis_auditd_max_log_file_size }}
   notify: Restart auditd
 
 - name: 5.2.2.2 | PATCH | Ensure audit logs are not automatically deleted
