@@ -12,6 +12,12 @@
   - Audit: version update, latest versions aligned
   - Audit: separated fails, YAML headers
   - Audit: removed legacy setting and content
+  - lint updates
+  - title and meta alignment
+  - audit sync on vars naming
+  - 4 -> 2 spacing
+  - var renaming to remove sub options for easier var override
+
 
 ## 1.2.7 based on v1.0.0
 
