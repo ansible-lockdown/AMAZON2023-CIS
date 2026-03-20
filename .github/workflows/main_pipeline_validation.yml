@@ -2,7 +2,7 @@
 
 name: Main pipeline
 
-on:  # yamllint disable-line rule:truthy
+on: # yamllint disable-line rule:truthy
   pull_request_target:
     types: [opened, reopened, synchronize]
     branches:
@@ -15,35 +15,35 @@ on:  # yamllint disable-line rule:truthy
       - '**.ps1'
       - '**.cfg'
 
-  # Allow permissions for AWS auth
+# Allow permissions for AWS auth
 permissions:
   id-token: write
   contents: read
   pull-requests: read
 
-  # A workflow run is made up of one or more jobs
-  # that can run sequentially or in parallel
+# A workflow run is made up of one or more jobs
+# that can run sequentially or in parallel
 jobs:
-    # This workflow contains a single job that tests the playbook
+  # This workflow contains a single job that tests the playbook
   playbook-test:
-      # The type of runner that the job will run on
+    # The type of runner that the job will run on
     runs-on: self-hosted
     env:
       ENABLE_DEBUG: ${{ vars.ENABLE_DEBUG }}
-        # Imported as a variable by terraform
+      # Imported as a variable by terraform
       TF_VAR_repository: ${{ github.event.repository.name }}
-      AWS_REGION: us-east-1
+      AWS_REGION: "us-east-1"
       ANSIBLE_VERSION: ${{ vars.ANSIBLE_RUNNER_VERSION }}
     defaults:
       run:
         shell: bash
         working-directory: .github/workflows/github_linux_IaC
-          # working-directory: .github/workflows
+        # working-directory: .github/workflows
 
     steps:
 
       - name: Git clone the lockdown repository to test
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
@@ -57,16 +57,16 @@ jobs:
             echo IAC_BRANCH=main >> $GITHUB_ENV
           fi
 
-        # Pull in terraform code for linux servers
+      # Pull in terraform code for linux servers
       - name: Clone GitHub IaC plan
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
         with:
           repository: ansible-lockdown/github_linux_IaC
           path: .github/workflows/github_linux_IaC
           ref: ${{ env.IAC_BRANCH }}
 
-        # Uses dedicated restricted role and policy to enable this only for this task
-        # No credentials are part of github for AWS auth
+      # Uses dedicated restricted role and policy to enable this only for this task
+      # No credentials are part of github for AWS auth
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@main
         with:
@@ -82,7 +82,7 @@ jobs:
           pwd
           ls
         env:
-            # Imported from GitHub variables this is used to load the relevant OS.tfvars file
+          # Imported from GitHub variables this is used to load the relevant OS.tfvars file
           OSVAR: ${{ vars.OSVAR }}
           benchmark_type: ${{ vars.BENCHMARK_TYPE }}
 
@@ -90,7 +90,7 @@ jobs:
         id: init
         run: tofu init
         env:
-            # Imported from GitHub variables this is used to load the relevant OS.tfvars file
+          # Imported from GitHub variables this is used to load the relevant OS.tfvars file
           OSVAR: ${{ vars.OSVAR }}
           TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
 
@@ -98,7 +98,7 @@ jobs:
         id: validate
         run: tofu validate
         env:
-            # Imported from GitHub variables this is used to load the relevant OS.tfvars file
+          # Imported from GitHub variables this is used to load the relevant OS.tfvars file
           OSVAR: ${{ vars.OSVAR }}
           TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
 
@@ -107,28 +107,30 @@ jobs:
         env:
           OSVAR: ${{ vars.OSVAR }}
           TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
+          TF_VAR_ansible_version: ${{ vars.ANSIBLE_RUNNER_VERSION }}
           TF_VAR_privsubnet_id: ${{ secrets.AWS_PRIVSUBNET_ID }}
           TF_VAR_vpc_secgrp_id: ${{ secrets.AWS_VPC_SECGRP_ID }}
         run: tofu apply -var-file "${OSVAR}.tfvars" --auto-approve -input=false
+
 ## Debug Section
       - name: DEBUG - Show Ansible hostfile
         if: env.ENABLE_DEBUG == 'true'
         run: cat hosts.yml
 
-  # Aws deployments taking a while to come up insert sleep or playbook fails
+# Aws deployments taking a while to come up insert sleep or playbook fails
 
       - name: Sleep to allow system to come up
         run: sleep ${{ vars.BUILD_SLEEPTIME }}
 
-      # Run the Ansible playbook
+    # Run the Ansible playbook
       - name: Run_Ansible_Playbook
         env:
-          ANSIBLE_HOST_KEY_CHECKING: 'false'
-          ANSIBLE_DEPRECATION_WARNINGS: 'false'
+          ANSIBLE_HOST_KEY_CHECKING: "false"
+          ANSIBLE_DEPRECATION_WARNINGS: "false"
         run: |
           /opt/ansible_${{ env.ANSIBLE_VERSION }}_venv/bin/ansible-playbook -i hosts.yml --private-key ~/.ssh/le_runner ../../../site.yml
 
-      # Remove test system - User secrets to keep if necessary
+    # Remove test system - User secrets to keep if necessary
 
       - name: Tofu Destroy
         if: always() && env.ENABLE_DEBUG == 'false'
