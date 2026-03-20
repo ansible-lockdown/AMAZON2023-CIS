@@ -19,7 +19,7 @@ amzn2023cis_allowed_crypto_policies_modules:
   - AD-SUPPORT
   - AD-SUPPORT-LEGACY
 # Used to control warning summary
-warn_control_list: ''
+warn_control_list: ""
 warn_count: 0
 
 gpg_key_package: system-release
@@ -27,7 +27,7 @@ gpg_key_package: system-release
 os_gpg_key_pubkey_name: gpg-pubkey-d832c631-6515c85e  # pragma: allowlist secret
 os_gpg_key_pubkey_content: Amazon Linux <amazon-linux@amazon.com> d832c631
 
-company_title: Mindpoint Group - A Tyto Athene Company
+company_title: 'Mindpoint Group - A Tyto Athene Company'
 file_managed_by_ansible: |-
   # File managed by ansible as part of {{ benchmark }} benchmark
   # As part of Ansible-lockdown

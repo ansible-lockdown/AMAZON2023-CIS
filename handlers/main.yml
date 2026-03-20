@@ -53,8 +53,9 @@
     state: restarted
 
 - name: Grub2cfg
-  ansible.builtin.shell: grub2-mkconfig -o /boot/grub2/grub.cfg
-  ignore_errors: true  # noqa ignore-errors
+  ansible.builtin.command: grub2-mkconfig -o /boot/grub2/grub.cfg
+  changed_when: true
+  ignore_errors: true
 
 - name: Restart rsyslog
   ansible.builtin.systemd:
@@ -88,7 +89,7 @@
   failed_when: discovered_augenrule_load.rc not in [ 0, 1 ]
   register: discovered_augenrule_load
 
-- name: Restart_auditd # noqa: command-instead-of-module
+- name: Restart auditd # noqa: command-instead-of-module
   ansible.builtin.command: /sbin/service auditd restart
   changed_when: true
 

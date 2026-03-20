@@ -4,6 +4,12 @@
 # we need to update the auditd rules depending on the architecture of the system.
 # This task passed the syscalls table to the auditd template and updates the auditd rules
 
+- name: "POST | AUDITD | Set supported_syscalls variable"
+  ansible.builtin.shell: ausyscall --dump |  awk  '{print $2}'
+  changed_when: false
+  failed_when: discovered_auditd_syscalls.rc not in [ 0, 1 ]
+  register: discovered_auditd_syscalls
+
 - name: "POST | AUDITD | Ensure use of privileged commands is collected"
   ansible.builtin.shell: |
     {%- set egrep_exclude = "(asdfmnop|{{ amazon2cis_priv_command_excluded_mounts | join('|') }})" -%}
@@ -30,7 +36,7 @@
     mode: 'go-rwx'
   notify:
     - Audit_immutable_fact
-    - Restart_auditd
+    - Restart auditd
 
 - name: POST | AUDITD | Apply auditd template will for section 5.2.3 - only required rules will be added | stat file
   ansible.builtin.stat:
