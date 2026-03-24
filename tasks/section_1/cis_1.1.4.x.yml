@@ -1,26 +1,26 @@
 ---
 
 # Skips if mount is absent
-- name: "1.1.4.1 | AUDIT | Ensure separate partition exists for /var/tmp"
+- name: 1.1.4.1 | AUDIT | Ensure separate partition exists for /var/tmp
   when:
-      - required_mount not in mount_names
-      - amzn2023cis_rule_1_1_4_1
+    - required_mount not in mount_names
+    - amzn2023cis_rule_1_1_4_1
   tags:
-      - level2-server
-      - audit
-      - mounts
-      - rule_1.1.4.1
+    - level2-server
+    - audit
+    - mounts
+    - rule_1.1.4.1
   vars:
-      warn_control_id: '1.1.4.1'
-      required_mount: '/var/tmp'
+    warn_control_id: 1.1.4.1
+    required_mount: /var/tmp
   block:
-      - name: "1.1.4.1 | AUDIT | Ensure separate partition exists for /var/tmp | Absent"
-        ansible.builtin.debug:
-            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
+    - name: 1.1.4.1 | AUDIT | Ensure separate partition exists for /var/tmp | Absent
+      ansible.builtin.debug:
+        msg: Warning!! {{ required_mount }} doesn't exist. This is a manual task
 
-      - name: "1.1.4.1 | AUDIT | Ensure separate partition exists for /var/tmp | Present"
-        ansible.builtin.import_tasks:
-            file: warning_facts.yml
+    - name: 1.1.4.1 | AUDIT | Ensure separate partition exists for /var/tmp | Present
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
 
 # skips if mount is absent
 - name: |
@@ -28,27 +28,25 @@
     "1.1.4.3 | PATCH | Ensure nosuid option set on /var/tmp partition"
     "1.1.4.4 | PATCH | Ensure nodev option set on /var/tmp partition"
   when:
-      - item.mount == "/var/tmp"
-      - amzn2023cis_rule_1_1_4_2 or
-        amzn2023cis_rule_1_1_4_3 or
-        amzn2023cis_rule_1_1_4_4
+    - item.mount == "/var/tmp"
+    - amzn2023cis_rule_1_1_4_2 or amzn2023cis_rule_1_1_4_3 or amzn2023cis_rule_1_1_4_4
   tags:
-      - level1-server
-      - patch
-      - mounts
-      - skip_ansible_lint
-      - rule_1.1.4.2
-      - rule_1.1.4.3
-      - rule_1.1.4.4
-      - NIST800-53R5_AC-3
-      - NIST800-53R5_MP-2
+    - level1-server
+    - patch
+    - mounts
+    - skip_ansible_lint
+    - rule_1.1.4.2
+    - rule_1.1.4.3
+    - rule_1.1.4.4
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_MP-2
   ansible.posix.mount:
-      name: /var/tmp
-      src: "{{ item.device }}"
-      fstype: "{{ item.fstype }}"
-      state: present
-      opts: defaults,{% if amzn2023cis_rule_1_1_4_2 %}noexec,{% endif %}{% if amzn2023cis_rule_1_1_4_3 %}nosuid,{% endif %}{% if amzn2023cis_rule_1_1_4_4 %}nodev{% endif %}
-  loop: "{{ ansible_facts.mounts }}"
+    name: /var/tmp
+    src: '{{ item.device }}'
+    fstype: '{{ item.fstype }}'
+    state: present
+    opts: defaults,{% if amzn2023cis_rule_1_1_4_2 %}noexec,{% endif %}{% if amzn2023cis_rule_1_1_4_3 %}nosuid,{% endif %}{% if amzn2023cis_rule_1_1_4_4 %}nodev{% endif %}
+  loop: '{{ ansible_facts.mounts }}'
   loop_control:
-      label: "{{ item.device }}"
+    label: '{{ item.device }}'
   notify: Change_requires_reboot

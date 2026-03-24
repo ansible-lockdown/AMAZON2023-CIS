@@ -1,49 +1,49 @@
 ---
 
-- name: "3.4.1.1 | PATCH | Ensure nftables is installed"
+- name: 3.4.1.1 | PATCH | Ensure nftables is installed
   when:
-      - amzn2023cis_rule_3_4_1_1
-      - amzn2023cis_firewall == 'nftables'
+    - amzn2023cis_rule_3_4_1_1
+    - amzn2023cis_firewall == 'nftables'
   tags:
-      - level2-server
-      - patch
-      - nftables
-      - rule_3.4.1.1
-      - NIST800-53R5_CM-7
-      - NIST800-53R5_CA-9
+    - level2-server
+    - patch
+    - nftables
+    - rule_3.4.1.1
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CA-9
   ansible.builtin.package:
-      name:
-          - nftables
-      state: present
+    name:
+      - nftables
+    state: present
 
-- name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use"
+- name: 3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use
   when: amzn2023cis_rule_3_4_1_2
   tags:
-      - level2-server
-      - patch
-      - firewalld
-      - nftables
-      - rule_3.4.1.2
+    - level2-server
+    - patch
+    - firewalld
+    - nftables
+    - rule_3.4.1.2
   block:
-      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | nftables"
-        when: amzn2023cis_firewall == 'nftables'
-        ansible.builtin.systemd:
-            name: firewalld
-            masked: true
+    - name: 3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | nftables
+      when: amzn2023cis_firewall == 'nftables'
+      ansible.builtin.systemd:
+        name: firewalld
+        masked: true
 
-      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | firewalld"
-        when: amzn2023cis_firewall == 'firewalld'
-        ansible.builtin.systemd:
-            name: nftables
-            masked: true
+    - name: 3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | firewalld
+      when: amzn2023cis_firewall == 'firewalld'
+      ansible.builtin.systemd:
+        name: nftables
+        masked: true
 
-      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | package installed"
-        ansible.builtin.package:
-            name: "{{ amzn2023cis_firewall }}"
-            state: installed
+    - name: 3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | package installed
+      ansible.builtin.package:
+        name: '{{ amzn2023cis_firewall }}'
+        state: installed
 
-      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | firewall started and enabled"
-        ansible.builtin.systemd:
-            name: "{{ amzn2023cis_firewall }}"
-            enabled: true
-            state: started
+    - name: 3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | firewall started and enabled
+      ansible.builtin.systemd:
+        name: '{{ amzn2023cis_firewall }}'
+        enabled: true
+        state: started

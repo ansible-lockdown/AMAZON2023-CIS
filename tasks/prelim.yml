@@ -5,297 +5,278 @@
 
 - name: Include audit specific variables
   when:
-      - run_audit or audit_only
-      - setup_audit
+    - run_audit or audit_only
+    - setup_audit
   tags:
-      - setup_audit
-      - run_audit
+    - setup_audit
+    - run_audit
   ansible.builtin.include_vars: audit.yml
 
 - name: Include pre-remediation audit tasks
   when:
-      - run_audit or audit_only
-      - setup_audit
+    - run_audit or audit_only
+    - setup_audit
   tags: run_audit
   ansible.builtin.import_tasks: pre_remediation_audit.yml
 
-- name: "PRELIM | AUDIT | Interactive Users"
+- name: PRELIM | AUDIT | Interactive Users
   tags: always
   ansible.builtin.shell: >
-      grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '(!index($7, "sbin/nologin") && $7 != "/bin/nologin" && $7 != "/bin/false") { print $1 }'
+    grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '(!index($7, "sbin/nologin") && $7 != "/bin/nologin" && $7 != "/bin/false") { print $1 }'
   changed_when: false
   register: prelim_interactive_usernames
 
-- name: "PRELIM | AUDIT | Interactive User accounts home directories"
+- name: PRELIM | AUDIT | Interactive User accounts home directories
   tags: always
   ansible.builtin.shell: >
-      grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '(!index($7, "sbin/nologin") && $7 != "/bin/nologin" && $7 != "/bin/false") { print $6 }'
+    grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '(!index($7, "sbin/nologin") && $7 != "/bin/nologin" && $7 != "/bin/false") { print $6 }'
   changed_when: false
   register: prelim_interactive_users_home
 
-- name: "PRELIM | capture /etc/password variables"
+- name: PRELIM | capture /etc/password variables
   tags: always
   ansible.builtin.include_tasks:
-      file: parse_etc_password.yml
+    file: parse_etc_password.yml
 
-- name: "PRELIM | Gather accounts with empty password fields"
+- name: PRELIM | Gather accounts with empty password fields
+  tags:
+    - level1-server
+    - passwords
   ansible.builtin.shell: "cat /etc/shadow | awk -F: '($2 == \"\" ) {j++;print $1; } END {exit j}'"
   changed_when: false
   check_mode: false
   register: prelim_empty_password_accounts
-  tags:
-      - level1-server
-      - passwords
 
-- name: "PRELIM | Gather UID 0 accounts other than root"
+- name: PRELIM | Gather UID 0 accounts other than root
   tags:
-      - rule_6.2.9
-      - level1-server
-      - users
+    - rule_6.2.9
+    - level1-server
+    - users
   ansible.builtin.shell: "cat /etc/passwd | awk -F: '($3 == 0 && $1 != \"root\") {i++;print $1 } END {exit i}'"
   changed_when: false
   check_mode: false
   register: prelim_uid_zero_accounts_except_root
 
-- name: "PRELIM | Setup crypto-policy"
+- name: PRELIM | Setup crypto-policy
   when: amzn2023cis_rule_1_9
   tags:
-      - level1-server
-      - rule_1.9
-      - crypto
+    - level1-server
+    - rule_1.9
+    - crypto
   block:
-      - name: "PRELIM | Install crypto-policies | pkgs present"
-        ansible.builtin.package:
-            name:
-                - crypto-policies
-                - crypto-policies-scripts
-            state: present
+    - name: PRELIM | Install crypto-policies | pkgs present
+      ansible.builtin.package:
+        name:
+          - crypto-policies
+          - crypto-policies-scripts
+        state: present
 
-      - name: "PRELIM | Gather system-wide crypto-policy"
-        ansible.builtin.command: 'update-crypto-policies --show'
-        changed_when: false
-        check_mode: false
-        register: prelim_system_wide_crypto_policy
+    - name: PRELIM | Gather system-wide crypto-policy
+      ansible.builtin.command: update-crypto-policies --show
+      changed_when: false
+      check_mode: false
+      register: prelim_system_wide_crypto_policy
 
-      - name: "PRELIM | Gather system-wide crypto-policy | set fact system policy"
-        ansible.builtin.set_fact:
-            current_crypto_policy: "{{ prelim_system_wide_crypto_policy.stdout.split(':')[0] }}"
+    - name: PRELIM | Gather system-wide crypto-policy | set fact system policy
+      ansible.builtin.set_fact:
+        current_crypto_policy: "{{ prelim_system_wide_crypto_policy.stdout.split(':')[0] }}"
 
-      - name: "PRELIM | Gather system-wide crypto-policy module | set fact system policy submodule"
-        ansible.builtin.set_fact:
-            current_crypto_module: "{{ prelim_system_wide_crypto_policy.stdout.split(':')[1] }}"
-        when: "':' in prelim_system_wide_crypto_policy.stdout"
+    - name: PRELIM | Gather system-wide crypto-policy module | set fact system policy submodule
+      ansible.builtin.set_fact:
+        current_crypto_module: "{{ prelim_system_wide_crypto_policy.stdout.split(':')[1] }}"
+      when: "':' in prelim_system_wide_crypto_policy.stdout"
 
-- name: "PRELIM | if systemd coredump"
+- name: PRELIM | if systemd coredump
   when: amzn2023cis_rule_1_5_3
   tags:
-      - level1-server
-      - rule_1.5.3
-      - systemd
+    - level1-server
+    - rule_1.5.3
+    - systemd
   ansible.builtin.stat:
-      path: /etc/systemd/coredump.conf
+    path: /etc/systemd/coredump.conf
   register: prelim_systemd_coredump
 
-- name: "PRELIM | Section 1.1 | Create list of mount points"
+- name: PRELIM | Section 1.1 | Create list of mount points
   tags: level1-server
   ansible.builtin.set_fact:
-      mount_names: "{{ ansible_facts.mounts | map(attribute='mount') | list }}"
+    mount_names: "{{ ansible_facts.mounts | map(attribute='mount') | list }}"
 
-- name: "PRELIM | Ensure python3-libselinux is installed"
+- name: PRELIM | Ensure python3-libselinux is installed
   when: '"python3-libselinux" not in ansible_facts.packages'
   ansible.builtin.package:
-      name: python3-libselinux
-      state: present
+    name: python3-libselinux
+    state: present
 
-- name: "PRELIM | 6.2.10 | Ensure acl is installed"
-  when:
-      - amzn2023cis_rule_6_2_10
-      - '"acl" not in ansible_facts.packages'
+- name: PRELIM | 6.2.10 | Ensure acl is installed
+  when: amzn2023cis_rule_6_2_10
   tags:
-      - level1-server
-      - rule_6.2.10
-      - acl
+    - level1-server
+    - rule_6.2.10
+    - acl
   ansible.builtin.package:
-      name: acl
-      state: present
+    name: acl
+    state: present
   become: true
 
-- name: "PRELIM | Set facts based on boot type"
+- name: PRELIM | Set facts based on boot type
   when: amzn2023cis_rule_1_4_1
   tags: always
   block:
-      - name: "PRELIM | Check whether machine is UEFI-based"
-        ansible.builtin.stat:
-            path: /sys/firmware/efi
-        register: prelim_efi_boot
+    - name: PRELIM | Check whether machine is UEFI-based
+      ansible.builtin.stat:
+        path: /sys/firmware/efi
+      register: prelim_efi_boot
 
-      - name: "PRELIM | Set legacy boot and grub path | Bios"
-        ansible.builtin.set_fact:
-            amzn2023cis_legacy_boot: true
-            grub2_path: /etc/grub2.cfg
-        when: not prelim_efi_boot.stat.exists
+    - name: PRELIM | Set legacy boot and grub path | Bios
+      ansible.builtin.set_fact:
+        amzn2023cis_legacy_boot: true
+        grub2_path: /etc/grub2.cfg
+      when: not prelim_efi_boot.stat.exists
 
-      - name: "PRELIM | Set grub fact | UEFI"
-        ansible.builtin.set_fact:
-            grub2_path: /etc/grub2-efi.cfg
-        when: prelim_efi_boot.stat.exists
+    - name: PRELIM | Set grub fact | UEFI
+      ansible.builtin.set_fact:
+        grub2_path: /etc/grub2-efi.cfg
+      when: prelim_efi_boot.stat.exists
 
-- name: "PRELIM | Update to latest gpg keys"
+- name: PRELIM | Update to latest gpg keys
   when: amzn2023cis_rule_1_2_4
   tags: always
   ansible.builtin.package:
-      name: "{{ gpg_key_package }}"
-      state: latest
+    name: '{{ gpg_key_package }}'
+    state: latest
 
-- name: "PRELIM | Section 4.1 | Configure cron"
-  when:
-      - amzn2023cis_rule_4_1_1
-      - '"cronie" not in ansible_facts.packages'
+- name: PRELIM | Section 4.1 | Configure cron
+  when: amzn2023cis_rule_4_1_1
   tags:
-      - level1-server
-      - rule_4.1.1
-      - cron
+    - level1-server
+    - rule_4.1.1
+    - cron
   ansible.builtin.package:
-      name: cronie
-      state: present
+    name: cronie
+    state: present
   become: true
 
 # Added to ensure ssh drop in file exists if not default /etc/ssh/sshd_config
-- name: "PRELIM | Section 4.2 | SSH"
-  when:
-      - amzn2023cis_sshd_config_file != '/etc/ssh/sshd_config'
-      - "'openssh-server' in ansible_facts.packages"
+- name: PRELIM | Section 4.2 | SSH
+  when: amzn2023cis_sshd_config_file != '/etc/ssh/sshd_config'
   tags:
-      - ssh
-      - level1_server
+    - ssh
+    - level1_server
   ansible.builtin.file:
-      path: "{{ amzn2023cis_sshd_config_file }}"
-      owner: root
-      group: root
-      mode: 'u-x,o-rwx'
-      state: touch
+    path: '{{ amzn2023cis_sshd_config_file }}'
+    owner: root
+    group: root
+    mode: u-x,o-rwx
+    state: touch
 
-- name: "PRELIM | Section 4.2 | SSH - Identify files in sshd_config.d Dir"
+- name: PRELIM | Section 4.2 | SSH - Identify files in sshd_config.d Dir
   when: "'openssh-server' in ansible_facts.packages"
   tags: always
   ansible.builtin.find:
-      patterns: '*.conf'
-      path: /etc/ssh/sshd_config.d
+    patterns: '*.conf'
+    path: /etc/ssh/sshd_config.d
   register: prelim_sshd_conf_files
 
-- name: "PRELIM | Section 4.2 | SSH - Search for main cfg file"
+- name: PRELIM | Section 4.2 | SSH - Search for main cfg file
   when: "'openssh-server' in ansible_facts.packages"
   tags: always
   ansible.builtin.stat:
-      path: "{{ amzn2023cis_sshd_config_file }}"
+    path: '{{ amzn2023cis_sshd_config_file }}'
   register: prelim_main_sshd_cfg
 
-- name: "PRELIM | 4.3.4 | Find all sudoers files."
+- name: PRELIM | 4.3.4 | Find all sudoers files.
   when: amzn2023cis_rule_4_3_4
   tags:
-      - rule_4.3.4
-      - sudo
-      - patch
-  ansible.builtin.shell: "find /etc/sudoers /etc/sudoers.d/ -type f ! -name '*~' ! -name '*.*'"
+    - rule_4.3.4
+    - sudo
+    - patch
+  ansible.builtin.shell: find /etc/sudoers /etc/sudoers.d/ -type f ! -name '*~' ! -name '*.*'
   changed_when: false
   failed_when: false
   check_mode: false
   register: prelim_sudoers_files
 
-- name: "PRELIM | 4.4.x | Install authselect"
-  when:
-      - '"authselect" not in ansible_facts.packages'
-      - amzn2023cis_rule_4_4_1
-      - amzn2023cis_rule_4_4_2
+- name: PRELIM | 4.4.x | Install authselect
+  when: amzn2023cis_rule_4_4_1 or amzn2023cis_rule_4_4_2
   tags: always
   ansible.builtin.package:
-      name: authselect
-      state: present
+    name: authselect
+    state: present
   become: true
 
-- name: "PRELIM | AUDIT | Check authselect profile is selected"
+- name: PRELIM | AUDIT | Check authselect profile is selected
   when: amzn2023cis_allow_authselect_updates
   tags: always
   block:
-      - name: "PRELIM | AUDIT | Check authselect profile name has been updated"
-        ansible.builtin.assert:
-            that: amzn2023cis_authselect['custom_profile_name'] != 'cis_example_profile'
-            fail_msg: "You still have the default name for your authselect profile"
+    - name: PRELIM | AUDIT | Check authselect profile name has been updated
+      ansible.builtin.assert:
+        that: amzn2023cis_authselect['custom_profile_name'] != 'cis_example_profile'
+        fail_msg: You still have the default name for your authselect profile
 
-      - name: "PRELIM | AUDIT | Check authselect profile is selected"
-        ansible.builtin.shell: authselect current | head -1 | awk '{print $NF}'
-        changed_when: false
-        failed_when: prelim_authselect_current_profile.rc not in [ 0, 1 ]
-        register: prelim_authselect_current_profile
+    - name: PRELIM | AUDIT | Check authselect profile is selected
+      ansible.builtin.shell: authselect current | head -1 | awk '{print $NF}'
+      changed_when: false
+      failed_when: prelim_authselect_current_profile.rc not in [ 0, 1 ]
+      register: prelim_authselect_current_profile
 
-      - name: "PRELIM | AUDIT | Check authselect profile is selected"
-        ansible.builtin.assert:
-            that: prelim_authselect_current_profile is defined
-            success_msg: "Authselect is running and profile is selected"
-            fail_msg: Authselect updates have been selected there are issues with profile selection"
+    - name: PRELIM | AUDIT | Check authselect profile is selected
+      ansible.builtin.assert:
+        that: prelim_authselect_current_profile is defined
+        success_msg: Authselect is running and profile is selected
+        fail_msg: Authselect updates have been selected there are issues with profile selection"
 
-- name: "PRELIM | Section 5.2 | Configure System Accounting (auditd)"
-  when:
-      - '"auditd" not in ansible_facts.packages'
-      - amzn2023cis_rule_5_2_1_1
+- name: PRELIM | Section 5.2 | Configure System Accounting (auditd)
+  when: amzn2023cis_rule_5_2_1_1
   tags:
-      - level2-server
-      - patch
-      - rule_5.2.1.1
-      - auditd
+    - level2-server
+    - patch
+    - rule_5.2.1.1
+    - auditd
   ansible.builtin.package:
-      name: audit
-      state: present
+    name: audit
+    state: present
   become: true
 
-- name: "PRELIM | 5.2.4.5|6|7 | Audit conf and rules files | list files"
-  when:
-      - amzn2023cis_rule_5_2_4_5 or
-        amzn2023cis_rule_5_2_4_6 or
-        amzn2023cis_rule_5_2_4_7
+- name: PRELIM | 5.2.4.5|6|7 | Audit conf and rules files | list files
+  when: amzn2023cis_rule_5_2_4_5 or amzn2023cis_rule_5_2_4_6 or amzn2023cis_rule_5_2_4_7
   tags:
-      - level2-server
-      - patch
-      - auditd
-      - rule_5.2.4.5
-      - rule_5.2.4.6
-      - rule_5.2.4.7
+    - level2-server
+    - patch
+    - auditd
+    - rule_5.2.4.5
+    - rule_5.2.4.6
+    - rule_5.2.4.7
   ansible.builtin.find:
-      path: /etc/audit
-      file_type: file
-      recurse: true
-      patterns: '*.conf,*.rules'
+    path: /etc/audit
+    file_type: file
+    recurse: true
+    patterns: '*.conf,*.rules'
   register: prelim_auditd_conf_files
 
-- name: "PRELIM | Discover Interactive UID MIN and MIN from logins.def"
+- name: PRELIM | Discover Interactive UID MIN and MIN from logins.def
   block:
-      - name: "PRELIM | Capture UID_MIN information from logins.def"
-        ansible.builtin.shell: grep -w "^UID_MIN" /etc/login.defs | awk '{print $NF}'
-        changed_when: false
-        register: uid_min_id
+    - name: PRELIM | Capture UID_MIN information from logins.def
+      ansible.builtin.shell: grep -w "^UID_MIN" /etc/login.defs | awk '{print $NF}'
+      changed_when: false
+      register: prelim_uid_min_id
 
-      - name: "PRELIM | Capture UID_MAX information from logins.def"
-        ansible.builtin.shell: grep -w "^UID_MAX" /etc/login.defs | awk '{print $NF}'
-        changed_when: false
-        register: uid_max_id
+    - name: PRELIM | Capture UID_MAX information from logins.def
+      ansible.builtin.shell: grep -w "^UID_MAX" /etc/login.defs | awk '{print $NF}'
+      changed_when: false
+      register: prelim_uid_max_id
 
-      - name: "PRELIM | Capture GID_MIN information from logins.def"
-        ansible.builtin.shell: grep -w "^GID_MIN" /etc/login.defs | awk '{print $NF}'
-        changed_when: false
-        register: gid_min_id
+    - name: PRELIM | Capture GID_MIN information from logins.def
+      ansible.builtin.shell: grep -w "^GID_MIN" /etc/login.defs | awk '{print $NF}'
+      changed_when: false
+      register: prelim_gid_min_id
 
-      - name: "PRELIM | Set_facts for interactive uid/gid"
-        ansible.builtin.set_fact:
-            min_int_uid: "{{ uid_min_id.stdout }}"
-            max_int_uid: "{{ uid_max_id.stdout }}"
-            min_int_gid: "{{ gid_min_id.stdout }}"
+    - name: PRELIM | Set_facts for interactive uid/gid
+      ansible.builtin.set_fact:
+        min_int_uid: '{{ prelim_uid_min_id.stdout }}'
+        max_int_uid: '{{ prelim_uid_max_id.stdout }}'
+        min_int_gid: '{{ prelim_gid_min_id.stdout }}'
 
-- name: "PRELIM | Output of uid findings"
-  when: not discover_int_uid
-  ansible.builtin.debug:
-      msg: "{{ min_int_uid }} {{ max_int_uid }}"
-
-- name: "PRELIM | Gather the package facts after prelim"
+- name: PRELIM | Gather the package facts after prelim
   tags: always
   ansible.builtin.package_facts:
-      manager: auto
+    manager: auto
