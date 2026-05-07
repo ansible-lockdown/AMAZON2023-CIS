@@ -36,7 +36,7 @@
     - rule_4.6.6
   block:
     - name: Ensure root password is set
-      ansible.builtin.shell: passwd -S root | grep "Password set, SHA512 crypt"
+      ansible.builtin.shell: passwd -S root | grep "Password set"
       changed_when: false
       register: discovered_root_passwd_set
 
@@ -48,7 +48,7 @@
 
 - name: Setup rules if container
   when:
-    - ansible_connection == 'docker' or ( ansible_virtualization_type is defined and ansible_virtualization_type in ["docker", "lxc", "openvz", "podman", "container"])
+    - ansible_connection in ['docker', 'community.docker.docker'] or ( ansible_virtualization_type is defined and ansible_virtualization_type in ["docker", "lxc", "openvz", "podman", "container"])
   tags: always
   block:
     - name: Discover and set container variable if required
@@ -146,7 +146,7 @@
         state: directory
         owner: root
         group: root
-        mode: u=rwx,go=rx
+        mode: 'go-w'
 
     - name: Create ansible facts file and levels applied if audit facts not present
       ansible.builtin.template:
@@ -154,7 +154,7 @@
         dest: '{{ ansible_facts_path }}/compliance_facts.fact'
         owner: root
         group: root
-        mode: u-x,go=r
+        mode: 'u-x,go-wx'
 
 - name: Fetch audit files
   when: fetch_audit_output and run_audit

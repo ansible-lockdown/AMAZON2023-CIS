@@ -82,7 +82,7 @@
     - name: 5.2.3.6 | PATCH | Ensure use of privileged commands are collected
       ansible.builtin.set_fact:
         update_audit_template: true
-      notify: update auditd
+      notify: Restart auditd
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: 5.2.3.7 | PATCH | Ensure unsuccessful file access attempts are collected
@@ -227,7 +227,7 @@
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: 5.2.3.18 | PATCH | Ensure successful and unsuccessful attempts to use the usermod command are recorded
-  changed_when: amzn2023cis_rule_5_2_3_18
+  when: amzn2023cis_rule_5_2_3_18
   tags:
     - level2-server
     - patch

@@ -8,7 +8,7 @@ change_requires_reboot: false
 # 'false' is left unchanged.
 system_is_container: false
 
-min_ansible_version: 2.10.1
+min_ansible_version: 2.16.1
 amzn2023cis_allowed_crypto_policies:
   - DEFAULT
   - FUTURE
@@ -27,7 +27,7 @@ gpg_key_package: system-release
 os_gpg_key_pubkey_name: gpg-pubkey-d832c631-6515c85e  # pragma: allowlist secret
 os_gpg_key_pubkey_content: Amazon Linux <amazon-linux@amazon.com> d832c631
 
-company_title: 'Mindpoint Group - A Tyto Athene Company'
+company_title: 'MindPoint Group - A Tyto Athene Company'
 file_managed_by_ansible: |-
   # File managed by ansible as part of {{ benchmark }} benchmark
   # As part of Ansible-lockdown
