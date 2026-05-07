@@ -25,19 +25,24 @@
     - NIST800-53R5_CM-3
     - NIST800-53R5_CM-6
   block:
-    - name: 1.7.2 | PATCH | Ensure local login warning banner is configured properly | Create file
+    - name: 1.7.2 | PATCH | Ensure local login warning banner is configured properly | Stat file
+      ansible.builtin.stat:
+        path: /etc/issue
+      register: discovered_etc_issue_stat
+
+    - name: 1.7.2 | PATCH | Ensure local login warning banner is configured properly | Remove symlink
+      when: discovered_etc_issue_stat.stat.islnk | default(false)
+      ansible.builtin.file:
+        path: /etc/issue
+        state: absent
+
+    - name: 1.7.2 | PATCH | Ensure local login warning banner is configured properly
       ansible.builtin.template:
         src: etc/issue.j2
-        dest: /usr/lib/issue
+        dest: /etc/issue
         owner: root
         group: root
-        mode: u-x,go-wx
-
-    - name: 1.7.2 | PATCH | Ensure local login warning banner is configured properly | Ensure symlink
-      ansible.builtin.file:
-        src: /usr/lib/issue
-        dest: /etc/issue
-        state: link
+        mode: 'u-x,go-wx'
 
 - name: 1.7.3 | PATCH | Ensure remote login warning banner is configured properly
   when: amzn2023cis_rule_1_7_3
@@ -50,19 +55,24 @@
     - NIST800-53R5_CM-3
     - NIST800-53R5_CM-6
   block:
-    - name: 1.7.3 | PATCH | Ensure remote login warning banner is configured properly | Create file
+    - name: 1.7.3 | PATCH | Ensure remote login warning banner is configured properly | Stat file
+      ansible.builtin.stat:
+        path: /etc/issue.net
+      register: discovered_etc_issue_net_stat
+
+    - name: 1.7.3 | PATCH | Ensure remote login warning banner is configured properly | Remove symlink
+      when: discovered_etc_issue_net_stat.stat.islnk | default(false)
+      ansible.builtin.file:
+        path: /etc/issue.net
+        state: absent
+
+    - name: 1.7.3 | PATCH | Ensure remote login warning banner is configured properly
       ansible.builtin.template:
         src: etc/issue.net.j2
-        dest: /usr/lib/issue.net
+        dest: /etc/issue.net
         owner: root
         group: root
-        mode: u-x,go-wx
-
-    - name: 1.7.3 | PATCH | Ensure remote login warning banner is configured properly | Ensure symlink
-      ansible.builtin.file:
-        src: /usr/lib/issue.net
-        dest: /etc/issue.net
-        state: link
+        mode: 'u-x,go-wx'
 
 - name: 1.7.4 | PATCH | Ensure permissions on /etc/motd are configured
   when: amzn2023cis_rule_1_7_4
@@ -89,10 +99,10 @@
     - NIST800-53R5_AC-3
     - NIST800-53R5_MP-2
   ansible.builtin.file:
-    path: /usr/lib/issue
+    path: /etc/issue
     owner: root
     group: root
-    mode: u-x,go-wx
+    mode: 'u-x,go-wx'
 
 - name: 1.7.6 | PATCH | Ensure permissions on /etc/issue.net are configured
   when: amzn2023cis_rule_1_7_6
@@ -104,7 +114,7 @@
     - NIST800-53R5_AC-3
     - NIST800-53R5_MP-2
   ansible.builtin.file:
-    path: /usr/lib/issue.net
+    path: /etc/issue.net
     owner: root
     group: root
-    mode: u-x,go-wx
+    mode: 'u-x,go-wx'

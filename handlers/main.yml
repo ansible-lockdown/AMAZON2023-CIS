@@ -42,10 +42,16 @@
     name: firewalld
     state: restarted
 
-- name: Restart sshd
+- name: Validate sshd configuration
+  ansible.builtin.command: sshd -t
+  changed_when: false
+  listen: Restart sshd
+
+- name: Restart sshd service
   ansible.builtin.systemd:
     name: sshd
     state: restarted
+  listen: Restart sshd
 
 - name: Restart postfix
   ansible.builtin.systemd:
@@ -83,15 +89,18 @@
   notify: Change_requires_reboot
 
 - name: Auditd rules reload
-  when: discovered_auditd_immutable_check.rc == 1 or discovered_augenrules_check.stdout is search('No change')
+  when: discovered_auditd_immutable_check.rc == 1
   ansible.builtin.command: augenrules --load
   changed_when: true
-  failed_when: discovered_augenrule_load.rc not in [ 0, 1 ]
   register: discovered_augenrule_load
+  failed_when: discovered_augenrule_load.rc not in [ 0, 1 ]
+  listen: Restart auditd
 
-- name: Restart auditd # noqa: command-instead-of-module
+- name: Restart auditd service  # noqa: command-instead-of-module
+  when: not system_is_container
   ansible.builtin.command: /sbin/service auditd restart
   changed_when: true
+  listen: Restart auditd
 
 - name: Change_requires_reboot
   ansible.builtin.set_fact:
