@@ -1,0 +1,25 @@
+---
+
+dependency:
+  name: galaxy
+driver:
+  name: default
+platforms:
+  - name: localhost
+    managed: false
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_PIPELINING: "true"
+  playbooks:
+    converge: ../default/converge.yml
+    verify: ../default/verify.yml
+  inventory:
+    host_vars:
+      localhost:
+        ansible_connection: local
+        skip_reboot: true
+        setup_audit: false
+        run_audit: false
+verifier:
+  name: ansible

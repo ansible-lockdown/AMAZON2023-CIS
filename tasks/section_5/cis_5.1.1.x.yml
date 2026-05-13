@@ -188,10 +188,10 @@
       # target can be IP or FQDN
       *.* action(type="omfwd" target="{{ amzn2023cis_remote_log_host }}" port="{{ amzn2023cis_remote_log_port }}" protocol="{{ amzn2023cis_remote_log_protocol }}" action.resumeRetryCount="{{ amzn2023cis_remote_log_retrycount }}" queue.type="LinkedList" queue.size="{{ amzn2023cis_remote_log_queuesize }}")
     insertafter: EOF
-  register: discovered_rsyslog_fwd_to_remote_log_host
   failed_when:
     - discovered_rsyslog_fwd_to_remote_log_host is failed
     - discovered_rsyslog_fwd_to_remote_log_host.rc != 257
+  register: discovered_rsyslog_fwd_to_remote_log_host
   notify: Restart rsyslog
 
 - name: 5.1.1.7 | PATCH | Ensure rsyslog is not configured to receive logs from a remote client

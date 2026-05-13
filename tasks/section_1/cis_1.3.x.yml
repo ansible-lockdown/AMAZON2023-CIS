@@ -31,7 +31,7 @@
         src: /var/lib/aide/aide.db.new.gz
         dest: /var/lib/aide/aide.db.gz
         remote_src: true
-        mode: '0640'
+        mode: 'u-x,g-wx,o-rwx'
 
 - name: 1.3.2 | PATCH | Ensure filesystem integrity is regularly checked
   when: amzn2023cis_rule_1_3_2

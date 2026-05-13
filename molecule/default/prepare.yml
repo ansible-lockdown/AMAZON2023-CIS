@@ -1,0 +1,69 @@
+---
+
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Install sudo first (container runs as root)
+      ansible.builtin.raw: dnf install -y sudo
+      changed_when: true
+
+    - name: Gather facts now that sudo is available
+      ansible.builtin.setup:
+
+    - name: Install required packages
+      ansible.builtin.package:
+        name:
+          - openssh-server
+          - pam
+          - cronie
+          - chrony
+          - rsyslog
+          - aide
+          - logrotate
+          - firewalld
+          - audit
+          - policycoreutils
+          - python3-libselinux
+          - libselinux-utils
+          - git
+          - hostname
+          - dmidecode
+          - autofs
+          - crypto-policies-scripts
+          - shadow-utils
+          - passwd
+        state: present
+
+    - name: Set FIPS crypto policy for audit compliance
+      ansible.builtin.command: update-crypto-policies --set FIPS
+      changed_when: true
+
+    - name: Start services for audit compliance
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop:
+        - sshd
+        - firewalld
+        - chronyd
+        - crond
+      loop_control:
+        label: "{{ item }}"
+
+    - name: Ensure /etc/ssh/sshd_config.d exists
+      ansible.builtin.file:
+        path: /etc/ssh/sshd_config.d
+        state: directory
+        mode: 'go-w'
+
+    - name: Ensure /etc/sysctl.d exists
+      ansible.builtin.file:
+        path: /etc/sysctl.d
+        state: directory
+        mode: 'go-w'
+
+    - name: Set root password for audit compliance
+      ansible.builtin.shell: echo 'root:P@ssw0rd123!' | chpasswd -c SHA512
+      changed_when: true

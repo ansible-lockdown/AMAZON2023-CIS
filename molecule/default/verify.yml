@@ -1,0 +1,29 @@
+---
+
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Gather package facts
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Verify SSH is installed
+      ansible.builtin.assert:
+        that: "'openssh-server' in ansible_facts.packages"
+
+    - name: Verify audit package is installed
+      ansible.builtin.assert:
+        that: "'audit' in ansible_facts.packages"
+
+    - name: Verify crypto-policies is installed
+      ansible.builtin.assert:
+        that: "'crypto-policies' in ansible_facts.packages"
+
+    - name: Verify firewalld is installed
+      ansible.builtin.assert:
+        that: "'firewalld' in ansible_facts.packages"
+
+    - name: Check SSHD configuration
+      ansible.builtin.command: sshd -t
+      changed_when: false

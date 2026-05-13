@@ -64,8 +64,8 @@
     - name: 1.2.3 | AUDIT | Ensure package manager repositories are configured | Get repo list
       ansible.builtin.command: dnf repolist
       changed_when: false
-      failed_when: false
       register: discovered_dnf_configured
+      failed_when: false
       check_mode: false
 
     - name: 1.2.3 | AUDIT | Ensure package manager repositories are configured | Display repo list
