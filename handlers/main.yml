@@ -146,7 +146,6 @@
 - name: Grub2cfg
   ansible.builtin.command: grub2-mkconfig -o /boot/grub2/grub.cfg
   changed_when: true
-  ignore_errors: true
 
 - name: Restart rsyslog
   ansible.builtin.systemd:
