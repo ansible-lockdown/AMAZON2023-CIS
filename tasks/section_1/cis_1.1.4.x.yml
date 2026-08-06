@@ -2,16 +2,13 @@
 
 # Skips if mount is absent
 - name: 1.1.4.1 | AUDIT | Ensure separate partition exists for /var/tmp
-  when:
-    - required_mount not in mount_names
-    - amzn2023cis_rule_1_1_4_1
+  when: amzn2023cis_rule_1_1_4_1
   tags:
     - level2-server
     - audit
     - mounts
     - rule_1.1.4.1
   vars:
-    warn_control_id: 1.1.4.1
     required_mount: /var/tmp
   block:
     - name: 1.1.4.1 | AUDIT | Ensure separate partition exists for /var/tmp | Absent
@@ -21,32 +18,65 @@
     - name: 1.1.4.1 | AUDIT | Ensure separate partition exists for /var/tmp | Present
       ansible.builtin.import_tasks:
         file: warning_facts.yml
+      vars:
+        warn_control_id: 1.1.4.1
 
-# skips if mount is absent
-- name: |
-    "1.1.4.2 | PATCH | Ensure noexec option set on /var/tmp partition"
-    "1.1.4.3 | PATCH | Ensure nosuid option set on /var/tmp partition"
-    "1.1.4.4 | PATCH | Ensure nodev option set on /var/tmp partition"
+- name: 1.1.4.2 | PATCH | Ensure noexec option set on /var/tmp partition
   when:
-    - item.mount == "/var/tmp"
-    - amzn2023cis_rule_1_1_4_2 or amzn2023cis_rule_1_1_4_3 or amzn2023cis_rule_1_1_4_4
+    - prelim_mount_point_fs_and_options[mount_point] is defined
+    - amzn2023cis_rule_1_1_4_2
   tags:
     - level1-server
     - patch
     - mounts
-    - skip_ansible_lint
     - rule_1.1.4.2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_MP-2
+  vars:
+    mount_point: /var/tmp
+    required_option: noexec
+  notify: &mount_option_notify
+    - Remount {{ mount_point }}
+  ansible.builtin.set_fact: &mount_option_set_fact
+    prelim_mount_point_fs_and_options: |
+      {{ prelim_mount_point_fs_and_options | combine({mount_point: {'options': (prelim_mount_point_fs_and_options[mount_point]['options'] + [required_option])}}, recursive=True) }}
+  changed_when: &mount_option_changed_when
+    - required_option not in prelim_mount_point_fs_and_options[mount_point]['original_options']
+
+- name: 1.1.4.3 | PATCH | Ensure nosuid option set on /var/tmp partition
+  when:
+    - prelim_mount_point_fs_and_options[mount_point] is defined
+    - amzn2023cis_rule_1_1_4_3
+  tags:
+    - level1-server
+    - patch
+    - mounts
     - rule_1.1.4.3
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_MP-2
+  vars:
+    mount_point: /var/tmp
+    required_option: nosuid
+  notify: *mount_option_notify
+  ansible.builtin.set_fact:
+    <<: *mount_option_set_fact
+  changed_when: *mount_option_changed_when
+
+- name: 1.1.4.4 | PATCH | Ensure nodev option set on /var/tmp partition
+  when:
+    - prelim_mount_point_fs_and_options[mount_point] is defined
+    - amzn2023cis_rule_1_1_4_4
+  tags:
+    - level1-server
+    - patch
+    - mounts
     - rule_1.1.4.4
     - NIST800-53R5_AC-3
     - NIST800-53R5_MP-2
-  ansible.posix.mount:
-    name: /var/tmp
-    src: '{{ item.device }}'
-    fstype: '{{ item.fstype }}'
-    state: present
-    opts: defaults,{% if amzn2023cis_rule_1_1_4_2 %}noexec,{% endif %}{% if amzn2023cis_rule_1_1_4_3 %}nosuid,{% endif %}{% if amzn2023cis_rule_1_1_4_4 %}nodev{% endif %}
-  loop: '{{ ansible_facts.mounts }}'
-  loop_control:
-    label: '{{ item.device }}'
-  notify: Change_requires_reboot
+  vars:
+    mount_point: /var/tmp
+    required_option: nodev
+  notify: *mount_option_notify
+  ansible.builtin.set_fact:
+    <<: *mount_option_set_fact
+  changed_when: *mount_option_changed_when

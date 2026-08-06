@@ -62,7 +62,11 @@
     - NIST800-53R5_AC-6
   block:
     - name: 4.3.5 | AUDIT | Ensure sudo authentication timeout is configured correctly | Get files with timeout set
-      ansible.builtin.shell: grep -is 'timestamp_timeout' /etc/sudoers /etc/sudoers.d/* | cut -d":" -f1 | uniq | sort
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -is 'timestamp_timeout' /etc/sudoers /etc/sudoers.d/* | cut -d":" -f1 | uniq | sort
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_timeout_files

@@ -12,7 +12,6 @@
     - rule_4.4.1
     - NIST800-53R5_CA-5
   ansible.builtin.command: /usr/bin/authselect create-profile {{ amzn2023cis_authselect['custom_profile_name'] }} -b {{ amzn2023cis_authselect['default_profile_to_copy'] }}
-  changed_when: true
   args:
     creates: /etc/authselect/custom/{{ amzn2023cis_authselect['custom_profile_name'] }}
 
@@ -30,7 +29,11 @@
     - NIST800-53R5_IA-5
   block:
     - name: 4.4.2 | AUDIT | Ensure authselect includes with-faillock | Gather profiles and enabled features
-      ansible.builtin.shell: authselect current | grep with-faillock
+      ansible.builtin.shell: |
+        set -o pipefail
+        authselect current | grep with-faillock
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       failed_when: false
       changed_when: false
       check_mode: false

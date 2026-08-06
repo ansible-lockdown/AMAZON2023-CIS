@@ -9,8 +9,6 @@
     - services
     - rule_2.4
     - NIST800-53R5_CM-7
-  vars:
-    warn_control_id: '2.4'
   block:
     - name: 2.4 | AUDIT | Ensure nonessential services listening on the system are removed or masked | Get list of services  # noqa: command-instead-of-module
       ansible.builtin.command: systemctl list-units --type=service
@@ -37,3 +35,5 @@
     - name: 2.4 | AUDIT | Ensure nonessential services listening on the system are removed or masked | Warn Count
       ansible.builtin.import_tasks:
         file: warning_facts.yml
+      vars:
+        warn_control_id: '2.4'

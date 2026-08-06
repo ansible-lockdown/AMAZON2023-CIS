@@ -98,7 +98,7 @@
       ansible.builtin.replace:
         path: '{{ item.path }}'
         regexp: (?i)(umask\s+\d*)
-        replace: '{{ item.line }} 027'
+        replace: '{{ item.line }}'
       loop:
         - {path: /etc/bashrc, line: 'umask {{ amzn2023cis_umask }}'}
         - {path: /etc/profile, line: 'umask {{ amzn2023cis_umask }}'}
