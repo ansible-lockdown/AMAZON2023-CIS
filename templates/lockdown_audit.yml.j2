@@ -6,7 +6,7 @@
 benchmark_version: 'v1.0.0'
 
 # If run via script this is discovered and set
-host_os_distribution: {{ ansible_facts.distribution | lower }}
+host_os_distribution: {{ ansible_facts['distribution'] | lower }}
 
 #  timeout for each command to run where set - default = 10seconds/10000ms
 timeout_ms: {{ audit_cmd_timeout }}
@@ -26,9 +26,6 @@ amzn2023cis_selinux_disable: {{ amzn2023cis_selinux_disable }}
 amzn2023cis_selinux_enforce: {{ amzn2023cis_selinux_enforce }}
 
 amzn2023cis_legacy_boot: {{ amzn2023cis_legacy_boot }}
-
-#  to enable rules that may have IO impact on a system e.g. full filesystem scans or CPU heavy
-run_heavy_tests: true
 
 # These variables correspond with the CIS rule IDs or paragraph numbers defined in
 # the CIS benchmark documents.
@@ -412,10 +409,10 @@ amzn2023cis_sshd_config_file: {{ amzn2023cis_sshd_config_file }}
 ## Note the following to understand precedence and layout
 
 # Note the following to understand precedence and layout
-amzn2023cis_sshd_allowusers: vagrant
-amzn2023cis_sshd_allowgroups:
-amzn2023cis_sshd_denyusers: nobody
-amzn2023cis_sshd_denygroups:
+amzn2023cis_sshd_allowusers: {{ amzn2023cis_sshd_allowusers }}
+amzn2023cis_sshd_allowgroups: {{ amzn2023cis_sshd_allowgroups }}
+amzn2023cis_sshd_denyusers: {{ amzn2023cis_sshd_denyusers }}
+amzn2023cis_sshd_denygroups: {{ amzn2023cis_sshd_denygroups }}
 
 amzn2023cis_sshd_clientalivecountmax: {{ amzn2023cis_sshd_clientalivecountmax }}
 amzn2023cis_sshd_clientaliveinterval: {{ amzn2023cis_sshd_clientaliveinterval }}
@@ -435,6 +432,8 @@ amzn2023cis_authselect_custom_profile_create: {{ amzn2023cis_authselect_custom_p
 ## PAM
 amzn2023cis_pam_password_minlen: '{{ amzn2023cis_pam_password_minlen }}'
 amzn2023cis_pam_password_minclass: '{{ amzn2023cis_pam_password_minclass }}'
+amzn2023cis_pam_faillock_deny: '{{ amzn2023cis_pam_faillock_deny }}'
+amzn2023cis_pam_faillock_unlock_time: '{{ amzn2023cis_pam_faillock_unlock_time }}'
 
 ## login.defs password settings
 amzn2023cis_pass_max_days: {{ amzn2023cis_pass_max_days }}
