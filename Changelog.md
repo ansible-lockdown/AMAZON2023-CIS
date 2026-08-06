@@ -6,6 +6,7 @@
   - 6.2.1: stdout_line typo, pwconv remediation added, block retagged PATCH (addresses #179) - Thank you @mariot8
   - 5.2.3.6: var prefix and empty exclude filter fixed, privileged command rules now generated (addresses #181) - Thank you @bjammal
   - 5.2.1.3: correct registered var used, audit=1 no longer dropped (addresses #182) - Thank you @bjammal
+  - ipv6 logic fixed #183 thansk to @bjammali
   - 1.3.1: AIDE db build gated on exists/age, async race removed
   - 4.4.1: changed_when no longer overrides creates
   - Section 1.1: mount options accumulate instead of replacing fstab options
