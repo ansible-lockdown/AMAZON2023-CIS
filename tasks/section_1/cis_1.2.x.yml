@@ -10,14 +10,22 @@
     - NIST800-53R5_SI-2
   block:
     - name: 1.2.1 | AUDIT | Ensure GPG keys are configured | list installed pubkey keys  # noqa: command-instead-of-module
-      ansible.builtin.shell: rpm -qa | grep {{ os_gpg_key_pubkey_name }}
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep {{ os_gpg_key_pubkey_name }}
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_os_installed_pub_keys
 
     - name: 1.2.1 | AUDIT | Ensure GPG keys are configured | Query found keys  # noqa: command-instead-of-module
       when: discovered_os_installed_pub_keys.rc == 0
-      ansible.builtin.shell: rpm -q --queryformat "%{PACKAGER} %{VERSION}\\n" {{ os_gpg_key_pubkey_name }} | grep "{{ os_gpg_key_pubkey_content }}"
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -q --queryformat "%{PACKAGER} %{VERSION}\\n" {{ os_gpg_key_pubkey_name }} | grep "{{ os_gpg_key_pubkey_content }}"
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_os_gpg_key_check
@@ -58,15 +66,13 @@
     - audit
     - rule_1.2.3
     - NIST800-53R5_SI-3
-  vars:
-    warn_control_id: 1.2.3
   block:
     - name: 1.2.3 | AUDIT | Ensure package manager repositories are configured | Get repo list
       ansible.builtin.command: dnf repolist
       changed_when: false
-      register: discovered_dnf_configured
       failed_when: false
       check_mode: false
+      register: discovered_dnf_configured
 
     - name: 1.2.3 | AUDIT | Ensure package manager repositories are configured | Display repo list
       ansible.builtin.debug:
@@ -77,6 +83,8 @@
     - name: 1.2.3 | AUDIT | Ensure package manager repositories are configured | Warn Count
       ansible.builtin.import_tasks:
         file: warning_facts.yml
+      vars:
+        warn_control_id: 1.2.3
 
 - name: 1.2.4 | AUDIT | Ensure repo_gpgcheck is globally activated
   when: amzn2023cis_rule_1_2_4

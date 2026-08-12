@@ -13,7 +13,11 @@
     - NIST800-53R5_SC-7
   block:
     - name: 3.4.2.1 | AUDIT | Ensure firewalld default zone is set
-      ansible.builtin.shell: firewall-cmd --get-default-zone | grep {{ amzn2023cis_default_zone }}
+      ansible.builtin.shell: |
+        set -o pipefail
+        firewall-cmd --get-default-zone | grep {{ amzn2023cis_default_zone }}
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: ( discovered_firewalld_zone_set.rc not in [ 0, 1 ] )
       register: discovered_firewalld_zone_set
@@ -33,8 +37,6 @@
     - nftables
     - rule_3.4.2.2
     - NIST800-53R5_CA-9
-  vars:
-    warn_control_id: 3.4.2.2
   block:
     - name: 3.4.2.2 | AUDIT | Ensure a table exists | Check for tables
       ansible.builtin.command: nft list tables
@@ -64,6 +66,8 @@
         - not amzn2023cis_nft_tables_autonewtable
       ansible.builtin.import_tasks:
         file: warning_facts.yml
+      vars:
+        warn_control_id: 3.4.2.2
 
     - name: 3.4.2.2 | PATCH | Ensure a table exists | Create table if needed
       when: amzn2023cis_nft_tables_autonewtable
@@ -84,19 +88,31 @@
     - NIST800-53R5_SC-7
   block:
     - name: 3.4.2.3 | AUDIT | Ensure nftables base chains exist | Get current chains for INPUT
-      ansible.builtin.shell: nft list ruleset | grep 'hook input'
+      ansible.builtin.shell: |
+        set -o pipefail
+        nft list ruleset | grep 'hook input'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_input_chains
 
     - name: 3.4.2.3 | AUDIT | Ensure nftables base chains exist | Get current chains for FORWARD
-      ansible.builtin.shell: nft list ruleset | grep 'hook forward'
+      ansible.builtin.shell: |
+        set -o pipefail
+        nft list ruleset | grep 'hook forward'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_forward_chains
 
     - name: 3.4.2.3 | AUDIT | Ensure nftables base chains exist | Get current chains for OUTPUT
-      ansible.builtin.shell: nft list ruleset | grep 'hook output'
+      ansible.builtin.shell: |
+        set -o pipefail
+        nft list ruleset | grep 'hook output'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_output_chains
@@ -134,19 +150,31 @@
     - NIST800-53R5_CA-9
   block:
     - name: 3.4.2.4 | AUDIT | Ensure host based firewall loopback traffic is configured | Gather iif lo accept existence | nftables
-      ansible.builtin.shell: nft list ruleset | awk '/hook input/,/}/' | grep 'iif "lo" accept'
+      ansible.builtin.shell: |
+        set -o pipefail
+        nft list ruleset | awk '/hook input/,/}/' | grep 'iif "lo" accept'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_iiflo
 
     - name: 3.4.2.4 | AUDIT | Ensure host based firewall loopback traffic is configured | Gather ip saddr existence | nftables
-      ansible.builtin.shell: nft list ruleset | awk '/hook input/,/}/' | grep 'ip saddr'
+      ansible.builtin.shell: |
+        set -o pipefail
+        nft list ruleset | awk '/hook input/,/}/' | grep 'ip saddr'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_ipsaddr
 
     - name: 3.4.2.4 | AUDIT | Ensure host based firewall loopback traffic is configured | Gather ip6 saddr existence | nftables
-      ansible.builtin.shell: nft list ruleset | awk '/hook input/,/}/' | grep 'ip6 saddr'
+      ansible.builtin.shell: |
+        set -o pipefail
+        nft list ruleset | awk '/hook input/,/}/' | grep 'ip6 saddr'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_ip6saddr
@@ -197,7 +225,11 @@
     - NIST800-53R5_CA-9
   block:
     - name: 3.4.2.5 | AUDIT | Ensure firewalld drops unnecessary services and ports | Get list of services and ports
-      ansible.builtin.shell: firewall-cmd --get-active-zones | awk '!/:/ {print $1}' | while read ZN; do firewall-cmd --list-all --zone=$ZN; done
+      ansible.builtin.shell: |
+        set -o pipefail
+        firewall-cmd --get-active-zones | awk '!/:/ {print $1}' | while read ZN; do firewall-cmd --list-all --zone=$ZN; done
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       check_mode: false
@@ -221,13 +253,21 @@
     - NIST800-53R5_CA-9
   block:
     - name: 3.4.2.6 | AUDIT | Ensure nftables established connections are configured | Gather incoming connection rules
-      ansible.builtin.shell: nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'
+      ansible.builtin.shell: |
+        set -o pipefail
+        nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_inconnectionrule
 
     - name: 3.4.2.6| AUDIT | Ensure nftables established connections are configured | Gather outbound connection rules
-      ansible.builtin.shell: nft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'
+      ansible.builtin.shell: |
+        set -o pipefail
+        nft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_outconnectionrule
@@ -274,25 +314,41 @@
     - NIST800-53R5_CA-9
   block:
     - name: 3.4.2.7 | AUDIT | Ensure nftables default deny firewall policy | Check for hook input deny policy
-      ansible.builtin.shell: nft list table inet "{{ amzn2023cis_nft_tables_tablename }}" | grep 'hook input'
+      ansible.builtin.shell: |
+        set -o pipefail
+        nft list table inet "{{ amzn2023cis_nft_tables_tablename }}" | grep 'hook input'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       failed_when: false
       changed_when: false
       register: discovered_inputpolicy
 
     - name: 3.4.2.7 | AUDIT | Ensure nftables default deny firewall policy | Check for hook forward deny policy
-      ansible.builtin.shell: nft list table inet "{{ amzn2023cis_nft_tables_tablename }}" | grep 'hook forward'
+      ansible.builtin.shell: |
+        set -o pipefail
+        nft list table inet "{{ amzn2023cis_nft_tables_tablename }}" | grep 'hook forward'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       failed_when: false
       changed_when: false
       register: discovered_forwardpolicy
 
     - name: 3.4.2.7 | AUDIT | Ensure nftables default deny firewall policy | Check for hook output deny policy
-      ansible.builtin.shell: nft list table inet "{{ amzn2023cis_nft_tables_tablename }}" | grep 'hook output'
+      ansible.builtin.shell: |
+        set -o pipefail
+        nft list table inet "{{ amzn2023cis_nft_tables_tablename }}" | grep 'hook output'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       failed_when: false
       changed_when: false
       register: discovered_outputpolicy
 
     - name: 3.4.2.7 | AUDIT | Ensure nftables default deny firewall policy | Check for SSH allow
-      ansible.builtin.shell: nft list table inet "{{ amzn2023cis_nft_tables_tablename }}" | grep 'ssh'
+      ansible.builtin.shell: |
+        set -o pipefail
+        nft list table inet "{{ amzn2023cis_nft_tables_tablename }}" | grep 'ssh'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       failed_when: false
       changed_when: false
       register: discovered_sshallowcheck

@@ -77,8 +77,6 @@
 
 - name: 5.1.2.2 | PATCH | Ensure journald service is enabled
   when: amzn2023cis_rule_5_1_2_2
-  vars:
-    warn_control_id: 5.1.2.2
   tags:
     - level1-server
     - audit
@@ -110,6 +108,8 @@
       when: "'static' not in discovered_journald_status.stdout"
       ansible.builtin.import_tasks:
         file: warning_facts.yml
+      vars:
+        warn_control_id: 5.1.2.2
 
 - name: 5.1.2.3 | PATCH | Ensure journald is configured to compress large log files
   when: amzn2023cis_rule_5_1_2_3

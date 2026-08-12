@@ -1,4 +1,5 @@
 ---
+
 extends: default
 ignore: |
     tests/
@@ -22,8 +23,6 @@ rules:
   indentation:
     # Requiring 2 space indentation
     spaces: 2
-    # Requiring consistent indentation within a file, either indented or not
-    indent-sequences: consistent
   key-duplicates: enable
   line-length: disable
   new-line-at-end-of-file: enable

@@ -3,7 +3,7 @@
 - name: 2.2.1 | PATCH | Ensure xorg-x11-server-common is not installed
   when:
     - amzn2023cis_rule_2_2_1
-    - "'xorg-x11-server-common' in ansible_facts.packages"
+    - "'xorg-x11-server-common' in ansible_facts['packages']"
   tags:
     - level2-server
     - patch
@@ -184,13 +184,13 @@
     - rule_2.2.12
     - NIST800-53R5_CM-7
   block:
-    - name: 2.2.12 | PATCH | Ensure net-snmp is not installed or smpd service is not enabled | remove package
+    - name: 2.2.12 | PATCH | Ensure net-snmp is not installed or the snmpd service is not enabled | remove package
       when: amzn2023cis_remove_snmp
       ansible.builtin.package:
         name: net-snmp
         state: absent
 
-    - name: 2.2.12 | PATCH | Ensure net-snmp is not installed or smpd service is not enabled | mask service
+    - name: 2.2.12 | PATCH | Ensure net-snmp is not installed or the snmpd service is not enabled | mask service
       ansible.builtin.systemd:
         name: net-snmp
         masked: true
@@ -226,7 +226,7 @@
 - name: 2.2.15 | PATCH | Ensure mail transfer agent is configured for local-only mode
   when:
     - not amzn2023cis_is_mail_server
-    - "'postfix' in ansible_facts.packages"
+    - "'postfix' in ansible_facts['packages']"
     - amzn2023cis_rule_2_2_15
   tags:
     - level1-server
@@ -310,7 +310,7 @@
     - NIST800-53R5_CM-6
     - NIST800-53R5_CM-7
   block:
-    - name: 2.2.18 | PATCH | Ensure rsync-daemon is not installed or the rsync service is masked | remove package
+    - name: 2.2.18 | PATCH | Ensure rsync-daemon is not installed or the rsyncd service is masked | remove package
       when: amzn2023cis_rsync_server == "remove"
       ansible.builtin.package:
         name: rsync-daemon

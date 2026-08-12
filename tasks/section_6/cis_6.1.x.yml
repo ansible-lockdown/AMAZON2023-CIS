@@ -193,7 +193,11 @@
     - NIST800-53R5_MP-2
   block:
     - name: 6.1.11 | AUDIT | Ensure world writable files and directories are secured | Get list of world-writable files
-      ansible.builtin.shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find \( ! -path "*/containerd/*" -a ! -path "*/kubelet/pods/*" -a ! -path "/snap/*" \) -xdev -type f -perm -0002
+      ansible.builtin.shell: |
+        set -o pipefail
+        df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find \( ! -path "*/containerd/*" -a ! -path "*/kubelet/pods/*" -a ! -path "/snap/*" \) -xdev -type f -perm -0002
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       failed_when: false
       changed_when: false
       register: discovered_perms_results
@@ -209,7 +213,11 @@
         - amzn2023cis_no_world_write_adjust
 
     - name: 6.1.11 | PATCH | Ensure sticky bit is set on all world-writable directories
-      ansible.builtin.shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | xargs chmod a+t
+      ansible.builtin.shell: |
+        set -o pipefail
+        df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | xargs chmod a+t
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
 
@@ -233,7 +241,7 @@
       failed_when: false
       check_mode: false
       register: discovered_audit_unowned_grouped
-      loop: '{{ ansible_facts.mounts }}'
+      loop: '{{ ansible_facts["mounts"] }}'
       loop_control:
         label: '{{ item.mount }}'
       when:
@@ -263,7 +271,7 @@
       failed_when: false
       changed_when: false
       register: discovered_audit_ungrouped_files_or_directories
-      loop: '{{ ansible_facts.mounts }}'
+      loop: '{{ ansible_facts["mounts"] }}'
       loop_control:
         label: '{{ item.mount }}'
 
@@ -308,11 +316,15 @@
     discovered_sgid_found: false
   block:
     - name: 6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Find all SUID executables
-      ansible.builtin.shell: df {{ item.mount }} -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -4000
+      ansible.builtin.shell: |
+        set -o pipefail
+        df {{ item.mount }} -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -4000
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       failed_when: false
       changed_when: false
       register: discovered_suid_perms
-      loop: '{{ ansible_facts.mounts }}'
+      loop: '{{ ansible_facts["mounts"] }}'
       loop_control:
         label: '{{ item.mount }}'
 
@@ -331,11 +343,15 @@
         msg: Warning!! SUID set on items in {{ discovered_suid_perms.results | map(attribute='stdout_lines') | flatten }} # noqa jinja[invalid]
 
     - name: 6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Find all SGID executables
-      ansible.builtin.shell: df {{ item.mount }} -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -2000
+      ansible.builtin.shell: |
+        set -o pipefail
+        df {{ item.mount }} -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -2000
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       failed_when: false
       changed_when: false
       register: discovered_sgid_perms
-      loop: '{{ ansible_facts.mounts }}'
+      loop: '{{ ansible_facts["mounts"] }}'
       loop_control:
         label: '{{ item.mount }}'
 
