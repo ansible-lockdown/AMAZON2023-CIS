@@ -10,7 +10,7 @@
   ansible.builtin.import_tasks:
     file: cis_4.2.x.yml
   when:
-    - "'openssh-server' in ansible_facts.packages"
+    - "'openssh-server' in ansible_facts['packages']"
 
 - name: SECTION | 4.3 | Configure privilege escalation
   ansible.builtin.import_tasks:

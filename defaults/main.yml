@@ -70,7 +70,7 @@ ansible_facts_path: /etc/ansible/facts.d
 ## Benchmark name and profile used by auditing control role
 # The audit variable can be found at the base
 benchmark: AMAZON2023-CIS
-benchmark_version: v1.0.0
+benchmark_version: 1.0.0
 
 # This variable states to the role whether to skip
 # the reboot or not. If it is set to 'false', the role
@@ -473,6 +473,10 @@ amzn2023cis_rule_6_2_11: true
 # service otherwise, the role will use the fstab configuration.
 amzn2023cis_tmp_svc: true
 
+# Set to true to dump the discovered mount points, filesystems and options
+# gathered in prelim - useful when troubleshooting section 1.1 mount controls.
+amzn2023cis_debug_mount_data: false
+
 ## Control 1.9 - Ensure system-wide crypto policy is not legacy
 # This variable helps in determining which type of crypto policy
 # the role will set. As per the description of Control 1.9,
@@ -511,6 +515,18 @@ amzn2023cis_ipv6_required: true
 # By setting this variable to 'true', all of the settings related to AIDE
 # will be applied!
 amzn2023cis_config_aide: true
+# This variable sets a maximum allowed age of the AIDE database file until
+# the file is rebuilt. If the file is older than the value below, the role
+# will automatically rebuild the database file.
+# e.g. options:1w = 1 week, 1d = 1day 1h = 1 hour
+amzn2023cis_aide_db_file_age: 1w
+# If AIDE is already setup this variable forces a new database
+# file to be created.
+amzn2023cis_aide_db_recreate: false
+# This variable is used to check if there is already an existing database file
+# created by AIDE on the target system. If it is not present, the role will generate
+# a database file with the same name as the value of this variable.
+amzn2023cis_aide_db_file: /var/lib/aide/aide.db.gz
 
 ## Control 1.3.2 - Ensure filesystem integrity is regularly checked
 # These are the crontab settings for periodical checking of the filesystem's
@@ -813,7 +829,7 @@ amzn2023cis_sshd_logingracetime: 60
 # access for users whose user name matches one of the patterns. This is done
 # by setting the value of `AllowUsers` option in `/etc/ssh/sshd_config` file.
 # If an USER@HOST format will be used, the specified user will be allowed only on that particular host.
-amzn2023cis_sshd_allowusers: "{% if ansible_facts.user_id != 'root' %}{{ ansible_facts.user_id }}{% elif ansible_env.SUDO_USER is defined %}{{ ansible_env.SUDO_USER }}{% endif %}"
+amzn2023cis_sshd_allowusers: "{% if ansible_facts['user_id'] != 'root' %}{{ ansible_facts['user_id'] }}{% elif ansible_env.SUDO_USER is defined %}{{ ansible_env.SUDO_USER }}{% endif %}"
 ## Control 4.2.4 - Ensure sshd access is configured
 # (String) This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to allow SSH access
 # for users whose primary group or supplementary group list matches one of the patterns. This is done
@@ -1096,6 +1112,13 @@ amzn2023cis_journald_maxfilesec: 1month
 # This variable should be set to a sufficient value. The CIS baseline recommends at least `8192`.
 amzn2023cis_auditd_back_log_limit: '8192'
 
+## Control 5.2.3.6 - Ensure use of privileged commands is collected
+# Exclude listed mountpoints from the find command used to locate privileged binaries.
+# Allows an operator to exclude mounted devices from being considered as within scope
+# to find privileged binaries; mainly in the case of external/temporary mounted USB drives.
+#   amzn2023cis_priv_command_excluded_mounts: ["/mnt/backup_disk", "/mnt/usb_external_storage"]
+amzn2023cis_priv_command_excluded_mounts: []
+
 ## Control 5.2.2.1 - Ensure audit log storage size is configured
 # This variable specifies the maximum size in MB that an audit log file can reach,
 # before it is archived or deleted to make space for the new audit data.
@@ -1201,6 +1224,12 @@ amzn2023cis_rpm_audit_file: /var/tmp/rpm_file_check
 # removal of world-writable permissions from all files.
 # Possible values are 'true' and 'false'.
 amzn2023cis_no_world_write_adjust: true
+
+## Control 6.2.1 - Ensure accounts in /etc/passwd use shadowed passwords
+# When true, run pwconv to migrate any in-passwd password hashes into /etc/shadow.
+# Set to false to only report the affected accounts as a warning and leave the
+# migration to be carried out manually.
+amzn2023cis_passwd_pwconv: true
 
 ## Control 6.2.10 - Ensure local interactive user home directories are configured
 # The minimum and maximum UIDs to be used when enforcing

@@ -16,7 +16,10 @@
     - name: 1.9 | PATCH | Ensure system-wide crypto policy is not legacy
       when: prelim_system_wide_crypto_policy.stdout != amzn2023cis_full_crypto_policy
       ansible.builtin.shell: |
+        set -o pipefail
         update-crypto-policies --set "{{ amzn2023cis_full_crypto_policy }}"
         update-crypto-policies
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: true
       notify: Change_requires_reboot

@@ -16,7 +16,11 @@
     - NIST800-53R5_AU-3
   block:
     - name: 5.2.4.1 | AUDIT | Ensure audit log files are mode 0640 or less permissive | discover file
-      ansible.builtin.shell: grep ^log_file /etc/audit/auditd.conf | awk '{ print $NF }'
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep ^log_file /etc/audit/auditd.conf | awk '{ print $NF }'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       register: discovered_auditd_logfile
 

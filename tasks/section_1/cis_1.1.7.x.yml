@@ -1,9 +1,7 @@
 ---
 
 - name: 1.1.7.1 | AUDIT | Ensure separate partition exists for /home
-  when:
-    - required_mount not in mount_names
-    - amzn2023cis_rule_1_1_7_1
+  when: amzn2023cis_rule_1_1_7_1
   tags:
     - level2-server
     - audit
@@ -11,7 +9,6 @@
     - rule_1.1.7.1
     - NIST800-53R5_CM-6
   vars:
-    warn_control_id: 1.1.7.1
     required_mount: /home
   block:
     - name: 1.1.7.1 | AUDIT | Ensure separate partition exists for /home | Absent
@@ -21,28 +18,46 @@
     - name: 1.1.7.1 | AUDIT | Ensure separate partition exists for /home | Present
       ansible.builtin.import_tasks:
         file: warning_facts.yml
+      vars:
+        warn_control_id: 1.1.7.1
 
-- name: |
-    "1.1.7.2 | PATCH | Ensure nodev option set on /home partition
-     1.1.7.3 | PATCH | Ensure nosuid option set on /home partition"
+- name: 1.1.7.2 | PATCH | Ensure nodev option set on /home partition
   when:
-    - item.mount == "/home"
-    - amzn2023cis_rule_1_1_7_2 or amzn2023cis_rule_1_1_7_3
+    - prelim_mount_point_fs_and_options[mount_point] is defined
+    - amzn2023cis_rule_1_1_7_2
   tags:
     - level1-server
     - patch
     - mounts
     - rule_1.1.7.2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_MP-2
+  vars:
+    mount_point: /home
+    required_option: nodev
+  notify: &mount_option_notify
+    - Remount {{ mount_point }}
+  ansible.builtin.set_fact: &mount_option_set_fact
+    prelim_mount_point_fs_and_options: |
+      {{ prelim_mount_point_fs_and_options | combine({mount_point: {'options': (prelim_mount_point_fs_and_options[mount_point]['options'] + [required_option])}}, recursive=True) }}
+  changed_when: &mount_option_changed_when
+    - required_option not in prelim_mount_point_fs_and_options[mount_point]['original_options']
+
+- name: 1.1.7.3 | PATCH | Ensure nosuid option set on /home partition
+  when:
+    - prelim_mount_point_fs_and_options[mount_point] is defined
+    - amzn2023cis_rule_1_1_7_3
+  tags:
+    - level1-server
+    - patch
+    - mounts
     - rule_1.1.7.3
     - NIST800-53R5_AC-3
     - NIST800-53R5_MP-2
-  ansible.posix.mount:
-    name: /home
-    src: '{{ item.device }}'
-    fstype: '{{ item.fstype }}'
-    state: present
-    opts: defaults,{% if amzn2023cis_rule_1_1_7_2 %}nodev,{% endif %}{% if amzn2023cis_rule_1_1_7_3 %}nosuid,{% endif %}
-  loop: '{{ ansible_facts.mounts }}'
-  loop_control:
-    label: '{{ item.device }}'
-  notify: Change_requires_reboot
+  vars:
+    mount_point: /home
+    required_option: nosuid
+  notify: *mount_option_notify
+  ansible.builtin.set_fact:
+    <<: *mount_option_set_fact
+  changed_when: *mount_option_changed_when

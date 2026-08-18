@@ -62,3 +62,5 @@ benchparse/
 
 # ansible-lint
 .ansible/
+prompt.md
+test_inv

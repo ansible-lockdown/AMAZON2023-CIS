@@ -1,6 +1,6 @@
 ---
 
-- name: 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords
+- name: 6.2.1 | PATCH | Ensure accounts in /etc/passwd use shadowed passwords
   when: amzn2023cis_rule_6_2_1
   tags:
     - level1-server
@@ -19,10 +19,19 @@
       ansible.builtin.debug:
         msg: |
           - "Warning!! Below are the accounts that do not have shadowed passwords set"
-          - "{{ discovered_shadow_passwds.stdout_line }}"
+          - "{{ discovered_shadow_passwds.stdout_lines }}"
+
+    - name: 6.2.1 | PATCH | Ensure accounts in /etc/passwd use shadowed passwords | Migrate to shadow
+      when:
+        - discovered_shadow_passwds.stdout | length > 0
+        - amzn2023cis_passwd_pwconv
+      ansible.builtin.command: pwconv
+      changed_when: true
 
     - name: 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | warning fact
-      when: discovered_shadow_passwds.stdout | length >= 1
+      when:
+        - discovered_shadow_passwds.stdout | length >= 1
+        - not amzn2023cis_passwd_pwconv
       ansible.builtin.import_tasks:
         file: warning_facts.yml
       vars:
@@ -56,11 +65,13 @@
     - NIST800-53R5_CM-6
     - NIST800-53R5_CM-7
     - NIST800-53R5_IA-5
-  vars:
-    warn_control_id: 6.2.3
   block:
     - name: 6.2.3 | AUDIT | Ensure all groups in /etc/passwd exist in /etc/group | Check /etc/passwd entries
-      ansible.builtin.shell: pwck -r | grep 'no group' | awk '{ gsub("[:\47]",""); print $2}'
+      ansible.builtin.shell: |
+        set -o pipefail
+        pwck -r | grep 'no group' | awk '{ gsub("[:\47]",""); print $2}'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       check_mode: false
@@ -75,6 +86,8 @@
       when: discovered_passwd_gid_check.stdout | length >= 1
       ansible.builtin.import_tasks:
         file: warning_facts.yml
+      vars:
+        warn_control_id: 6.2.3
 
 - name: 6.2.4 | AUDIT | Ensure no duplicate UIDs exist
   when:
@@ -90,11 +103,13 @@
     - NIST800-53R5_CM-6
     - NIST800-53R5_CM-7
     - NIST800-53R5_IA-5
-  vars:
-    warn_control_id: 6.2.4
   block:
     - name: 6.2.4 | AUDIT | Ensure no duplicate UIDs exist | Check for duplicate UIDs
-      ansible.builtin.shell: "pwck -r | awk -F: '{if ($3 in uid) print $1 ; else uid[$3]}' /etc/passwd"
+      ansible.builtin.shell: |
+        set -o pipefail
+        pwck -r | awk -F: '{if ($3 in uid) print $1 ; else uid[$3]}' /etc/passwd
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_user_uid_check
@@ -108,6 +123,8 @@
       when: discovered_user_uid_check.stdout | length >= 1
       ansible.builtin.import_tasks:
         file: warning_facts.yml
+      vars:
+        warn_control_id: 6.2.4
 
 - name: 6.2.5 | AUDIT | Ensure no duplicate GIDs exist
   when: amzn2023cis_rule_6_2_5
@@ -122,11 +139,13 @@
     - NIST800-53R5_CM-6
     - NIST800-53R5_CM-7
     - NIST800-53R5_IA-5
-  vars:
-    warn_control_id: 6.2.5
   block:
     - name: 6.2.5 | AUDIT | Ensure no duplicate GIDs exist | Check for duplicate GIDs
-      ansible.builtin.shell: "pwck -r | awk -F: '{if ($3 in users) print $1 ; else users[$3]}' /etc/group"
+      ansible.builtin.shell: |
+        set -o pipefail
+        pwck -r | awk -F: '{if ($3 in users) print $1 ; else users[$3]}' /etc/group
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_dup_gid_check
@@ -140,6 +159,8 @@
       when: discovered_dup_gid_check.stdout_lines | length >= 1
       ansible.builtin.import_tasks:
         file: warning_facts.yml
+      vars:
+        warn_control_id: 6.2.5
 
 - name: 6.2.6 | AUDIT | Ensure no duplicate user names exist
   when: amzn2023cis_rule_6_2_6
@@ -154,11 +175,13 @@
     - NIST800-53R5_CM-6
     - NIST800-53R5_CM-7
     - NIST800-53R5_IA-5
-  vars:
-    warn_control_id: 6.2.6
   block:
     - name: 6.2.6 | AUDIT | Ensure no duplicate user names exist | Check for duplicate User Names
-      ansible.builtin.shell: "pwck -r | awk -F: '{if ($1 in users) print $1 ; else users[$1]}' /etc/passwd"
+      ansible.builtin.shell: |
+        set -o pipefail
+        pwck -r | awk -F: '{if ($1 in users) print $1 ; else users[$1]}' /etc/passwd
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_dup_username_check
@@ -172,6 +195,8 @@
       when: discovered_dup_username_check.stdout | length >= 1
       ansible.builtin.import_tasks:
         file: warning_facts.yml
+      vars:
+        warn_control_id: 6.2.6
 
 - name: 6.2.7 | AUDIT | Ensure no duplicate group names exist
   when: amzn2023cis_rule_6_2_7
@@ -186,11 +211,13 @@
     - NIST800-53R5_CM-6
     - NIST800-53R5_CM-7
     - NIST800-53R5_IA-5
-  vars:
-    warn_control_id: 6.2.7
   block:
     - name: 6.2.7 | AUDIT | Ensure no duplicate group names exist | Check for duplicate group names
-      ansible.builtin.shell: 'getent passwd | cut -d: -f1 | sort -n | uniq -d'
+      ansible.builtin.shell: |
+        set -o pipefail
+        getent passwd | cut -d: -f1 | sort -n | uniq -d
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: false
       check_mode: false
@@ -205,6 +232,8 @@
       when: discovered_dup_group_check.stdout is not defined
       ansible.builtin.import_tasks:
         file: warning_facts.yml
+      vars:
+        warn_control_id: 6.2.7
 
 - name: 6.2.8 | PATCH | Ensure root PATH Integrity
   when: amzn2023cis_rule_6_2_8
@@ -220,12 +249,20 @@
     - NIST800-53R5_IA-5
   block:
     - name: 6.2.8 | AUDIT | Ensure root PATH Integrity | Get root paths
-      ansible.builtin.shell: sudo -Hiu root env | grep '^PATH' | cut -d= -f2
+      ansible.builtin.shell: |
+        set -o pipefail
+        sudo -Hiu root env | grep '^PATH' | cut -d= -f2
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       register: discovered_root_paths
 
     - name: 6.2.8 | AUDIT | Ensure root PATH Integrity | Get root paths
-      ansible.builtin.shell: sudo -Hiu root env | grep '^PATH' | cut -d= -f2 | tr ":" "\n"
+      ansible.builtin.shell: |
+        set -o pipefail
+        sudo -Hiu root env | grep '^PATH' | cut -d= -f2 | tr ":" "\n"
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       register: discovered_root_paths_split
 
@@ -234,13 +271,21 @@
         root_paths: '{{ discovered_root_paths.stdout }}'
 
     - name: 6.2.8 | AUDIT | Ensure root PATH Integrity | Check for empty dirs
-      ansible.builtin.shell: echo {{ root_paths }} | grep -q "::" && echo "roots path contains a empty directory (::)"
+      ansible.builtin.shell: |
+        set -o pipefail
+        echo {{ root_paths }} | grep -q "::" && echo "roots path contains a empty directory (::)"
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: discovered_empty_root_paths.rc not in [ 0, 1 ]
       register: discovered_empty_root_paths
 
     - name: 6.2.8 | AUDIT | Ensure root PATH Integrity | Check for trailing ':'
-      ansible.builtin.shell: '{{ root_paths }} | cut -d= -f2 | grep -q ":$" && echo "roots path contains a trailing (:)"'
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ root_paths }} | cut -d= -f2 | grep -q ":$" && echo "roots path contains a trailing (:)"
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
       failed_when: discovered_root_path_trailing_colon.rc not in [ 0, 1 ]
       register: discovered_root_path_trailing_colon

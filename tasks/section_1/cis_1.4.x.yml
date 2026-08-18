@@ -9,6 +9,7 @@
     - rule_1.4.1
   block:
     - name: 1.4.1 | PATCH | Ensure permissions on bootloader config are configured | bios boot
+      when: amzn2023cis_legacy_boot
       ansible.builtin.file:
         path: /boot/grub2/{{ item.path }}
         owner: root
@@ -18,10 +19,9 @@
         modification_time: preserve
         access_time: preserve
       loop:
-        - {path: grub.cfg, mode: '0700'}
-        - {path: grubenv, mode: '0600'}
-        - {path: user.cfg, mode: '0600'}
-      when: amzn2023cis_legacy_boot
+        - {path: grub.cfg, mode: 'u-x,go-rwx'}
+        - {path: grubenv, mode: 'u-x,go-rwx'}
+        - {path: user.cfg, mode: 'u-x,go-rwx'}
 
     - name: 1.4.1 | PATCH | Ensure permissions on bootloader config are configured | efi boot
       ansible.builtin.lineinfile:

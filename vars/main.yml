@@ -9,6 +9,12 @@ change_requires_reboot: false
 system_is_container: false
 
 min_ansible_version: 2.16.1
+update_audit_template: false
+# Ability to change the default shell
+# Note this can change how some of the ansible.builtin.shell tasks work and may require adjustments to args.executable for those tasks
+# Used mainly for overriding to use a more POSIX compliant shell such as dash or ash when running in a container environment
+amzn2023cis_shell_executable: /bin/bash
+
 amzn2023cis_allowed_crypto_policies:
   - DEFAULT
   - FUTURE
@@ -26,6 +32,12 @@ gpg_key_package: system-release
 
 os_gpg_key_pubkey_name: gpg-pubkey-d832c631-6515c85e  # pragma: allowlist secret
 os_gpg_key_pubkey_content: Amazon Linux <amazon-linux@amazon.com> d832c631
+
+aide_packages:
+  - aide
+
+# Aide initiate command for new DB creation
+aide_initiate_command: /usr/sbin/aide --init
 
 company_title: 'MindPoint Group - A Tyto Athene Company'
 file_managed_by_ansible: |-

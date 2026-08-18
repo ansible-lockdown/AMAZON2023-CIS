@@ -5,42 +5,127 @@
   ansible.builtin.command: sysctl --system
   changed_when: true
 
-- name: Sysctl flush ipv4 route table
-  when:
-    - amzn2023cis_flush_ipv4_route
-    - not system_is_container
-  ansible.posix.sysctl:
-    name: net.ipv4.route.flush
-    value: '1'
-    sysctl_set: true
-  ignore_errors: true  # noqa ignore-errors
+- name: Remount tmp filesystem
+  ansible.builtin.include_tasks:
+    file: remount_tmp.yml
+  listen: Remount /tmp
 
-- name: Sysctl flush ipv6 route table
-  when:
-    - amzn2023cis_flush_ipv6_route
-    - not system_is_container
-  ansible.posix.sysctl:
-    name: net.ipv6.route.flush
-    value: '1'
-    sysctl_set: true
-
-- name: Systemd restart tmp.mount
-  ansible.builtin.systemd:
-    name: tmp.mount
-    daemon_reload: true
-    enabled: true
-    masked: false
-    state: reloaded
-
-- name: Remount tmp
+# Mount option handlers are paired: the first writes the accumulated option set
+# from prelim_mount_point_fs_and_options back to fstab, the second applies it.
+# Remounting alone would only re-read an unchanged fstab entry.
+- name: Adding options for /dev/shm
+  vars:
+    mount_point: /dev/shm
   ansible.posix.mount:
-    path: /tmp
-    state: remounted
+    path: '{{ mount_point }}'
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: Remount /dev/shm
 
-- name: Restart firewalld
-  ansible.builtin.systemd:
-    name: firewalld
-    state: restarted
+- name: Remounting /dev/shm
+  vars:
+    mount_point: /dev/shm
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    state: remounted
+  listen: Remount /dev/shm
+
+- name: Adding options for /home
+  vars:
+    mount_point: /home
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: Remount /home
+
+- name: Remounting /home
+  vars:
+    mount_point: /home
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    state: remounted
+  listen: Remount /home
+
+- name: Adding options for /var
+  vars:
+    mount_point: /var
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: Remount /var
+
+- name: Remounting /var
+  vars:
+    mount_point: /var
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    state: remounted
+  listen: Remount /var
+
+- name: Adding options for /var/tmp
+  vars:
+    mount_point: /var/tmp
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: Remount /var/tmp
+
+- name: Remounting /var/tmp
+  vars:
+    mount_point: /var/tmp
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    state: remounted
+  listen: Remount /var/tmp
+
+- name: Adding options for /var/log
+  vars:
+    mount_point: /var/log
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: Remount /var/log
+
+- name: Remounting /var/log
+  vars:
+    mount_point: /var/log
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    state: remounted
+  listen: Remount /var/log
+
+- name: Adding options for /var/log/audit
+  vars:
+    mount_point: /var/log/audit
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: Remount /var/log/audit
+
+- name: Remounting /var/log/audit
+  vars:
+    mount_point: /var/log/audit
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    state: remounted
+  listen: Remount /var/log/audit
 
 - name: Validate sshd configuration
   ansible.builtin.command: sshd -t
@@ -61,7 +146,6 @@
 - name: Grub2cfg
   ansible.builtin.command: grub2-mkconfig -o /boot/grub2/grub.cfg
   changed_when: true
-  ignore_errors: true
 
 - name: Restart rsyslog
   ansible.builtin.systemd:
@@ -71,11 +155,6 @@
 - name: Restart journald
   ansible.builtin.systemd:
     name: systemd-journald
-    state: restarted
-
-- name: Restart systemd_journal_upload
-  ansible.builtin.systemd:
-    name: systemd-journal-upload
     state: restarted
 
 - name: Systemd daemon reload
@@ -92,8 +171,8 @@
   when: discovered_auditd_immutable_check.rc == 1
   ansible.builtin.command: augenrules --load
   changed_when: true
-  register: discovered_augenrule_load
   failed_when: discovered_augenrule_load.rc not in [ 0, 1 ]
+  register: discovered_augenrule_load
   listen: Restart auditd
 
 - name: Restart auditd service  # noqa: command-instead-of-module
