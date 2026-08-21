@@ -31,6 +31,7 @@
   - 1.4.1: grub file modes octal -> symbolic, when moved above loop
   - post.yml: tags added to Update sysctl
   - Removed orphans: check_prereqs.yml, aide.cron.j2, crypt_audit_procs.conf.j2, 4 unused handlers
+  - README updates and updated contributing and contributors
 
 ## 2026_MAY_QA2
 
