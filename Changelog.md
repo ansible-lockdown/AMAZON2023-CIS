@@ -2,6 +2,8 @@
 
 ## 1.3.1 based on v1.0.0
 
+- 5.2.1.2/5.2.1.3: GRUB line templating fixed for ansible-core before 2.19
+- 5.1.3: lastlog, wtmp and btmp allowed group write per benchmark, no change after reboot
 - 4.6.5: login.defs UMASK anchored, weak umask statements tightened without touching comments, profile.d fallback
 - 4.2.x: sshd restarted after every config change
 - 6.1.10: rpm -Va gated on the control toggle and tagged
@@ -13,7 +15,10 @@
 - 1.3.3: AIDE audit tool options match benchmark, gated on config_aide
 - 1.5.4: gated on coredump.conf existing
 - 5.2.1.2/5.2.1.3: GRUB_CMDLINE_LINUX_DEFAULT created when absent, commented lines ignored
-- /tmp remount: busy mount sets reboot required via rescue
+- 5.2.1.2/5.2.1.3: kernel args applied with grubby to BLS entries, reboot flagged
+- boot type detected before the pre-remediation audit, legacy_boot reaches the audit bridge
+- /tmp: management method auto-detected (amzn2023cis_tmp_svc: auto), remount_tmp aligned with RHEL9/SUSE16
+- /tmp: busy remount warning now fires (failed_when false hid .failed)
 - 1.2.4: named and tagged PATCH
 - 4.4.1: gated on amzn2023cis_authselect_custom_profile_create
 - defaults split into defaults/main/main.yml and defaults/main/audit.yml, vars/audit.yml removed

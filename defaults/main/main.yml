@@ -398,12 +398,12 @@ amzn2023cis_rule_6_2_11: true
 ##
 
 ## Control 1.1.2 - Configure /tmp
-# This variable is used in order to determine which method
-# shall be used by the role in order to ensure that the
-# "nodev,noexec,nosuid" options are set for "/tmp".
-# If it is set to 'true', the role will use the tmp.mount
-# service otherwise, the role will use the fstab configuration.
-amzn2023cis_tmp_svc: true
+# How /tmp mount options are managed:
+#  - auto:  discover it - a tmp.mount unit if /tmp is mounted by one, otherwise /etc/fstab
+#  - true:  always use the tmp.mount systemd unit (creates it if needed)
+#  - false: always use /etc/fstab
+# These /tmp settings will include nosuid,nodev,noexec to conform to CIS standards.
+amzn2023cis_tmp_svc: auto
 
 # Set to true to dump the discovered mount points, filesystems and options
 # gathered in prelim - useful when troubleshooting section 1.1 mount controls.

@@ -36,6 +36,23 @@
     - NIST800-53R5_AU-3
     - NIST800-53R5_AU-12
   block:
+    - name: 5.2.1.2 | AUDIT | Ensure auditing for processes that start prior to auditd is enabled | Count kernels without audit=1
+      ansible.builtin.shell: |
+        set -o pipefail
+        grubby --info=ALL | grep '^args=' | grep -cvE '[[:space:]"]audit=1([[:space:]"]|$)'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
+      changed_when: false
+      failed_when: discovered_grubby_audit_missing.rc not in [ 0, 1 ]
+      check_mode: false
+      register: discovered_grubby_audit_missing
+
+    - name: 5.2.1.2 | PATCH | Ensure auditing for processes that start prior to auditd is enabled | Grubby update
+      when: discovered_grubby_audit_missing.stdout | int > 0
+      ansible.builtin.command: grubby --update-kernel=ALL --args="audit=1"
+      notify: Change_requires_reboot
+      changed_when: true
+
     - name: 5.2.1.2 | AUDIT | Ensure auditing for processes that start prior to auditd is enabled | Get GRUB_CMDLINE_LINUX
       ansible.builtin.shell: |
         set -o pipefail
@@ -60,7 +77,7 @@
       ansible.builtin.lineinfile:
         path: /etc/default/grub
         regexp: ^GRUB_CMDLINE_LINUX_DEFAULT=
-        line: '{{ discovered_grub_cmdline_linux.stdout | default("GRUB_CMDLINE_LINUX_DEFAULT=\"", true) }} audit=1"'
+        line: "{{ discovered_grub_cmdline_linux.stdout | default('GRUB_CMDLINE_LINUX_DEFAULT=\"', true) }} audit=1\""
       notify: Grub2cfg
 
 - name: 5.2.1.3 | PATCH | Ensure audit_backlog_limit is sufficient
@@ -75,6 +92,22 @@
     - NIST800-53R5_AU-3
     - NIST800-53R5_AU-12
   block:
+    - name: 5.2.1.3 | AUDIT | Ensure audit_backlog_limit is sufficient | Count kernels with missing or low audit_backlog_limit
+      ansible.builtin.shell: |
+        set -o pipefail
+        grubby --info=ALL | grep '^args=' | awk -v lim={{ amzn2023cis_auditd_back_log_limit }} '{ if (match($0, /audit_backlog_limit=[0-9]+/)) { if (substr($0, RSTART + 20, RLENGTH - 20) + 0 < lim) c++ } else c++ } END { print c + 0 }'
+      args:
+        executable: "{{ amzn2023cis_shell_executable }}"
+      changed_when: false
+      check_mode: false
+      register: discovered_grubby_backlog_low
+
+    - name: 5.2.1.3 | PATCH | Ensure audit_backlog_limit is sufficient | Grubby update
+      when: discovered_grubby_backlog_low.stdout | int > 0
+      ansible.builtin.command: grubby --update-kernel=ALL --args="audit_backlog_limit={{ amzn2023cis_auditd_back_log_limit }}"
+      notify: Change_requires_reboot
+      changed_when: true
+
     - name: 5.2.1.3 | AUDIT | Ensure audit_backlog_limit is sufficient | Get GRUB_CMDLINE_LINUX
       ansible.builtin.shell: |
         set -o pipefail
@@ -99,7 +132,7 @@
       ansible.builtin.lineinfile:
         path: /etc/default/grub
         regexp: ^GRUB_CMDLINE_LINUX_DEFAULT=
-        line: '{{ discovered_grub_cmdline_linux_auditd_backlog.stdout | default("GRUB_CMDLINE_LINUX_DEFAULT=\"", true) }} audit_backlog_limit={{ amzn2023cis_auditd_back_log_limit }}"'
+        line: "{{ discovered_grub_cmdline_linux_auditd_backlog.stdout | default('GRUB_CMDLINE_LINUX_DEFAULT=\"', true) }} audit_backlog_limit={{ amzn2023cis_auditd_back_log_limit }}\""
       notify: Grub2cfg
 
 - name: 5.2.1.4 | PATCH | Ensure auditd service is enabled

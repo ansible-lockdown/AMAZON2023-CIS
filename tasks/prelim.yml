@@ -3,6 +3,25 @@
 # Preliminary tasks that should always be run
 # List users in order to look files inside each home directory
 
+- name: PRELIM | AUDIT | Set facts based on boot type
+  tags: always
+  block:
+    - name: PRELIM | AUDIT | Check whether machine is UEFI-based
+      ansible.builtin.stat:
+        path: /sys/firmware/efi
+      register: prelim_efi_boot
+
+    - name: PRELIM | AUDIT | Set legacy boot and grub path | Bios
+      when: not prelim_efi_boot.stat.exists
+      ansible.builtin.set_fact:
+        amzn2023cis_legacy_boot: true
+        grub2_path: /etc/grub2.cfg
+
+    - name: PRELIM | AUDIT | Set grub fact | UEFI
+      when: prelim_efi_boot.stat.exists
+      ansible.builtin.set_fact:
+        grub2_path: /etc/grub2-efi.cfg
+
 - name: Include pre-remediation audit tasks
   when:
     - run_audit or audit_only
@@ -138,6 +157,23 @@
       ansible.builtin.debug:
         msg: '{{ prelim_mount_point_fs_and_options }}'
 
+- name: PRELIM | AUDIT | Section 1.1.2.1 | Discover how /tmp is mounted
+  when: amzn2023cis_tmp_svc == 'auto'
+  tags: always
+  ansible.builtin.systemd_service:
+    name: tmp.mount
+  check_mode: false
+  register: prelim_tmp_mount_source
+
+- name: PRELIM | AUDIT | Section 1.1.2.1 | Set /tmp management method
+  tags: always
+  ansible.builtin.set_fact:
+    prelim_tmp_svc: >-
+      {{ (prelim_tmp_mount_source.status.ActiveState == 'active' and
+          prelim_tmp_mount_source.status.SourcePath | default('') != '/etc/fstab')
+         if amzn2023cis_tmp_svc == 'auto'
+         else amzn2023cis_tmp_svc | bool }}
+
 - name: PRELIM | Ensure python3-libselinux is installed
   when: '"python3-libselinux" not in ansible_facts["packages"]'
   ansible.builtin.package:
@@ -154,26 +190,6 @@
     name: acl
     state: present
   become: true
-
-- name: PRELIM | Set facts based on boot type
-  when: amzn2023cis_rule_1_4_1
-  tags: always
-  block:
-    - name: PRELIM | Check whether machine is UEFI-based
-      ansible.builtin.stat:
-        path: /sys/firmware/efi
-      register: prelim_efi_boot
-
-    - name: PRELIM | Set legacy boot and grub path | Bios
-      ansible.builtin.set_fact:
-        amzn2023cis_legacy_boot: true
-        grub2_path: /etc/grub2.cfg
-      when: not prelim_efi_boot.stat.exists
-
-    - name: PRELIM | Set grub fact | UEFI
-      ansible.builtin.set_fact:
-        grub2_path: /etc/grub2-efi.cfg
-      when: prelim_efi_boot.stat.exists
 
 - name: PRELIM | Update to latest gpg keys
   when: amzn2023cis_rule_1_2_4
