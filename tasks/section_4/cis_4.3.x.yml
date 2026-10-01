@@ -68,6 +68,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_timeout_files
 

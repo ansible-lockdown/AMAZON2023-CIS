@@ -2,11 +2,38 @@
 
 ## 1.3.1 based on v1.0.0
 
+- 4.6.5: login.defs UMASK anchored, weak umask statements tightened without touching comments, profile.d fallback
+- 4.2.x: sshd restarted after every config change
+- 6.1.10: rpm -Va gated on the control toggle and tagged
+- 5.2.4.1-4: audit log file discovered in prelim, mode/owner/group applied to every log file
+- 5.2.4.1: compliant log file modes no longer loosened
+- 4.6.1.5: warning lists the correct accounts
+- 6.2.7: checks group names, warning now fires
+- 2.2.12: snmpd masked instead of net-snmp
+- 1.3.3: AIDE audit tool options match benchmark, gated on config_aide
+- 1.5.4: gated on coredump.conf existing
+- 5.2.1.2/5.2.1.3: GRUB_CMDLINE_LINUX_DEFAULT created when absent, commented lines ignored
+- /tmp remount: busy mount sets reboot required via rescue
+- 1.2.4: named and tagged PATCH
+- 4.4.1: gated on amzn2023cis_authselect_custom_profile_create
+- defaults split into defaults/main/main.yml and defaults/main/audit.yml, vars/audit.yml removed
+- prelim include_vars for audit vars removed
+- container discovery uses guarded ansible_facts['virtualization_type']
+- ansible_local and ansible_env replaced with ansible_facts bracket notation
+- /tmp systemd path: tmp.mount enabled and unmasked
+- 4.2.14: sed command replaced with replace module
+- 1.1.1.3: tagged level1-server
+- check_mode false added to 44 read-only discovery tasks
+- sub-task titles aligned to benchmark: 3.4.2.2, 5.2.4.8, 6.1.11
+- 1.3.1: register placed after failed_when
+- company name updated to Quantum Sky
+- README: tracking tags unified, known issues rule IDs, defaults paths
 - Aug26_align branch
   - 6.2.1: stdout_line typo, pwconv remediation added, block retagged PATCH (addresses #179) - Thank you @mariot8
   - 5.2.3.6: var prefix and empty exclude filter fixed, privileged command rules now generated (addresses #181) - Thank you @bjammal
+  - 5.2.3.6: pipefail line join fixed, discovery failures no longer masked (addresses #189) - Thank you @Nevon
   - 5.2.1.3: correct registered var used, audit=1 no longer dropped (addresses #182) - Thank you @bjammal
-  - ipv6 logic fixed #183 thansk to @bjammali
+  - ipv6 logic fixed #183 thansk to @bjammal
   - 1.3.1: AIDE db build gated on exists/age, async race removed
   - 4.4.1: changed_when no longer overrides creates
   - Section 1.1: mount options accumulate instead of replacing fstab options

@@ -14,37 +14,46 @@
         opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
 
     - name: Remounting /tmp
-      ansible.posix.mount:
-        path: '{{ mount_point }}'
-        state: remounted
-      failed_when: false
-      register: discovered_remount_tmp
+      block:
+        - name: Remounting /tmp | remount
+          ansible.posix.mount:
+            path: '{{ mount_point }}'
+            state: remounted
+      rescue:
+        - name: /tmp mount busy, set reboot required fact
+          ansible.builtin.set_fact:
+            change_requires_reboot: true
+
+        - name: /tmp mount busy, reboot required to apply changes | Warning
+          ansible.builtin.debug:
+            msg: 'Warning: /tmp mount busy, reboot required to apply changes'
+
+        - name: /tmp mount busy, reboot required to apply changes
+          ansible.builtin.import_tasks:
+            file: warning_facts.yml
+          vars:
+            warn_control_id: /tmp mount busy, reboot required
 
 - name: Reloading /tmp systemd service
   when: amzn2023cis_tmp_svc
-  vars:
-    mount_point: /tmp
-  ansible.builtin.systemd:
-    name: tmp.mount
-    state: reloaded
-    daemon_reload: true
-  failed_when: false
-  register: discovered_remount_tmp_systemd
-  listen: Remount /tmp
-
-- name: /tmp mount busy, set reboot required fact
-  when: (discovered_remount_tmp is defined and discovered_remount_tmp.failed | default(false)) or
-        (discovered_remount_tmp_systemd is defined and discovered_remount_tmp_systemd.failed | default(false))
   block:
-    - name: Set reboot required fact
+    - name: Reloading /tmp systemd service | reload
+      ansible.builtin.systemd:
+        name: tmp.mount
+        state: reloaded
+        enabled: true
+        masked: false
+        daemon_reload: true
+  rescue:
+    - name: /tmp mount busy, set reboot required fact | systemd
       ansible.builtin.set_fact:
         change_requires_reboot: true
 
-    - name: /tmp mount busy, reboot required to apply changes | Warning
+    - name: /tmp mount busy, reboot required to apply changes | Warning | systemd
       ansible.builtin.debug:
         msg: 'Warning: /tmp mount busy, reboot required to apply changes'
 
-    - name: /tmp mount busy, reboot required to apply changes
+    - name: /tmp mount busy, reboot required to apply changes | systemd
       ansible.builtin.import_tasks:
         file: warning_facts.yml
       vars:

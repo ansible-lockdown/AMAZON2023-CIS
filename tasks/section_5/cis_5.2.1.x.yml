@@ -39,7 +39,7 @@
     - name: 5.2.1.2 | AUDIT | Ensure auditing for processes that start prior to auditd is enabled | Get GRUB_CMDLINE_LINUX
       ansible.builtin.shell: |
         set -o pipefail
-        grep 'GRUB_CMDLINE_LINUX_DEFAULT=' /etc/default/grub | sed 's/.$//'
+        grep '^GRUB_CMDLINE_LINUX_DEFAULT=' /etc/default/grub | sed 's/.$//'
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
@@ -60,7 +60,7 @@
       ansible.builtin.lineinfile:
         path: /etc/default/grub
         regexp: ^GRUB_CMDLINE_LINUX_DEFAULT=
-        line: '{{ discovered_grub_cmdline_linux.stdout }} audit=1"'
+        line: '{{ discovered_grub_cmdline_linux.stdout | default("GRUB_CMDLINE_LINUX_DEFAULT=\"", true) }} audit=1"'
       notify: Grub2cfg
 
 - name: 5.2.1.3 | PATCH | Ensure audit_backlog_limit is sufficient
@@ -78,7 +78,7 @@
     - name: 5.2.1.3 | AUDIT | Ensure audit_backlog_limit is sufficient | Get GRUB_CMDLINE_LINUX
       ansible.builtin.shell: |
         set -o pipefail
-        grep 'GRUB_CMDLINE_LINUX_DEFAULT=' /etc/default/grub | sed 's/.$//'
+        grep '^GRUB_CMDLINE_LINUX_DEFAULT=' /etc/default/grub | sed 's/.$//'
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
@@ -99,7 +99,7 @@
       ansible.builtin.lineinfile:
         path: /etc/default/grub
         regexp: ^GRUB_CMDLINE_LINUX_DEFAULT=
-        line: '{{ discovered_grub_cmdline_linux_auditd_backlog.stdout }} audit_backlog_limit={{ amzn2023cis_auditd_back_log_limit }}"'
+        line: '{{ discovered_grub_cmdline_linux_auditd_backlog.stdout | default("GRUB_CMDLINE_LINUX_DEFAULT=\"", true) }} audit_backlog_limit={{ amzn2023cis_auditd_back_log_limit }}"'
       notify: Grub2cfg
 
 - name: 5.2.1.4 | PATCH | Ensure auditd service is enabled

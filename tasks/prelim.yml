@@ -3,15 +3,6 @@
 # Preliminary tasks that should always be run
 # List users in order to look files inside each home directory
 
-- name: Include audit specific variables
-  when:
-    - run_audit or audit_only
-    - setup_audit
-  tags:
-    - setup_audit
-    - run_audit
-  ansible.builtin.include_vars: audit.yml
-
 - name: Include pre-remediation audit tasks
   when:
     - run_audit or audit_only
@@ -27,6 +18,7 @@
   args:
     executable: "{{ amzn2023cis_shell_executable }}"
   changed_when: false
+  check_mode: false
   register: prelim_interactive_usernames
 
 - name: PRELIM | AUDIT | Interactive User accounts home directories
@@ -37,6 +29,7 @@
   args:
     executable: "{{ amzn2023cis_shell_executable }}"
   changed_when: false
+  check_mode: false
   register: prelim_interactive_users_home
 
 - name: PRELIM | capture /etc/password variables
@@ -127,6 +120,7 @@
       args:
         executable: '{{ amzn2023cis_shell_executable }}'
       changed_when: false
+      check_mode: false
       register: prelim_mount_output
 
     - name: PRELIM | AUDIT | Retrieve mount options - build fact  # This is inherited and used in mountpoints tasks
@@ -263,6 +257,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       # authselect exits 2 with "No existing configuration detected." when no
       # profile is selected, which is a valid state - 4.4.1 creates one. Before
       # set -o pipefail the pipeline returned awk's rc of 0 and this never
@@ -287,6 +282,22 @@
     name: audit
     state: present
   become: true
+
+- name: PRELIM | 5.2.4.1|2|3|4 | Discover audit logfile
+  when:
+    - amzn2023cis_rule_5_2_4_1 or
+      amzn2023cis_rule_5_2_4_2 or
+      amzn2023cis_rule_5_2_4_3 or
+      amzn2023cis_rule_5_2_4_4
+  tags: always
+  ansible.builtin.shell: |
+    set -o pipefail
+    grep ^log_file /etc/audit/auditd.conf | awk '{ print $NF }'
+  args:
+    executable: "{{ amzn2023cis_shell_executable }}"
+  changed_when: false
+  check_mode: false
+  register: prelim_auditd_logfile
 
 - name: PRELIM | 5.2.4.5|6|7 | Audit conf and rules files | list files
   when: amzn2023cis_rule_5_2_4_5 or amzn2023cis_rule_5_2_4_6 or amzn2023cis_rule_5_2_4_7
@@ -313,6 +324,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: prelim_uid_min_id
 
@@ -323,6 +335,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: prelim_uid_max_id
 
@@ -333,6 +346,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: prelim_gid_min_id
 

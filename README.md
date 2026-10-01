@@ -56,9 +56,9 @@
 
 ## Looking for support?
 
-[Lockdown Enterprise](https://www.lockdownenterprise.com#GH_AL_AMAZON2023-CIS)
+[Lockdown Enterprise](https://www.lockdownenterprise.com#GH_AL_AMAZON2023_cis)
 
-[Ansible support](https://www.mindpointgroup.com/cybersecurity-products/ansible-counselor#GH_AL_AMAZON2023-CIS)
+[Ansible support](https://www.mindpointgroup.com/cybersecurity-products/ansible-counselor#GH_AL_AMAZON2023_cis)
 
 ### Community
 
@@ -93,7 +93,7 @@ This role **will make changes to the system** which may have unintended conseque
 CIS release always contains changes, it is highly recommended to review the new references and available variables. This have changed significantly since ansible-lockdown initial release.
 This is now compatible with python3 if it is found to be the default interpreter. This does come with pre-requisites which it configures the system accordingly.
 
-Further details can be seen in the [Changelog](./ChangeLog.md)
+Further details can be seen in the [Changelog](./Changelog.md)
 
 ---
 
@@ -122,7 +122,7 @@ The control found in defaults main also need to reflect this as this control the
   - [Tower User Guide](https://docs.ansible.com/ansible-tower/latest/html/userguide/index.html)
   - [Ansible Community Info](https://docs.ansible.com/ansible/latest/community/index.html)
 - Functioning Ansible and/or Tower Installed, configured, and running. This includes all of the base Ansible/Tower configurations, needed packages installed, and infrastructure setup.
-- Please read through the tasks in this role to gain an understanding of what each control is doing. Some of the tasks are disruptive and can have unintended consequences in a live production system. Also familiarize yourself with the variables in the defaults/main.yml file.
+- Please read through the tasks in this role to gain an understanding of what each control is doing. Some of the tasks are disruptive and can have unintended consequences in a live production system. Also familiarize yourself with the variables in the defaults/main/ directory.
 
 **Technical Dependencies:**
 
@@ -139,7 +139,7 @@ AMAZON 2023
 
 ## Auditing
 
-This can be turned on or off within the defaults/main.yml file with the variable run_audit. The value is false by default, please refer to the wiki for more details. The defaults file also populates the goss checks to check only the controls that have been enabled in the ansible role.
+This can be turned on or off within defaults/main/audit.yml with the variable run_audit. The value is false by default, please refer to the wiki for more details. The defaults file also populates the goss checks to check only the controls that have been enabled in the ansible role.
 
 This is a much quicker, very lightweight, checking (where possible) config compliance and live/running settings.
 
@@ -177,7 +177,7 @@ testhost                   : ok=396  changed=143  unreachable=0    failed=0    s
 
 ## Role Variables
 
-This role is designed that the end user should not have to edit the tasks themselves. All customizing should be done via the defaults/main.yml file or with extra vars within the project, job, workflow, etc.
+This role is designed that the end user should not have to edit the tasks themselves. All customizing should be done via the defaults/main/ files or with extra vars within the project, job, workflow, etc.
 
 ## Tags
 
@@ -231,7 +231,7 @@ uses:
 
 ## Known Issues
 
-Almalinux BaseOS, EPEL and many cloud providers repositories, do not allow gpgcheck(rule_1.2.1.2) or repo_gpgcheck (rule_1.2.1.4) this will cause issues during the playbook unless or a workaround is found.
+EPEL and many third-party or cloud provider repositories do not support gpgcheck (rule_1.2.2) or repo_gpgcheck (rule_1.2.4). This will cause issues during the playbook unless a workaround is found.
 
 ## Local Testing
 

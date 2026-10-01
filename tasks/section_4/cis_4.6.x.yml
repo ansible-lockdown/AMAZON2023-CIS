@@ -94,21 +94,41 @@
     - NIST800-53R5_AC-3
     - NIST800-53R5_MP-2
   block:
-    - name: 4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set umask for /etc/login.defs pam_umask settings
-      ansible.builtin.replace:
-        path: '{{ item.path }}'
-        regexp: (?i)(umask\s+\d*)
-        replace: '{{ item.line }}'
-      loop:
-        - {path: /etc/bashrc, line: 'umask {{ amzn2023cis_umask }}'}
-        - {path: /etc/profile, line: 'umask {{ amzn2023cis_umask }}'}
-        - {path: /etc/login.defs, line: 'UMASK {{ amzn2023cis_umask }}'}
+    - name: 4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set UMASK in /etc/login.defs
+      ansible.builtin.lineinfile:
+        path: /etc/login.defs
+        regexp: '^\s*UMASK\s+'
+        line: UMASK {{ amzn2023cis_umask }}
 
-    - name: 4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set umask for /etc/bashrc
+    - name: 4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set USERGROUPS_ENAB in /etc/login.defs
       ansible.builtin.lineinfile:
         path: /etc/login.defs
         regexp: ^USERGROUPS_ENAB
         line: USERGROUPS_ENAB no
+
+    - name: 4.6.5 | AUDIT | Ensure default user umask is 027 or more restrictive | Find shell initialization files setting umask
+      ansible.builtin.shell: grep -lPsi -- '^\h*umask\h+\S' /etc/profile /etc/bashrc /etc/profile.d/*.sh
+      changed_when: false
+      failed_when: discovered_umask_files.rc not in [ 0, 1, 2 ]
+      check_mode: false
+      register: discovered_umask_files
+
+    - name: 4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Tighten weak umask statements
+      ansible.builtin.replace:
+        path: "{{ item }}"
+        regexp: '(?i)^(\s*umask\s+)(?!0?[0-7][2367]7\b)[^\s#;]+'
+        replace: '\g<1>{{ amzn2023cis_umask }}'
+      loop: "{{ discovered_umask_files.stdout_lines }}"
+
+    - name: 4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set umask when no shell initialization file sets one
+      when: discovered_umask_files.stdout_lines | length == 0
+      ansible.builtin.copy:
+        dest: /etc/profile.d/50-systemwide_umask.sh
+        content: |
+          umask {{ amzn2023cis_umask }}
+        owner: root
+        group: root
+        mode: u-x,go-wx
 
 - name: 4.6.6 | PATCH | Ensure root password is set
   when: amzn2023cis_rule_4_6_6
