@@ -15,6 +15,7 @@
   register: discovered_auditd_syscalls
 
 - name: "POST | AUDITD | Ensure use of privileged commands is collected"
+  when: amzn2023cis_rule_5_2_3_6
   ansible.builtin.shell: |
     set -o pipefail
     {% set egrep_exclude = "(" ~ (["asdfmnop"] + amzn2023cis_priv_command_excluded_mounts) | join("|") ~ ")" -%}

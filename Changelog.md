@@ -33,10 +33,11 @@
 - 1.3.1: register placed after failed_when
 - company name updated to Quantum Sky
 - README: tracking tags unified, known issues rule IDs, defaults paths
+- 5.2.3.6: duplicate privileged command discovery removed, auditd.yml discovery gated on the control
 - Aug26_align branch
   - 6.2.1: stdout_line typo, pwconv remediation added, block retagged PATCH (addresses #179) - Thank you @mariot8
   - 5.2.3.6: var prefix and empty exclude filter fixed, privileged command rules now generated (addresses #181) - Thank you @bjammal
-  - 5.2.3.6: pipefail line join fixed, discovery failures no longer masked (addresses #189) - Thank you @Nevon
+  - 5.2.3.6: pipefail line join fixed, script errors (rc above 1) fail the run (addresses #189) - Thank you @Nevon
   - 5.2.1.3: correct registered var used, audit=1 no longer dropped (addresses #182) - Thank you @bjammal
   - ipv6 logic fixed #183 thansk to @bjammal
   - 1.3.1: AIDE db build gated on exists/age, async race removed

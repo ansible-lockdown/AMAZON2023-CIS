@@ -63,7 +63,7 @@
     update_audit_template: true
 
 # All changes selected are managed by the POST audit and handlers to update
-- name: 5.2.3.6 | PATCH | Ensure use of privileged commands are collected
+- name: 5.2.3.6 | PATCH | Ensure use of privileged commands are collected | privileged command discovery runs in tasks/auditd.yml
   when: amzn2023cis_rule_5_2_3_6
   tags:
     - level2-server
@@ -71,22 +71,9 @@
     - auditd
     - rule_5.2.3.6
     - NIST800-53R5_AU-3
-  block:
-    - name: 5.2.3.6 | PATCH | Ensure use of privileged commands are collected
-      ansible.builtin.shell: |
-        set -o pipefail
-        for i in  $(df | grep '^/dev' | awk '{ print $NF }'); do find $i -xdev -type f -perm /6000 2>/dev/null; done
-      args:
-        executable: "{{ amzn2023cis_shell_executable }}"
-      changed_when: false
-      failed_when: false
-      check_mode: false
-      register: discovered_priv_procs
-
-    - name: 5.2.3.6 | PATCH | Ensure use of privileged commands are collected
-      ansible.builtin.set_fact:
-        update_audit_template: true
-      notify: Restart auditd
+  ansible.builtin.set_fact:
+    update_audit_template: true
+  notify: Restart auditd
 
 # All changes selected are managed by the POST audit and handlers to update
 - name: 5.2.3.7 | PATCH | Ensure unsuccessful file access attempts are collected
