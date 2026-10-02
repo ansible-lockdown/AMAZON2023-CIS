@@ -16,6 +16,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_os_installed_pub_keys
 
@@ -27,6 +28,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_os_gpg_key_check
 
@@ -86,12 +88,12 @@
       vars:
         warn_control_id: 1.2.3
 
-- name: 1.2.4 | AUDIT | Ensure repo_gpgcheck is globally activated
+- name: 1.2.4 | PATCH | Ensure repo_gpgcheck is globally activated
   when: amzn2023cis_rule_1_2_4
   tags:
     - level2-server
     - manual
-    - audit
+    - patch
     - rule_1.2.4
     - NIST800-53R5_SI-3
   block:

@@ -12,6 +12,7 @@
     - name: 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | discover
       ansible.builtin.shell: awk -F':' '($2 != "x" ) { print $1 " is not set to shadowed passwords "}' /etc/passwd
       changed_when: false
+      check_mode: false
       register: discovered_shadow_passwds
 
     - name: 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Output
@@ -111,6 +112,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_user_uid_check
 
@@ -147,6 +149,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_dup_gid_check
 
@@ -183,6 +186,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_dup_username_check
 
@@ -215,7 +219,7 @@
     - name: 6.2.7 | AUDIT | Ensure no duplicate group names exist | Check for duplicate group names
       ansible.builtin.shell: |
         set -o pipefail
-        getent passwd | cut -d: -f1 | sort -n | uniq -d
+        getent group | cut -d: -f1 | sort | uniq -d
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
@@ -223,13 +227,13 @@
       check_mode: false
       register: discovered_dup_group_check
 
-    - name: 6.2.7 | AUDIT | Ensure no duplicate group names exist | Print warning about users with duplicate group names
-      when: discovered_dup_group_check.stdout is not defined
+    - name: 6.2.7 | AUDIT | Ensure no duplicate group names exist | Print warning about duplicate group names
+      when: discovered_dup_group_check.stdout | length > 0
       ansible.builtin.debug:
         msg: 'Warning!! The following group names are duplicates: {{ discovered_dup_group_check.stdout_lines }}'
 
     - name: 6.2.7 | AUDIT | Ensure no duplicate group names exist | warning count
-      when: discovered_dup_group_check.stdout is not defined
+      when: discovered_dup_group_check.stdout | length > 0
       ansible.builtin.import_tasks:
         file: warning_facts.yml
       vars:
@@ -255,6 +259,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       register: discovered_root_paths
 
     - name: 6.2.8 | AUDIT | Ensure root PATH Integrity | Get root paths
@@ -264,6 +269,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       register: discovered_root_paths_split
 
     - name: 6.2.8 | AUDIT | Ensure root PATH Integrity | Set fact
@@ -277,6 +283,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: discovered_empty_root_paths.rc not in [ 0, 1 ]
       register: discovered_empty_root_paths
 
@@ -287,6 +294,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: discovered_root_path_trailing_colon.rc not in [ 0, 1 ]
       register: discovered_root_path_trailing_colon
 

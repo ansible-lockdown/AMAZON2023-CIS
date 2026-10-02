@@ -136,28 +136,29 @@
     mode: ugo-rwx
 
 - name: 6.1.10 | AUDIT | Audit system file permissions
+  when: amzn2023cis_rule_6_1_10
+  tags:
+    - level2-server
+    - manual
+    - audit
+    - permissions
+    - rule_6.1.10
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_IA-5
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_MP-2
   block:
     - name: 6.1.10 | AUDIT | Audit system file permissions | Audit the packages  # noqa: command-instead-of-module
       ansible.builtin.command: rpm -Va --nomtime --nosize --nomd5 --nolinkto
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_packages_rpm
 
     - name: 6.1.10 | AUDIT | Audit system file permissions | Create list and warning
-      when: amzn2023cis_rule_6_1_10
-      tags:
-        - level2-server
-        - manual
-        - audit
-        - permissions
-        - rule_6.1.10
-        - NIST800-53R5_CM-1
-        - NIST800-53R5_CM-2
-        - NIST800-53R5_CM-6
-        - NIST800-53R5_CM-7
-        - NIST800-53R5_IA-5
-        - NIST800-53R5_AC-3
-        - NIST800-53R5_MP-2
       block:
         - name: 6.1.10 | AUDIT | Audit system file permissions | Add file discrepancy list to system
           ansible.builtin.copy:
@@ -200,6 +201,7 @@
         executable: "{{ amzn2023cis_shell_executable }}"
       failed_when: false
       changed_when: false
+      check_mode: false
       register: discovered_perms_results
 
     - name: 6.1.11 | PATCH | Ensure world writable files and directories are secured | Adjust world-writable files if they exist (Configurable)
@@ -212,7 +214,7 @@
         - discovered_perms_results.stdout_lines is defined
         - amzn2023cis_no_world_write_adjust
 
-    - name: 6.1.11 | PATCH | Ensure sticky bit is set on all world-writable directories
+    - name: 6.1.11 | PATCH | Ensure world writable files and directories are secured | Set sticky bit on world-writable directories
       ansible.builtin.shell: |
         set -o pipefail
         df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | xargs chmod a+t
@@ -323,6 +325,7 @@
         executable: "{{ amzn2023cis_shell_executable }}"
       failed_when: false
       changed_when: false
+      check_mode: false
       register: discovered_suid_perms
       loop: '{{ ansible_facts["mounts"] }}'
       loop_control:
@@ -350,6 +353,7 @@
         executable: "{{ amzn2023cis_shell_executable }}"
       failed_when: false
       changed_when: false
+      check_mode: false
       register: discovered_sgid_perms
       loop: '{{ ansible_facts["mounts"] }}'
       loop_control:

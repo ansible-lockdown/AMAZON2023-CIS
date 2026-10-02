@@ -10,19 +10,19 @@
 
     - name: Verify SSH is installed
       ansible.builtin.assert:
-        that: "'openssh-server' in ansible_facts.packages"
+        that: "'openssh-server' in ansible_facts['packages']"
 
     - name: Verify audit package is installed
       ansible.builtin.assert:
-        that: "'audit' in ansible_facts.packages"
+        that: "'audit' in ansible_facts['packages']"
 
     - name: Verify crypto-policies is installed
       ansible.builtin.assert:
-        that: "'crypto-policies' in ansible_facts.packages"
+        that: "'crypto-policies' in ansible_facts['packages']"
 
     - name: Verify firewalld is installed
       ansible.builtin.assert:
-        that: "'firewalld' in ansible_facts.packages"
+        that: "'firewalld' in ansible_facts['packages']"
 
     - name: Check SSHD configuration
       ansible.builtin.command: sshd -t

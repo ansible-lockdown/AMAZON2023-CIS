@@ -39,7 +39,7 @@ aide_packages:
 # Aide initiate command for new DB creation
 aide_initiate_command: /usr/sbin/aide --init
 
-company_title: 'MindPoint Group - A Tyto Athene Company'
+company_title: 'MindPoint Group - A Quantum Sky Company'
 file_managed_by_ansible: |-
   # File managed by ansible as part of {{ benchmark }} benchmark
   # As part of Ansible-lockdown

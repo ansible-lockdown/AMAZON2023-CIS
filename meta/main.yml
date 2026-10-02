@@ -3,7 +3,7 @@
 galaxy_info:
   author: Ansible-Lockdown Team
   description: Apply the Amazon 2023 CIS
-  company: MindPoint Group - A Tyto Athene Company
+  company: MindPoint Group - A Quantum Sky Company
   license: MIT
   role_name: amazon2023_cis
   namespace: mindpointgroup
