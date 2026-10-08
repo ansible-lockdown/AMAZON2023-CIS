@@ -3,6 +3,7 @@
 - name: 4.4.1 | PATCH | Ensure custom authselect profile is used
   when:
     - amzn2023cis_rule_4_4_1
+    - amzn2023cis_authselect_custom_profile_create
     - amzn2023cis_authselect['custom_profile_name'] not in prelim_authselect_current_profile.stdout or prelim_authselect_current_profile.stdout is not defined
   tags:
     - level1-server

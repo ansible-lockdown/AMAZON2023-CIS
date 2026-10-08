@@ -50,11 +50,12 @@
   notify: Systemd daemon reload
 
 - name: 1.5.4 | PATCH | Ensure core dump backtraces are disabled
-  when: amzn2023cis_rule_1_5_4
+  when:
+    - amzn2023cis_rule_1_5_4
+    - prelim_systemd_coredump.stat.exists
   tags:
     - level1-server
     - patch
-    - sysctl
     - rule_1.5.4
     - NIST800-53R5_CM-6
   ansible.builtin.lineinfile:

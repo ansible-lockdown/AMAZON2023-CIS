@@ -191,8 +191,13 @@
         state: absent
 
     - name: 2.2.12 | PATCH | Ensure net-snmp is not installed or the snmpd service is not enabled | mask service
+      when:
+        - not amzn2023cis_remove_snmp
+        - "'net-snmp' in ansible_facts['packages']"
       ansible.builtin.systemd:
-        name: net-snmp
+        name: snmpd
+        enabled: false
+        state: stopped
         masked: true
 
 - name: 2.2.13 | PATCH | Ensure telnet-server is not installed

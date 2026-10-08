@@ -15,30 +15,34 @@
     - rule_5.2.4.3
     - NIST800-53R5_AU-3
   block:
-    - name: 5.2.4.1 | AUDIT | Ensure audit log files are mode 0640 or less permissive | discover file
-      ansible.builtin.shell: |
-        set -o pipefail
-        grep ^log_file /etc/audit/auditd.conf | awk '{ print $NF }'
-      args:
-        executable: "{{ amzn2023cis_shell_executable }}"
-      changed_when: false
-      register: discovered_auditd_logfile
+    - name: 5.2.4.1 | AUDIT | Ensure audit log files are mode 0640 or less permissive | Find audit log files
+      ansible.builtin.find:
+        paths: "{{ prelim_auditd_logfile.stdout | dirname }}"
+        file_type: file
+      register: discovered_auditd_logfiles
 
-    - name: 5.2.4.1 | AUDIT | Ensure audit log files are mode 0640 or less permissive | stat file
-      ansible.builtin.stat:
-        path: '{{ discovered_auditd_logfile.stdout }}'
-      changed_when: false
-      register: discovered_auditd_logfile_stat
-
-    - name: |
-        "5.2.4.1 | PATCH | Ensure audit log files are mode 0640 or less permissive"
-        "5.2.4.2 | PATCH | Ensure only authorized users own audit log files"
-        "5.2.4.3 | PATCH | Ensure only authorized groups are assigned ownership of audit log files"
+    - name: 5.2.4.1 | PATCH | Ensure audit log files are mode 0640 or less permissive | Set mode
+      when: amzn2023cis_rule_5_2_4_1
       ansible.builtin.file:
-        path: '{{ discovered_auditd_logfile.stdout }}'
-        mode: "{% if discovered_auditd_logfile_stat.stat.mode != '0600' %}0640{% endif %}"
+        path: "{{ item.path }}"
+        mode: u-x,g-wx,o-rwx
+      loop: "{{ discovered_auditd_logfiles.files }}"
+
+    - name: 5.2.4.2 | PATCH | Ensure only authorized users own audit log files | Set owner
+      when: amzn2023cis_rule_5_2_4_2
+      ansible.builtin.file:
+        path: "{{ item.path }}"
         owner: root
+      loop: "{{ discovered_auditd_logfiles.files }}"
+
+    - name: 5.2.4.3 | PATCH | Ensure only authorized groups are assigned ownership of audit log files | Set group
+      when:
+        - amzn2023cis_rule_5_2_4_3
+        - item.gr_name not in ['root', 'adm']
+      ansible.builtin.file:
+        path: "{{ item.path }}"
         group: root
+      loop: "{{ discovered_auditd_logfiles.files }}"
 
 - name: 5.2.4.4 | PATCH | Ensure the audit log directory is 0750 or more restrictive
   when: amzn2023cis_rule_5_2_4_4
@@ -47,18 +51,10 @@
     - patch
     - auditd
     - rule_5.2.4.4
-  block:
-    - name: 5.2.4.4 | AUDIT | Ensure the audit log directory is 0750 or more restrictive | get current permissions
-      ansible.builtin.stat:
-        path: '{{ discovered_auditd_logfile.stdout | dirname }}'
-      register: discovered_auditlog_dir
-
-    - name: 5.2.4.4 | PATCH | Ensure the audit log directory is 0750 or more restrictive | set
-      when: not discovered_auditlog_dir.stat.mode is match('07(0|5)0')
-      ansible.builtin.file:
-        path: '{{ discovered_auditd_logfile.stdout | dirname }}'
-        state: directory
-        mode: u+x,g-w,o-rwx
+  ansible.builtin.file:
+    path: "{{ prelim_auditd_logfile.stdout | dirname }}"
+    state: directory
+    mode: g-w,o-rwx
 
 - name: 5.2.4.5 | PATCH | Ensure audit configuration files are 640 or more restrictive
   when: amzn2023cis_rule_5_2_4_5
@@ -114,7 +110,7 @@
     - rule_5.2.4.8
     - NIST800-53R5_AU-3
   block:
-    - name: 5.2.4.8 | AUDIT | Get audit binary file stat | get current mode
+    - name: 5.2.4.8 | AUDIT | Ensure audit tools are 755 or more restrictive | Get current mode
       ansible.builtin.stat:
         path: '{{ item }}'
       register: discovered_audit_bins

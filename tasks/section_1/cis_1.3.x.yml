@@ -56,10 +56,10 @@
             dest: '{{ amzn2023cis_aide_db_file }}'
             remote_src: true
             mode: 'u-x,g-wx,o-rwx'
-          register: discovered_aide_db_cp
           failed_when:
             - not ansible_check_mode
             - discovered_aide_db_cp.failed
+          register: discovered_aide_db_cp
 
 - name: 1.3.2 | PATCH | Ensure filesystem integrity is regularly checked
   when: amzn2023cis_rule_1_3_2
@@ -82,7 +82,9 @@
     job: "{{ amzn2023cis_aide_cron['aide_job'] }}"
 
 - name: 1.3.3 | PATCH | Ensure cryptographic mechanisms are used to protect the integrity of audit tools
-  when: amzn2023cis_rule_1_3_3
+  when:
+    - amzn2023cis_rule_1_3_3
+    - amzn2023cis_config_aide
   tags:
     - level1-server
     - aide
@@ -94,11 +96,10 @@
     path: /etc/aide.conf
     marker: '# {mark} Audit tools - CIS benchmark - Ansible-lockdown'
     block: |
-      /sbin/auditctl p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
-      /sbin/auditd p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
-      /sbin/augenrules p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
-      /sbin/aureport p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
-      /sbin/ausearch p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
-      /sbin/autrace p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
-      /sbin/audispd p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+      /sbin/auditctl p+i+n+u+g+s+b+acl+xattrs+sha512
+      /sbin/auditd p+i+n+u+g+s+b+acl+xattrs+sha512
+      /sbin/ausearch p+i+n+u+g+s+b+acl+xattrs+sha512
+      /sbin/aureport p+i+n+u+g+s+b+acl+xattrs+sha512
+      /sbin/autrace p+i+n+u+g+s+b+acl+xattrs+sha512
+      /sbin/augenrules p+i+n+u+g+s+b+acl+xattrs+sha512
     validate: aide -D --config %s

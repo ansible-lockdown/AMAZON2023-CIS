@@ -42,6 +42,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       register: discovered_root_passwd_set
 
     - name: Ensure root password is set
@@ -52,7 +53,7 @@
 
 - name: Setup rules if container
   when:
-    - ansible_connection in ['docker', 'community.docker.docker'] or ( ansible_virtualization_type is defined and ansible_virtualization_type in ["docker", "lxc", "openvz", "podman", "container"])
+    - ansible_connection in ['docker', 'community.docker.docker'] or (ansible_facts['virtualization_type'] is defined and ansible_facts['virtualization_type'] in ["docker", "lxc", "openvz", "podman", "container"])
   tags: always
   block:
     - name: Discover and set container variable if required
@@ -141,7 +142,7 @@
 - name: Add ansible file showing Benchmark and levels applied if audit details not present
   when:
     - create_benchmark_facts
-    - (post_audit_summary is defined) or (ansible_local['compliance_facts']['lockdown_audit_details']['audit_summary'] is undefined and post_audit_summary is undefined)
+    - (post_audit_summary is defined) or (ansible_facts['local']['compliance_facts']['lockdown_audit_details']['audit_summary'] is undefined and post_audit_summary is undefined)
   tags: always
   block:
     - name: Create ansible facts directory if audit facts not present

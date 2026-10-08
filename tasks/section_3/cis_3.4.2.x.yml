@@ -19,6 +19,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: ( discovered_firewalld_zone_set.rc not in [ 0, 1 ] )
       register: discovered_firewalld_zone_set
 
@@ -38,20 +39,21 @@
     - rule_3.4.2.2
     - NIST800-53R5_CA-9
   block:
-    - name: 3.4.2.2 | AUDIT | Ensure a table exists | Check for tables
+    - name: 3.4.2.2 | AUDIT | Ensure at least one nftables table exists | Check for tables
       ansible.builtin.command: nft list tables
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_nft_tables
 
-    - name: 3.4.2.2 | AUDIT | Ensure an nftables table exists | Show existing tables
+    - name: 3.4.2.2 | AUDIT | Ensure at least one nftables table exists | Show existing tables
       when: discovered_nft_tables.stdout | length > 0
       ansible.builtin.debug:
         msg:
           - Below are the current nft tables, please review
           - '{{ discovered_nft_tables.stdout_lines }}'
 
-    - name: 3.4.2.2 | AUDIT | Ensure an nftables table exists | Alert on no tables
+    - name: 3.4.2.2 | AUDIT | Ensure at least one nftables table exists | Alert on no tables
       when:
         - discovered_nft_tables.stdout | length == 0
         - not amzn2023cis_nft_tables_autonewtable
@@ -60,7 +62,7 @@
           - Warning!! You currently have no nft tables, please review your setup
           - Use the command "nft create table inet <table name>" to create a new table
 
-    - name: 3.4.2.2 | AUDIT | Ensure an nftables table exists | Alert on no tables | warning count
+    - name: 3.4.2.2 | AUDIT | Ensure at least one nftables table exists | Alert on no tables | warning count
       when:
         - discovered_nft_tables.stdout | length == 0
         - not amzn2023cis_nft_tables_autonewtable
@@ -69,7 +71,7 @@
       vars:
         warn_control_id: 3.4.2.2
 
-    - name: 3.4.2.2 | PATCH | Ensure a table exists | Create table if needed
+    - name: 3.4.2.2 | PATCH | Ensure at least one nftables table exists | Create table if needed
       when: amzn2023cis_nft_tables_autonewtable
       ansible.builtin.command: nft create table inet "{{ amzn2023cis_nft_tables_tablename }}"
       failed_when: false
@@ -94,6 +96,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_input_chains
 
@@ -104,6 +107,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_forward_chains
 
@@ -114,6 +118,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_output_chains
 
@@ -156,6 +161,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_iiflo
 
@@ -166,6 +172,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_ipsaddr
 
@@ -176,6 +183,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_ip6saddr
 
@@ -259,6 +267,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_inconnectionrule
 
@@ -269,6 +278,7 @@
       args:
         executable: "{{ amzn2023cis_shell_executable }}"
       changed_when: false
+      check_mode: false
       failed_when: false
       register: discovered_outconnectionrule
 
@@ -321,6 +331,7 @@
         executable: "{{ amzn2023cis_shell_executable }}"
       failed_when: false
       changed_when: false
+      check_mode: false
       register: discovered_inputpolicy
 
     - name: 3.4.2.7 | AUDIT | Ensure nftables default deny firewall policy | Check for hook forward deny policy
@@ -331,6 +342,7 @@
         executable: "{{ amzn2023cis_shell_executable }}"
       failed_when: false
       changed_when: false
+      check_mode: false
       register: discovered_forwardpolicy
 
     - name: 3.4.2.7 | AUDIT | Ensure nftables default deny firewall policy | Check for hook output deny policy
@@ -341,6 +353,7 @@
         executable: "{{ amzn2023cis_shell_executable }}"
       failed_when: false
       changed_when: false
+      check_mode: false
       register: discovered_outputpolicy
 
     - name: 3.4.2.7 | AUDIT | Ensure nftables default deny firewall policy | Check for SSH allow
@@ -351,6 +364,7 @@
         executable: "{{ amzn2023cis_shell_executable }}"
       failed_when: false
       changed_when: false
+      check_mode: false
       register: discovered_sshallowcheck
 
     - name: 3.4.2.7 | PATCH | Ensure nftables default deny firewall policy | Enable SSH traffic

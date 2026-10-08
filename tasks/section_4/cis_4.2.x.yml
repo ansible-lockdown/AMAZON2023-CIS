@@ -137,6 +137,7 @@
   with_items:
     - '{{ prelim_sshd_conf_files.files }}'
     - '{{ prelim_main_sshd_cfg.stat }}'
+  notify: Restart sshd
 
 - name: 4.2.6 | PATCH | Ensure SSH PAM is enabled
   when: amzn2023cis_rule_4_2_6
@@ -158,6 +159,7 @@
   with_items:
     - '{{ prelim_sshd_conf_files.files }}'
     - '{{ prelim_main_sshd_cfg.stat }}'
+  notify: Restart sshd
 
 - name: 4.2.7 | PATCH | Ensure SSH root login is disabled
   when: amzn2023cis_rule_4_2_7
@@ -175,6 +177,7 @@
   with_items:
     - '{{ prelim_sshd_conf_files.files }}'
     - '{{ prelim_main_sshd_cfg.stat }}'
+  notify: Restart sshd
 
 - name: 4.2.8 | PATCH | Ensure SSH HostbasedAuthentication is disabled
   when: amzn2023cis_rule_4_2_8
@@ -196,6 +199,7 @@
   with_items:
     - '{{ prelim_sshd_conf_files.files }}'
     - '{{ prelim_main_sshd_cfg.stat }}'
+  notify: Restart sshd
 
 - name: 4.2.9 | PATCH | Ensure SSH PermitEmptyPasswords is disabled
   when: amzn2023cis_rule_4_2_9
@@ -217,6 +221,7 @@
   with_items:
     - '{{ prelim_sshd_conf_files.files }}'
     - '{{ prelim_main_sshd_cfg.stat }}'
+  notify: Restart sshd
 
 - name: 4.2.10 | PATCH | Ensure SSH PermitUserEnvironment is disabled
   when: amzn2023cis_rule_4_2_10
@@ -238,6 +243,7 @@
   with_items:
     - '{{ prelim_sshd_conf_files.files }}'
     - '{{ prelim_main_sshd_cfg.stat }}'
+  notify: Restart sshd
 
 - name: 4.2.11 | PATCH | Ensure SSH IgnoreRhosts is enabled
   when: amzn2023cis_rule_4_2_11
@@ -256,6 +262,7 @@
     regexp: ^#IgnoreRhosts|^IgnoreRhosts
     line: IgnoreRhosts yes
     validate: sshd -t -f %s
+  notify: Restart sshd
 
 - name: 4.2.12 | PATCH | Ensure SSH X11 forwarding is disabled
   when: amzn2023cis_rule_4_2_12
@@ -273,6 +280,7 @@
   with_items:
     - '{{ prelim_sshd_conf_files.files }}'
     - '{{ prelim_main_sshd_cfg.stat }}'
+  notify: Restart sshd
 
 - name: 4.2.13 | PATCH | Ensure SSH AllowTcpForwarding is disabled
   when: amzn2023cis_rule_4_2_13
@@ -294,6 +302,7 @@
   with_items:
     - '{{ prelim_sshd_conf_files.files }}'
     - '{{ prelim_main_sshd_cfg.stat }}'
+  notify: Restart sshd
 
 - name: 4.2.14 | PATCH | Ensure system-wide crypto policy is not over-ridden
   when: amzn2023cis_rule_4_2_14
@@ -309,13 +318,16 @@
     - name: 4.2.14 | AUDIT | Ensure system-wide crypto policy is not over-ridden
       ansible.builtin.shell: grep -i '^\s*CRYPTO_POLICY=' /etc/sysconfig/sshd
       changed_when: false
+      check_mode: false
       failed_when: ( discovered_crypto_discovery.rc not in [ 0, 1 ] )
       register: discovered_crypto_discovery
 
-    - name: 4.2.14 | PATCH | Ensure system-wide crypto policy is not over-ridden  # noqa: command-instead-of-module
+    - name: 4.2.14 | PATCH | Ensure system-wide crypto policy is not over-ridden | Comment out CRYPTO_POLICY
       when: discovered_crypto_discovery.stdout | length > 0
-      ansible.builtin.command: sed -ri "s/^\s*(CRYPTO_POLICY\s*=.*)$/# \1/" /etc/sysconfig/sshd
-      changed_when: true
+      ansible.builtin.replace:
+        path: /etc/sysconfig/sshd
+        regexp: '(?i)^\s*(CRYPTO_POLICY\s*=.*)$'
+        replace: '# \1'
       notify: Restart sshd
 
 - name: 4.2.15 | PATCH | Ensure SSH warning banner is configured
@@ -334,6 +346,7 @@
     path: '{{ amzn2023cis_sshd_config_file }}'
     regexp: ^Banner
     line: Banner /etc/issue.net
+  notify: Restart sshd
 
 - name: 4.2.16 | PATCH | Ensure SSH MaxAuthTries is set to 4 or less
   when: amzn2023cis_rule_4_2_16
@@ -351,6 +364,7 @@
   with_items:
     - '{{ prelim_sshd_conf_files.files }}'
     - '{{ prelim_main_sshd_cfg.stat }}'
+  notify: Restart sshd
 
 - name: 4.2.17 | PATCH | Ensure SSH MaxStartups is configured
   when: amzn2023cis_rule_4_2_17
@@ -372,6 +386,7 @@
   with_items:
     - '{{ prelim_sshd_conf_files.files }}'
     - '{{ prelim_main_sshd_cfg.stat }}'
+  notify: Restart sshd
 
 - name: 4.2.18 | PATCH | Ensure SSH MaxSessions is set to 10 or less
   when: amzn2023cis_rule_4_2_18
@@ -393,6 +408,7 @@
   with_items:
     - '{{ prelim_sshd_conf_files.files }}'
     - '{{ prelim_main_sshd_cfg.stat }}'
+  notify: Restart sshd
 
 - name: 4.2.19 | PATCH | Ensure SSH LoginGraceTime is set to one minute or less
   when: amzn2023cis_rule_4_2_19
@@ -410,6 +426,7 @@
   with_items:
     - '{{ prelim_sshd_conf_files.files }}'
     - '{{ prelim_main_sshd_cfg.stat }}'
+  notify: Restart sshd
 
 - name: 4.2.20 | PATCH | Ensure SSH Idle Timeout Interval is configured
   when: amzn2023cis_rule_4_2_20
@@ -433,6 +450,7 @@
       with_items:
         - '{{ prelim_sshd_conf_files.files }}'
         - '{{ prelim_main_sshd_cfg.stat }}'
+      notify: Restart sshd
 
     - name: 4.2.20 | PATCH | Ensure SSH Idle Timeout Interval is configured | Ensure SSH ClientAliveCountMax set to <= 3
       ansible.builtin.lineinfile:
@@ -443,3 +461,4 @@
       with_items:
         - '{{ prelim_sshd_conf_files.files }}'
         - '{{ prelim_main_sshd_cfg.stat }}'
+      notify: Restart sshd
